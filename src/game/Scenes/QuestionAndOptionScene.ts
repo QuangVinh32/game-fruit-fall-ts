@@ -89,9 +89,26 @@ export default class QuestionAndOptionScene extends Phaser.Scene{
             console.error("Không thể lấy questionDTO hoặc questionId không hợp lệ");
         }
 
-        this.add.text(510, 15, "Next Level", { fontSize: '30px Arial', fontStyle: "bold", color: 'black' })
-        .setInteractive() 
-        .on('pointerdown', () => {
+        // this.add.text(510, 15, "Next Level", { fontSize: '30px Arial', fontStyle: "bold", color: 'black' })
+        // .setInteractive() 
+        // .on('pointerdown', () => {
+        //     this.levelId += 1;
+    
+        //     console.log("Transitioning to LevelScene with levelId:", this.levelId);
+        //     this.scene.start('LevelScene', {
+        //         levelId: this.levelId,
+        //     });
+        //     this.scene.stop('QuestionAndOptionScene', {
+        //     });
+        //     this.scene.stop('ResultScene', {
+        //     });
+            
+        // });
+
+    }
+    checkAnswer(currentCount: number, optionDTO: OptionDTO): void {
+        if (currentCount === optionDTO.value) {
+            console.log("đúng"); 
             this.levelId += 1;
     
             console.log("Transitioning to LevelScene with levelId:", this.levelId);
@@ -103,12 +120,6 @@ export default class QuestionAndOptionScene extends Phaser.Scene{
             this.scene.stop('ResultScene', {
             });
             
-        });
-
-    }
-    checkAnswer(currentCount: number, optionDTO: OptionDTO): void {
-        if (currentCount === optionDTO.value) {
-            console.log("đúng"); 
         } else {
             console.log("sai");
             // this.scene.launch("WrongChoiceScene")
