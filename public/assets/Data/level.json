@@ -1,0 +1,23 @@
+{
+    "levels": [
+        {
+            "levelId": 1,
+            "score": null,
+            "time": null,
+            "state": 1,
+            "playerId": 1,
+            "fruitId": 1,
+            "questionId": 1
+        },
+        {
+            "levelId": 2,
+            "score": null,
+            "time": null,
+            "state": 1,
+            "playerId": 1,
+            "fruitId": 1,
+            "questionId": 1
+        }
+
+    ]
+}

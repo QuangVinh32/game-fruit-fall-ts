@@ -1,0 +1,234 @@
+{
+    "fruitTypes": [
+        {
+            "fruitTypeId": 1,
+            "name": "Applwwwe",
+            "texture": "apple"
+        },
+        {
+            "fruitTypeId": 2,
+            "name": "Cherry",
+            "texture": "cherry"
+        },
+        {
+            "fruitTypeId": 3,
+            "name": "Kiwi",
+            "texture": "kiwi"
+        },
+        {
+            "fruitTypeId": 4,
+            "name": "Lemon",
+            "texture": "lemon"
+        },
+        {
+            "fruitTypeId": 6,
+            "name": "Mango",
+            "texture": "mango"
+        },
+        {
+            "fruitTypeId": 7,
+            "name": "Orrange",
+            "texture": "orrange"
+        },
+        {
+            "fruitTypeId": 8,
+            "name": "Pear",
+            "texture": "pear"
+        }
+    ],
+    "fruits": [
+        {
+            "fruitId": 1,
+            "positionX":80 ,
+            "positionY":100,
+            "width": 40,
+            "height": 50,
+            "fruitTypeId": 1,
+            "levelId": 1
+        },
+        {
+            "fruitId": 2,
+            "positionX": 210,
+            "positionY": 100,
+            "width": 40,
+            "height": 50,
+            "fruitTypeId": 1,
+            "levelId": 1
+            
+        },
+        {
+            "fruitId": 3,
+            "positionX": 350,
+            "positionY": 100,
+            "width": 40,
+            "height": 50,
+            "fruitTypeId": 1,
+            "levelId": 1
+        },
+        {
+            "fruitId": 4,
+            "positionX": 485,
+            "positionY": 100,
+            "width": 40,
+            "height": 50,
+            "fruitTypeId": 1,
+            "levelId": 1
+
+        },
+        {
+            "fruitId": 5,
+            "positionX": 620,
+            "positionY": 100,
+            "width": 40,
+            "height": 50,
+            "fruitTypeId": 1,
+            "levelId": 1
+
+        },
+
+        {
+            "fruitId": 1,
+            "positionX": 80,
+            "positionY": 100,
+            "width": 40,
+            "height": 55,
+            "fruitTypeId": 8,
+            "levelId": 2
+        },
+        {
+            "fruitId": 2,
+            "positionX": 210,
+            "positionY": 100,
+            "width": 40,
+            "height": 55,
+            "fruitTypeId": 8,
+            "levelId": 2
+            
+        },
+        {
+            "fruitId": 3,
+            "positionX": 350,
+            "positionY": 100,
+            "width": 40,
+            "height": 55,
+            "fruitTypeId": 8,
+            "levelId": 2
+        },
+        {
+            "fruitId": 4,
+            "positionX": 485,
+            "positionY": 100,
+            "width": 40,
+            "height": 55,
+            "fruitTypeId": 8,
+            "levelId": 2
+
+        },
+        {
+            "fruitId": 5,
+            "positionX": 620,
+            "positionY": 100,
+            "width": 40,
+            "height": 55,
+            "fruitTypeId": 8,
+            "levelId": 2
+
+        },
+        {
+            "fruitId": 1,
+            "positionX": 80,
+            "positionY": 100,
+            "width": 50,
+            "height": 50,
+            "fruitTypeId": 7,
+            "levelId": 3
+        },
+        {
+            "fruitId": 2,
+            "positionX": 210,
+            "positionY": 100,
+            "width": 50,
+            "height": 50,
+            "fruitTypeId": 7,
+            "levelId": 3
+            
+        },
+        {
+            "fruitId": 3,
+            "positionX": 350,
+            "positionY": 100,
+            "width": 50,
+            "height": 50,
+            "fruitTypeId": 7,
+            "levelId": 3
+        },
+        {
+            "fruitId": 4,
+            "positionX": 485,
+            "positionY": 100,
+            "width": 50,
+            "height": 50,
+            "fruitTypeId": 7,
+            "levelId": 3
+
+        },
+        {
+            "fruitId": 5,
+            "positionX": 620,
+            "positionY": 100,
+            "width": 50,
+            "height": 50,
+            "fruitTypeId": 7,
+            "levelId": 3
+
+        },
+        {
+            "fruitId": 1,
+            "positionX": 80,
+            "positionY": 100,
+            "width": 50,
+            "height": 50,
+            "fruitTypeId": 4,
+            "levelId": 4
+        },
+        {
+            "fruitId": 2,
+            "positionX": 210,
+            "positionY": 100,
+            "width": 50,
+            "height": 50,
+            "fruitTypeId": 4,
+            "levelId": 4
+            
+        },
+        {
+            "fruitId": 3,
+            "positionX": 350,
+            "positionY": 100,
+            "width": 50,
+            "height": 50,
+            "fruitTypeId": 4,
+            "levelId": 4
+        },
+        {
+            "fruitId": 4,
+            "positionX": 485,
+            "positionY": 100,
+            "width": 50,
+            "height": 50,
+            "fruitTypeId": 4,
+            "levelId": 4
+
+        },
+        {
+            "fruitId": 5,
+            "positionX": 620,
+            "positionY": 100,
+            "width": 50,
+            "height": 50,
+            "fruitTypeId": 4,
+            "levelId": 4
+
+        }
+    ]
+}

@@ -1,0 +1,47 @@
+{
+    "players": [
+        {
+            "playerId": 1,
+            "positionX": 0,
+            "positionY": 530,
+            "width": 90,
+            "height": 130,
+            "bounce": 0,
+            "texture": "player",
+            "levelId": 1
+        },
+        {
+            "playerId": 2,
+            "positionX": 0,
+            "positionY": 0,
+            "width": 90,
+            "height": 130,
+            "bounce": 0.5,
+            "texture": "player",
+            "levelId": 2
+
+        },  
+        {
+            "playerId": 3,
+            "positionX": 0,
+            "positionY": 0,
+            "width": 90,
+            "height": 130,
+            "bounce": 0.5,
+            "texture": "player",
+            "levelId": 3
+
+        },
+        {
+            "playerId": 4,
+            "positionX": 0,
+            "positionY": 0,
+            "width": 90,
+            "height": 130,
+            "bounce": 0.5,
+            "texture": "player",
+            "levelId": 4
+
+        }
+    ]
+}
