@@ -369,3 +369,95 @@ export default class LevelScene extends Phaser.Scene {
     }
 }
 
+
+
+
+
+
+
+
+
+
+
+
+
+/////////////
+table
+ // Add fruit sprites
+        for (let row = 0; row < this.fruitsCaught.length; row++) {
+            const fruitData = this.fruitsCaught[row];
+            this.fruitId = fruitData.fruitId;
+
+            // Lấy thông tin trái cây từ FruitService
+            const fruitDTO = this.fruitService.getFruitDTOById(this.fruitId, this.levelId);
+            if (fruitDTO) {
+                // Tạo sprite trái cây và đặt nó vào vị trí phù hợp trong lưới
+                const x = gridStartX + cellWidth / 2; // Thay đôi hàng ở đây
+                const y = gridStartY + row * cellHeight + cellHeight / 2;
+                // Tạo sprite cho trái cây
+                const fruitType = this.fruitService.getFruitTypeById(fruitDTO.fruitTypeId);
+                if (fruitType) {
+                    this.add.sprite(x, y, fruitType.texture) 
+                        .setOrigin(0.5, 0.5)
+                        .setDisplaySize(fruitDTO.width, fruitDTO.height);  
+                }
+            }
+            else {
+            console.warn(`Missing data for fruitId: ${this.fruitId}`);
+            }
+        }
+
+
+
+
+        //
+                // Add fruit sprites
+        for (let row = 0; row < this.fruitsCaught.length; row++) {
+            const fruitData = this.fruitsCaught[row];
+            this.fruitId = fruitData.fruitId;
+
+            // Lấy thông tin trái cây từ FruitService
+            const fruitDTO = this.fruitService.getFruitDTOById(this.fruitId, this.levelId);
+            if (fruitDTO) {
+                // Calculate x position based on level
+                const x = gridStartX + (this.levelId - 1) * cellWidth + cellWidth / 2;
+                const y = gridStartY + row * cellHeight + cellHeight / 2;
+
+                // Tạo sprite cho trái cây
+                const fruitType = this.fruitService.getFruitTypeById(fruitDTO.fruitTypeId);
+                if (fruitType) {
+                    this.add.sprite(x, y, fruitType.texture)
+                        .setOrigin(0.5, 0.5)
+                        .setDisplaySize(fruitDTO.width, fruitDTO.height);
+                }
+            } else {
+                console.warn(`Missing data for fruitId: ${this.fruitId}`);
+            }
+        }
+
+
+
+        
+        // Add fruit sprites
+        for (let row = 0; row < this.fruitsCaught.length; row++) {
+            const fruitData = this.fruitsCaught[row];
+            this.fruitId = fruitData.fruitId;
+
+            // Lấy thông tin trái cây từ FruitService
+            const fruitDTO = this.fruitService.getFruitDTOById(this.fruitId, this.levelId);
+            if (fruitDTO) {
+                // Calculate x position based on level
+                const x = gridStartX + (this.levelId - 1) * cellWidth + cellWidth / 2;
+                const y = gridStartY + row * cellHeight + cellHeight / 2;
+
+                // Tạo sprite cho trái cây
+                const fruitType = this.fruitService.getFruitTypeById(fruitDTO.fruitTypeId);
+                if (fruitType) {
+                    this.add.sprite(x, y, fruitType.texture)
+                        .setOrigin(0.5, 0.5)
+                        .setDisplaySize(fruitDTO.width, fruitDTO.height);
+                }
+            } else {
+                console.warn(`Missing data for fruitId: ${this.fruitId}`);
+            }
+        }
