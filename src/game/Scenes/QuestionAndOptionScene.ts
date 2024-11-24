@@ -54,7 +54,6 @@ export default class QuestionAndOptionScene extends Phaser.Scene{
         this.buttonSound = this.sound.add("sound_initial", {
             volume: 1, 
         });
-        // this.add.text(150, 410, "How many did you catch?", { fontSize: '30px Arial', fontStyle: "bold", color: 'black' });
         this.add.text(180, 450, "Use the picture graph above to find the correct amount.", { fontSize: '15px Arial', color: 'black' });
 
         this.questionService = new QuestionService(this, "assets/Data/question.json");
@@ -63,18 +62,18 @@ export default class QuestionAndOptionScene extends Phaser.Scene{
         const questionDTO = this.questionService.getQuestionDTOById(this.levelId);
 
         if (questionDTO && questionDTO.questionId !== undefined) {
-            console.log(questionDTO);
+            // console.log(questionDTO);
             const questionId = questionDTO.questionId;
 
             this.optionService = new OptionService(this, "assets/Data/option.json");
             await this.optionService.initialize(questionId);
             const optionDTOs = this.optionService.getAllOptionDTOs1(questionId);
-            console.log("op", optionDTOs);
+            // console.log("op", optionDTOs);
 
             const currentCount = fruitCountPerLevel.get(this.levelId) || 0;
 
             const optionView = this.optionService.getAllOptionViews();
-            console.log(optionView);
+            // console.log(optionView);
 
 
             optionDTOs.forEach((optionDTO) => {
@@ -122,7 +121,6 @@ export default class QuestionAndOptionScene extends Phaser.Scene{
             
         } else {
             console.log("sai");
-            // this.scene.launch("WrongChoiceScene")
             this.scene.stop("QuestionAndOptionScene")
             this.scene.launch("WrongChoiceScene", {
             levelId: this.levelId,
@@ -133,7 +131,6 @@ export default class QuestionAndOptionScene extends Phaser.Scene{
             validFruitsCount: this.validFruitsCount,
             currentCount: currentCount,
         });
-    
         }
     }
 

@@ -71,11 +71,27 @@ export default class WrongChoiceScene extends Phaser.Scene{
 
         buttonStart.on('pointerdown', () => {
             console.log("Quay lại màn chơi")
-            // this.scene.start("LevelScene");
             if (this.buttonSound) {
                 this.buttonSound.play();
             }
+
+            if (this.fruitsCaught.has(this.levelId)) {
+                this.fruitsCaught.delete(this.levelId);
+            }
+            this.levelId;
+            console.log("Level trước đó", this.levelId);
+            this.scene.start('LevelScene', {
+                levelId: this.levelId,
+            });
+            this.scene.stop('QuestionAndOptionScene', {
+            });
+            this.scene.stop('ResultScene', {
+            });
         });
+        // Khi quay lại màn chơi trừ đi số fruitId != 0;
+        // Khi quay lại màn chơi xóa mảng có levelId vừa đạt được
+
+        
 
 
         

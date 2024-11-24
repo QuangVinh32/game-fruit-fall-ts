@@ -39,12 +39,13 @@ export default class LevelScene extends Phaser.Scene {
     }
     init(data: { levelId: number, fruitsCaught: { levelId: number, fruitId: number }[] }) {
         if (data) {
-            this.levelId = data.levelId || 1; 
-            this.fruitsCaught = data.fruitsCaught || []; 
+            this.levelId = data.levelId || 1;  
+            this.fruitsCaught = data.fruitsCaught || [];  
         }
         console.log("LevelScene initialized with levelId:", this.levelId);
         console.log("Fruits caught from previous level:", this.fruitsCaught);
     }
+    
     
     async create() {
         this.catchSound = this.sound.add("sound_catch", {
@@ -100,13 +101,9 @@ export default class LevelScene extends Phaser.Scene {
     
             if (fruits.length === 0) {
                 console.warn("Tất cả trái cây đã được sử dụng.");
-                console.log("v",this.levelId)
-                this.scene.start('ResultScene', { score: this.score,levelId: this.levelId, fruitsCaught: this.fruitsCaught 
-                });
-                this.scene.start('QuestionAndOptionScene', { score: this.score,levelId: this.levelId, fruitsCaught: this.fruitsCaught 
-                });
-                // this.scene.start('WrongChoiceScene');
-
+                console.log("v", this.levelId);
+                this.scene.start('ResultScene', { score: this.score, levelId: this.levelId, fruitsCaught: this.fruitsCaught });
+                this.scene.start('QuestionAndOptionScene', { score: this.score, levelId: this.levelId, fruitsCaught: this.fruitsCaught });
                 return;
             }
     
@@ -146,7 +143,7 @@ export default class LevelScene extends Phaser.Scene {
                         this.catchSound.play();
                     }
                     this.score++;
-                    console.log(this.score);
+                    // console.log(this.score);
     
                     fruit.destroy();
     
@@ -159,12 +156,29 @@ export default class LevelScene extends Phaser.Scene {
                         levelId: this.levelId,
                         fruitId: randomFruit.fruitId
                     });
-
-      
                 });
     
+                let fruitSpawnDelay = 2000; 
+                switch (this.levelId) {
+                    case 1:
+                        fruitSpawnDelay = 2500;
+                        break;
+                    case 2:
+                        fruitSpawnDelay = 2200; 
+                        break;
+                    case 3:
+                        fruitSpawnDelay = 2000; 
+                        break;
+                    case 4:
+                        fruitSpawnDelay = 1800;
+                        break;
+                    default:
+                        fruitSpawnDelay = 2000; 
+                        break;
+                }
+    
                 this.time.addEvent({
-                    delay: 2000,
+                    delay: fruitSpawnDelay,
                     callback: () => {
                         if (fruitView.body) {
                             const body = fruitView.body as Phaser.Physics.Arcade.Body;
@@ -181,10 +195,20 @@ export default class LevelScene extends Phaser.Scene {
                 });
             }
         };
+    
         this.time.addEvent({
-            delay: 2000,
+            delay: 1500,
             callback: spawnFruit,
             loop: true,
         });
     }
+    onIncorrectAnswer() {
+        this.fruitsCaught = [];
+
+        this.scene.restart({
+            levelId: this.levelId,  
+            fruitsCaught: this.fruitsCaught,
+        });
+    }
+    
 }

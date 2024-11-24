@@ -29,22 +29,21 @@ export default class ResultScene extends Phaser.Scene {
         });
 
         console.log('Fruits caught (grouped by level):', this.fruitsCaught);
-        // console.log("Số lượng trái cây hợp lệ:", this.validFruitsCount);
 
     }
     
     async create() {
 
-        // const fruitCountPerLevel: Map<number, number> = new Map();
+        const fruitCountPerLevel: Map<number, number> = new Map();
 
-        // this.fruitsCaught.forEach((fruits, levelId) => {
-        //     const count = fruits.filter(fruitData => fruitData.fruitId !== 0).length;
-        //     fruitCountPerLevel.set(levelId, count);
-        // });
+        this.fruitsCaught.forEach((fruits, levelId) => {
+            const count = fruits.filter(fruitData => fruitData.fruitId !== 0).length;
+            fruitCountPerLevel.set(levelId, count);
+        });
 
-        // fruitCountPerLevel.forEach((count, levelId) => {
-        //     console.log(`Level ${levelId}: Số lượng fruitId khác 0 là ${count}`);
-        // });
+        fruitCountPerLevel.forEach((count, levelId) => {
+            console.log(`Level ${levelId}: Số lượng fruitId khác 0 là ${count}`);
+        });
 
 
         this.add.text(230, 15, "The Farmer's Fruit", { fontSize: '30px Arial', fontStyle: "bold", color: 'black' });
@@ -112,6 +111,53 @@ export default class ResultScene extends Phaser.Scene {
                 { fontSize: '12px', color: 'black', fontStyle: "bold" }
             );
         }
+
+
+        this.add.text(510, 15, "Wrong Answer", { fontSize: '25px Arial', fontStyle: "bold", color: 'red' })
+        .setInteractive()
+        .on('pointerdown', () => {
+            this.fruitsCaught.clear();
+            console.log('Fruits caught cleared:', this.fruitsCaught);
+            this.validFruitsCount = 0; 
+            this.levelId;
+            console.log("Level trước đó", this.levelId);
+            this.scene.start('LevelScene', {
+                levelId: this.levelId,
+                fruitsCaught: Array.from(this.fruitsCaught.values()),
+            });
+            this.scene.stop('QuestionAndOptionScene', {
+            });
+            this.scene.stop('ResultScene', {
+            });
+            
+        });
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
         // // this.add.text(150, 410, "How many did you catch?", { fontSize: '30px Arial', fontStyle: "bold", color: 'black' });
         // this.add.text(180, 450, "Use the picture graph above to find the correct amount.", { fontSize: '15px Arial', color: 'black' });
