@@ -11,28 +11,32 @@ export default class WrongChoiceScene extends Phaser.Scene{
     private questionId: number;
     private fruitsCaught: Map<number, { levelId: number, fruitId: number }[]> = new Map();
     private validFruitsCount: number;
-    private currentCount: number;
     private buttonSound: Phaser.Sound.NoAudioSound | Phaser.Sound.HTML5AudioSound | Phaser.Sound.WebAudioSound;
+    private score: number;
 
     constructor(){
         super("WrongChoiceScene")
     }
 
-    init(data: { levelId: number, fruitsCaught: { levelId: number, fruits: { levelId: number, fruitId: number }[] }[], validFruitsCount: number, currentCount: number }) {
+    init(data: { levelId: number, score: number, validFruitsCount: number,fruitsCaughtMatrix: { [key: number]: { levelId: number, fruitId: number }[] } }) {
         this.levelId = data.levelId;
-        this.validFruitsCount = data.validFruitsCount;
-        this.currentCount = data.currentCount;
+        this.score = data.score;
+        console.log(data.score);
+
+        this.fruitsCaught = new Map(Object.entries(data.fruitsCaughtMatrix).map(([key, value]) => [parseInt(key), value]));
+
+        this.validFruitsCount = this.fruitsCaught.get(this.levelId)?.filter(fruit => fruit.fruitId !== 0).length || 0;
     
-        data.fruitsCaught.forEach(fruitGroup => {
-            if (!this.fruitsCaught.has(fruitGroup.levelId)) {
-                this.fruitsCaught.set(fruitGroup.levelId, []);
-            }
-            this.fruitsCaught.get(fruitGroup.levelId)!.push(...fruitGroup.fruits);
-        });
+        // data.fruitsCaught.forEach(fruitGroup => {
+        //     if (!this.fruitsCaught.has(fruitGroup.levelId)) {
+        //         this.fruitsCaught.set(fruitGroup.levelId, []);
+        //     }
+        //     this.fruitsCaught.get(fruitGroup.levelId)!.push(...fruitGroup.fruits);
+        // });
     
-        console.log('Fruits caught (grouped by level):', this.fruitsCaught);
-        console.log("Số lượng trái cây hợp lệ:", this.validFruitsCount);
-        console.log("Số lượng đúng:", this.currentCount);
+        // console.log('Fruits caught (grouped by level):', this.fruitsCaught);
+        // console.log("Số lượng trái cây hợp lệ:", this.validFruitsCount);
+        // console.log("Số lượng đúng:", this.currentCount);
     }
     
     preaload(){
@@ -54,11 +58,8 @@ export default class WrongChoiceScene extends Phaser.Scene{
             console.log(`Level ${levelId}: Số lượng fruitId khác 0 là ${count}`);
         });
 
-        const currentCount = fruitCountPerLevel.get(this.levelId) || 0;
-
-
         this.add.text(240, 410, "Sorry, The answer is", { fontSize: '20px Arial', fontStyle: "bold", color: 'black' })
-        this.add.text(440, 410, currentCount.toString(), { fontSize: '20px Arial', fontStyle: "bold", color: 'black' })
+        this.add.text(440, 410, this.validFruitsCount.toString(), { fontSize: '20px Arial', fontStyle: "bold", color: 'black' })
         this.add.text(230, 440, "Try agian, Select 'Start' to continue.", { fontSize: '15px Arial', color: 'black' })
 
         let buttonStart = this.add.image(350, 530, 'button')
@@ -74,24 +75,24 @@ export default class WrongChoiceScene extends Phaser.Scene{
             if (this.buttonSound) {
                 this.buttonSound.play();
             }
-
-            if (this.fruitsCaught.has(this.levelId)) {
-                this.fruitsCaught.delete(this.levelId);
+            const currentLevelFruits = this.fruitsCaught.get(this.levelId);
+            if (currentLevelFruits) {
+                currentLevelFruits.length = 0; 
             }
-            this.levelId;
-            console.log("Level trước đó", this.levelId);
+            console.log('Fruits caught for the current level cleared:', this.fruitsCaught);
+
+            this.validFruitsCount = 0;
+            console.log("Level before:", this.levelId);
             this.scene.start('LevelScene', {
                 levelId: this.levelId,
+                fruitsCaught: Array.from(this.fruitsCaught.get(this.levelId) || []),
             });
-            this.scene.stop('QuestionAndOptionScene', {
-            });
-            this.scene.stop('ResultScene', {
-            });
+            this.scene.stop("QuestionAndOptionScene");
+            this.scene.stop("ResultScene")
+            this.scene.start("PlayGameScene")
         });
         // Khi quay lại màn chơi trừ đi số fruitId != 0;
         // Khi quay lại màn chơi xóa mảng có levelId vừa đạt được
-
-        
 
 
         

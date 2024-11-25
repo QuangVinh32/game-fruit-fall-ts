@@ -4,42 +4,38 @@ import OptionService from "../Service/OptionService";
 import QuestionService from "../Service/QuestionService";
 import OptionView from "../View/OptionView";
 
-
-export default class QuestionAndOptionScene extends Phaser.Scene{
+export default class QuestionAndOptionScene extends Phaser.Scene {
     private buttonSound: Phaser.Sound.BaseSound | null = null;
     private fruitService: FruitService | null = null;
     private questionService: QuestionService | null = null;
     private optionService: OptionService | null = null;
     private levelId: number;
-    private fruitId: number;
-    private fruitsCaught: Map<number, { levelId: number, fruitId: number }[]> = new Map();
+    private score: number;
     private validFruitsCount: number;
-    private currentCount: any;
-    public buttonOption: Phaser.GameObjects.Image; // Change from private to public
+    private fruitsCaught: Map<number, { levelId: number, fruitId: number }[]> = new Map();
+    public buttonOption: Phaser.GameObjects.Image; 
 
-    
-    
-    constructor(){
+
+    constructor() {
         super("QuestionAndOptionScene");
     }
-    init(data: { score: number, levelId: number, fruitsCaught: { levelId: number, fruitId: number }[],validFruitsCount: number }) {
+
+    init(data: { score: number, levelId: number, fruitsCaughtMatrix: { [key: number]: { levelId: number, fruitId: number }[] } }) {
         this.levelId = data.levelId;
-        this.validFruitsCount = data.validFruitsCount;
+        this.score = data.score;
+        console.log(data.score);
 
-        data.fruitsCaught.forEach(fruit => {
-            if (!this.fruitsCaught.has(fruit.levelId)) {
-                this.fruitsCaught.set(fruit.levelId, []);
-            }
-            this.fruitsCaught.get(fruit.levelId)!.push(fruit);
-        });
+        this.fruitsCaught = new Map(Object.entries(data.fruitsCaughtMatrix).map(([key, value]) => [parseInt(key), value]));
 
-        console.log('Fruits caught (grouped by level):', this.fruitsCaught);
+        this.validFruitsCount = this.fruitsCaught.get(this.levelId)?.filter(fruit => fruit.fruitId !== 0).length || 0;
+
+        console.log("Fruits caught matrix:", this.fruitsCaught);
+        console.log(`Valid fruits count for level ${this.levelId}:`, this.validFruitsCount);
     }
-    preaload(){
 
-    }
-    async create(){
+    preload() { }
 
+    async create() {
         const fruitCountPerLevel: Map<number, number> = new Map();
 
         this.fruitsCaught.forEach((fruits, levelId) => {
@@ -48,12 +44,13 @@ export default class QuestionAndOptionScene extends Phaser.Scene{
         });
 
         fruitCountPerLevel.forEach((count, levelId) => {
-            console.log(`Level ${levelId}: Số lượng fruitId khác 0 là ${count}`);
+            console.log(`Level ${levelId}: Valid fruits caught = ${count}`);
         });
 
         this.buttonSound = this.sound.add("sound_initial", {
-            volume: 1, 
+            volume: 1,
         });
+
         this.add.text(180, 450, "Use the picture graph above to find the correct amount.", { fontSize: '15px Arial', color: 'black' });
 
         this.questionService = new QuestionService(this, "assets/Data/question.json");
@@ -62,19 +59,13 @@ export default class QuestionAndOptionScene extends Phaser.Scene{
         const questionDTO = this.questionService.getQuestionDTOById(this.levelId);
 
         if (questionDTO && questionDTO.questionId !== undefined) {
-            // console.log(questionDTO);
             const questionId = questionDTO.questionId;
 
             this.optionService = new OptionService(this, "assets/Data/option.json");
             await this.optionService.initialize(questionId);
+
             const optionDTOs = this.optionService.getAllOptionDTOs1(questionId);
-            // console.log("op", optionDTOs);
-
             const currentCount = fruitCountPerLevel.get(this.levelId) || 0;
-
-            const optionView = this.optionService.getAllOptionViews();
-            // console.log(optionView);
-
 
             optionDTOs.forEach((optionDTO) => {
                 const optionView = new OptionView(this, optionDTO);
@@ -83,58 +74,36 @@ export default class QuestionAndOptionScene extends Phaser.Scene{
                     this.checkAnswer(currentCount, optionDTO);
                 });
             });
-        
         } else {
             console.error("Không thể lấy questionDTO hoặc questionId không hợp lệ");
         }
-
-        // this.add.text(510, 15, "Next Level", { fontSize: '30px Arial', fontStyle: "bold", color: 'black' })
-        // .setInteractive() 
-        // .on('pointerdown', () => {
-        //     this.levelId += 1;
-    
-        //     console.log("Transitioning to LevelScene with levelId:", this.levelId);
-        //     this.scene.start('LevelScene', {
-        //         levelId: this.levelId,
-        //     });
-        //     this.scene.stop('QuestionAndOptionScene', {
-        //     });
-        //     this.scene.stop('ResultScene', {
-        //     });
-            
-        // });
-
     }
+
     checkAnswer(currentCount: number, optionDTO: OptionDTO): void {
         if (currentCount === optionDTO.value) {
-            console.log("đúng"); 
+            console.log("Đúng!");
             this.levelId += 1;
-    
-            console.log("Transitioning to LevelScene with levelId:", this.levelId);
+
+            console.log("Chuyển sang LevelScene với levelId:", this.levelId);
             this.scene.start('LevelScene', {
                 levelId: this.levelId,
+                fruitsCaughtMatrix: Object.fromEntries(this.fruitsCaught), 
             });
-            this.scene.stop('QuestionAndOptionScene', {
-            });
-            this.scene.stop('ResultScene', {
-            });
-            
+            this.scene.stop('QuestionAndOptionScene');
+            this.scene.stop('ResultScene');
         } else {
-            console.log("sai");
-            this.scene.stop("QuestionAndOptionScene")
+            console.log("Sai!");
+            this.scene.stop("QuestionAndOptionScene");
             this.scene.launch("WrongChoiceScene", {
-            levelId: this.levelId,
-            fruitsCaught: Array.from(this.fruitsCaught.entries()).map(([levelId, fruits]) => ({
-                levelId,
-                fruits,
-            })),
-            validFruitsCount: this.validFruitsCount,
-            currentCount: currentCount,
-        });
+                levelId: this.levelId,
+                score: this.score,
+                fruitsCaughtMatrix: Object.fromEntries(this.fruitsCaught), 
+                validFruitsCount: this.validFruitsCount,
+                currentCount: currentCount,
+            });
         }
     }
 
-    update(){
-
+    update() {
     }
 }
