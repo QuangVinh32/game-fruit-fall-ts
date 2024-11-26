@@ -20,7 +20,6 @@ export default class ResultScene extends Phaser.Scene {
         this.fruitsCaught = new Map(Object.entries(data.fruitsCaughtMatrix).map(([key, value]) => [parseInt(key), value]));
 
         // this.validFruitsCount = this.fruitsCaught.get(this.levelId)?.filter(fruit => fruit.fruitId !== 0).length || 0;
-
         // console.log("Fruits caught matrix:", this.fruitsCaught);
         // console.log(`Valid fruits count for level ${this.levelId}:`, this.validFruitsCount);
     }
@@ -67,7 +66,7 @@ export default class ResultScene extends Phaser.Scene {
                     const fruitType = this.fruitService?.getFruitTypeById(fruitDTO.fruitTypeId);
                     if (fruitType) {
                         this.add.sprite(x, y, fruitType.texture)
-                            .setOrigin(0.5, 0.5) // Đảm bảo sprite vẽ từ tâm
+                            .setOrigin(0.5, 0.5)
                             .setDisplaySize(
                                 Math.min(cellWidth * 0.8, fruitDTO.width), // Đặt kích thước vừa vặn với ô
                                 Math.min(cellHeight * 0.8, fruitDTO.height)
