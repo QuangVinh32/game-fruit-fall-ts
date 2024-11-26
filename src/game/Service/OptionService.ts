@@ -70,10 +70,10 @@ export default class OptionService {
         return this.controller.getOptionById(optionId);
     }
 
-    getAllOptionDTOs(): OptionDTO[] {
-        return this.controller.getAllOptions();
-    }
-    getAllOptionDTOs1(questionId: number): OptionDTO[] {
+    // getAllOptionDTOs(): OptionDTO[] {
+    //     return this.controller.getAllOptions();
+    // }
+    getAllOptionDTOs(questionId: number): OptionDTO[] {
         const allOptions = this.controller.getAllOptions();
             const filteredOptions = allOptions.filter(option => option.questionId === questionId);
         return filteredOptions;

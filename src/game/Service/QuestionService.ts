@@ -48,35 +48,35 @@ export default class QuestionService {
         }
     }
 
-    async initializeforPlayGame(levelId: number): Promise<void> {
-        const data = await this.loadData(); 
-        const questions = this.mapQuestions(data); 
+    // async initializeforPlayGame(levelId: number): Promise<void> {
+    //     const data = await this.loadData(); 
+    //     const questions = this.mapQuestions(data); 
     
-        questions.forEach(question => this.controller.addQuestions(question));
+    //     questions.forEach(question => this.controller.addQuestions(question));
     
-        const levelQuestions = questions.filter(question => question.levelId === levelId && question.state === false);
+    //     const levelQuestions = questions.filter(question => question.levelId === levelId && question.state === false);
     
-        if (levelQuestions.length === 0) {
-            console.warn(`No questions found for levelId: ${levelId} with state === false`);
-        } else {
-            levelQuestions.forEach(question => this.createQuestionView(question));
-        }
-    }
+    //     if (levelQuestions.length === 0) {
+    //         console.warn(`No questions found for levelId: ${levelId} with state === false`);
+    //     } else {
+    //         levelQuestions.forEach(question => this.createQuestionView(question));
+    //     }
+    // }
 
-    async initializeforQuestion(levelId: number): Promise<void> {
-        const data = await this.loadData(); 
-        const questions = this.mapQuestions(data); 
+    // async initializeforQuestion(levelId: number): Promise<void> {
+    //     const data = await this.loadData(); 
+    //     const questions = this.mapQuestions(data); 
     
-        questions.forEach(question => this.controller.addQuestions(question));
+    //     questions.forEach(question => this.controller.addQuestions(question));
     
-        const levelQuestions = questions.filter(question => question.levelId === levelId && question.state === true);
+    //     const levelQuestions = questions.filter(question => question.levelId === levelId && question.state === true);
     
-        if (levelQuestions.length === 0) {
-            console.warn(`No questions found for levelId: ${levelId} with state === true`);
-        } else {
-            levelQuestions.forEach(question => this.createQuestionView(question));
-        }
-    }
+    //     if (levelQuestions.length === 0) {
+    //         console.warn(`No questions found for levelId: ${levelId} with state === true`);
+    //     } else {
+    //         levelQuestions.forEach(question => this.createQuestionView(question));
+    //     }
+    // }
     
 
     async initializeById(levelId: number, questionId: number): Promise<void> {
