@@ -47,18 +47,18 @@
             if (this.score > 0 && this.validFruitsCount > 0) {
                 this.score -= this.validFruitsCount;
                 if (this.score < 0) {
-                    this.score = 0; 
+                    // this.score = 0; 
                 }        
             }
-            console.log("Score after deduction:", this.score);
-            console.log("canMovePlayer:", this.canMovePlayer);
-            console.log("canDropFruit:", this.canDropFruit);
+            // console.log("Score after deduction:", this.score);
+            // console.log("canMovePlayer:", this.canMovePlayer);
+            // console.log("canDropFruit:", this.canDropFruit);
         }
         
         
         async create() {
-            console.log("canMovePlayer:", this.canMovePlayer);
-            console.log("canDropFruit:", this.canDropFruit);
+            // console.log("canMovePlayer:", this.canMovePlayer);
+            // console.log("canDropFruit:", this.canDropFruit);
 
             this.catchSound = this.sound.add("sound_catch", {
                 volume: 3,
@@ -90,12 +90,12 @@
         
             this.events.on("startFruitFall", () => {
                 this.canDropFruit = true;
-                console.log("dropFruit",this.canDropFruit)
+                // console.log("dropFruit",this.canDropFruit)
             });
         
             this.events.on("enablePlayerMove", () => {
                 this.canMovePlayer = true;
-                console.log("movePlayer",this.canMovePlayer)
+                // console.log("movePlayer",this.canMovePlayer)
 
             });
         
@@ -108,7 +108,7 @@
             const fruits = this.fruitService.getFruitsByLevelId(this.levelId);
         
             if (!fruits.length) {
-                console.warn(`Không có trái cây nào cho levelId: ${this.levelId}`);
+                // console.warn(`Không có trái cây nào cho levelId: ${this.levelId}`);
                 return;
             }
         
@@ -130,7 +130,7 @@
                 const randomFruit = fruits.splice(randomIndex, 1)[0];
                 const fruitView = this.fruitService?.getFruitViewById(randomFruit.fruitId, this.levelId);
         
-                console.log("FruitId", randomFruit.fruitId);
+                // console.log("FruitId", randomFruit.fruitId);
         
                 if (fruitView) {
                     this.physics.add.existing(fruitView);
@@ -163,7 +163,7 @@
                         }
                         this.score++;
 
-                        console.log("score of Level", this.score)
+                        // console.log("score of Level", this.score)
         
                         fruit.destroy();
         
@@ -212,17 +212,28 @@
                     //     callback: () => {
                     //         if (fruitView.body) {
                     //             const body = fruitView.body as Phaser.Physics.Arcade.Body;
+                    
                     //             if (body && body.touching.none) {
-                    //                 this.fruitsCaught.push({
+                    //                 const missedFruit = {
                     //                     levelId: this.levelId,
-                    //                     fruitId: 0
-                    //                 });
-                    //                 console.log("Trái cây bị bỏ lỡ, fruitId được đặt thành 0");
+                    //                     fruitId: 0 
+                    //                 };
+                    
+                    //                 this.fruitsCaught.push(missedFruit);
+                    
+                    //                 if (!this.fruitsCaughtMatrix.has(this.levelId)) {
+                    //                     this.fruitsCaughtMatrix.set(this.levelId, []);
+                    //                 }
+                    //                 this.fruitsCaughtMatrix.get(this.levelId)?.push(missedFruit);
+                    
+                    //                 console.log("Trái cây bị bỏ lỡ:", missedFruit);
+                    //                 console.log("fruitsCaughtMatrix hiện tại:", Array.from(this.fruitsCaughtMatrix.entries()));
                     //             }
                     //         }
                     //     },
                     //     loop: false,
                     // });
+                    
                 }
             };
         

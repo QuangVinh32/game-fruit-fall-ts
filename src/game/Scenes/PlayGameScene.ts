@@ -5,6 +5,8 @@ export default class PlayGameScene extends Phaser.Scene {
     private questionService: any;
     public levelId: number;
     private score: number;
+    private isUISceneLaunched: boolean = false; 
+
     constructor() {
         super("PlayGameScene");
         this.levelId = 1;
@@ -13,7 +15,7 @@ export default class PlayGameScene extends Phaser.Scene {
     init(data: {levelId: number,score: number}) {
         this.levelId = data.levelId;
         this.score = data.score
-        console.log(data.levelId)
+        // console.log("score in Play",data.score)
     }
 
     preload() {
@@ -25,7 +27,7 @@ export default class PlayGameScene extends Phaser.Scene {
         this.buttonSound = this.sound.add("sound_initial", {
             volume: 1,
         });
-    // Hiển thị văn bản dựa trên `levelId`
+
     switch (this.levelId) {
         case 1:
             this.add.text(190, 410, "Help the farmer catch the apples.", {
@@ -88,14 +90,6 @@ export default class PlayGameScene extends Phaser.Scene {
             break;
         }
     
-        this.questionService = new QuestionService(this, "assets/Data/question.json");
-        await this.questionService.initializeforPlayGame(this.levelId);
-    
-        const questionDTO = this.questionService.getQuestionDTOById(this.levelId);
-        console.log(questionDTO);
-
-
-    
         let buttonStart = this.add.image(350, 300, "button")
             .setDisplaySize(150, 150)
             .setOrigin(0.5, 0.5)
@@ -111,11 +105,14 @@ export default class PlayGameScene extends Phaser.Scene {
         startText.setPosition(buttonStart.x, buttonStart.y);
     
         buttonStart.on("pointerdown", () => {
-            console.log("Start button clicked");
+            // console.log("Start button clicked");
             if (this.buttonSound) {
                 this.buttonSound.play();
             }
-            this.scene.launch("UIScene",{score: this.score});
+              if (!this.isUISceneLaunched) {
+                this.scene.launch("UIScene", { score: this.score });
+                this.isUISceneLaunched = true; 
+            }
             this.scene.get("LevelScene").events.emit("enablePlayerMove");
             this.scene.get("LevelScene").events.emit("startFruitFall");
             this.scene.stop("PlayGameScene");

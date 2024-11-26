@@ -25,7 +25,7 @@ export default class QuestionAndOptionScene extends Phaser.Scene {
     init(data: { score: number, levelId: number, fruitsCaughtMatrix: { [key: number]: { levelId: number, fruitId: number }[] } }) {
         this.levelId = data.levelId;
         this.score = data.score;
-        console.log("levelId in Question :",data.levelId);
+        // console.log("levelId in Question :",data.levelId);
 
         this.fruitsCaught = new Map(Object.entries(data.fruitsCaughtMatrix).map(([key, value]) => [parseInt(key), value]));
 
@@ -68,7 +68,7 @@ export default class QuestionAndOptionScene extends Phaser.Scene {
         await this.questionService.initialize(this.levelId);
 
         const questionDTO = this.questionService.getQuestionDTOById(this.levelId);
-        console.log(questionDTO);
+        // console.log(questionDTO);
 
         if (questionDTO && questionDTO.questionId !== undefined) {
             const questionId = questionDTO.questionId;
@@ -76,7 +76,7 @@ export default class QuestionAndOptionScene extends Phaser.Scene {
             this.optionService = new OptionService(this, "assets/Data/option.json");
             await this.optionService.initialize(questionId);
 
-            const optionDTOs = this.optionService.getAllOptionDTOs1(questionId);
+            const optionDTOs = this.optionService.getAllOptionDTOs(questionId);
             const currentCount = fruitCountPerLevel.get(this.levelId) || 0;
 
             optionDTOs.forEach((optionDTO) => {
@@ -93,18 +93,18 @@ export default class QuestionAndOptionScene extends Phaser.Scene {
 
     checkAnswer(currentCount: number, optionDTO: OptionDTO): void {
         if (currentCount === optionDTO.value) {
-            console.log("Đúng!");
+            // console.log("Đúng!");
             if (this.successSount) {
                 this.successSount.play();
             }
             this.levelId += 1;
 
-            console.log("Chuyển sang LevelScene với levelId:", this.levelId);
+            // console.log("Chuyển sang LevelScene với levelId:", this.levelId);
             this.scene.start('LevelScene', {
                 levelId: this.levelId,
                 fruitsCaughtMatrix: Object.fromEntries(this.fruitsCaught), 
             });  
-            this.scene.launch("PlayGameScene",{
+            this.scene.start("PlayGameScene",{
                 levelId: this.levelId,
                 score: this.score
             });
@@ -112,15 +112,17 @@ export default class QuestionAndOptionScene extends Phaser.Scene {
             this.scene.stop('ResultScene');
 
         } else {
-            console.log("Sai!");
+            // console.log("Sai!");
               if (this.failureSount) {
                 this.failureSount.play();
             }
-            // this.scene.launch("UIScene",{validFruitsCount: this.validFruitsCount});
+            const newScore = this.score - this.validFruitsCount;
+
+            this.scene.launch("UIScene", { newScore: newScore });
             this.scene.stop("QuestionAndOptionScene");
             this.scene.launch("WrongChoiceScene", {
                 levelId: this.levelId,
-                score: this.score,
+                score: newScore,
                 fruitsCaughtMatrix: Object.fromEntries(this.fruitsCaught), 
                 validFruitsCount: this.validFruitsCount,
                 currentCount: currentCount,

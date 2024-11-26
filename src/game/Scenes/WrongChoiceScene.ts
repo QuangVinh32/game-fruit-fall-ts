@@ -1,14 +1,6 @@
-import FruitService from "../Service/FruitService";
-import OptionService from "../Service/OptionService";
-import QuestionService from "../Service/QuestionService";
 
 export default class WrongChoiceScene extends Phaser.Scene{
-    private fruitService: FruitService | null = null;
-    private questionService: QuestionService | null = null;
-    private optionService: OptionService | null = null;
     private levelId: number;
-    private fruitId: number;
-    private questionId: number;
     private fruitsCaught: Map<number, { levelId: number, fruitId: number }[]> = new Map();
     private validFruitsCount: number;
     private buttonSound: Phaser.Sound.NoAudioSound | Phaser.Sound.HTML5AudioSound | Phaser.Sound.WebAudioSound;
@@ -39,7 +31,6 @@ export default class WrongChoiceScene extends Phaser.Scene{
 
         this.events.emit('updateScore', this.validFruitsCount);
 
-
         const fruitCountPerLevel: Map<number, number> = new Map();
 
         this.fruitsCaught.forEach((fruits, levelId) => {
@@ -51,9 +42,9 @@ export default class WrongChoiceScene extends Phaser.Scene{
             // console.log(`Level ${levelId}: Số lượng fruitId khác 0 là ${count}`);
         });
 
-        this.add.text(240, 410, "Sorry, The answer is", { fontSize: '20px Arial', fontStyle: "bold", color: 'black' })
-        this.add.text(440, 410, this.validFruitsCount.toString(), { fontSize: '20px Arial', fontStyle: "bold", color: 'black' })
-        this.add.text(230, 440, "Try agian, Select 'Start' to continue.", { fontSize: '15px Arial', color: 'black' })
+        this.add.text(240, 420, "Sorry, The answer is", { fontSize: '20px Arial', fontStyle: "bold", color: 'black' })
+        this.add.text(440, 420, this.validFruitsCount.toString(), { fontSize: '20px Arial', fontStyle: "bold", color: 'black' })
+        this.add.text(230, 445, "Try agian, Select 'Start' to continue.", { fontSize: '15px Arial', color: 'black' })
 
         let buttonStart = this.add.image(350, 530, 'button')
         .setDisplaySize(120, 120)
@@ -64,7 +55,7 @@ export default class WrongChoiceScene extends Phaser.Scene{
         startText.setPosition(buttonStart.x, buttonStart.y);
 
         buttonStart.on('pointerdown', () => {
-            console.log("Quay lại màn chơi")
+            // console.log("Quay lại màn chơi")
             if (this.buttonSound) {
                 this.buttonSound.play();
             }
