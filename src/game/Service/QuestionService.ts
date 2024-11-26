@@ -112,12 +112,6 @@ export default class QuestionService {
     getQuestionDTOById(levelId: number): QuestionDTO | undefined {
         return this.controller.getQuestionById(levelId);
     }
-
-    getQuestionDTOById1(levelId: number, state: boolean): QuestionDTO | undefined {
-        const question = this.controller.getQuestionById(levelId);
-        // Kiểm tra điều kiện dựa trên tham số `state`
-        return question && question.state === state ? question : undefined;
-    }
     
 
     getAllQuestionDTOs(): QuestionDTO[] {
