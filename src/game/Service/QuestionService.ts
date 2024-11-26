@@ -48,6 +48,37 @@ export default class QuestionService {
         }
     }
 
+    async initializeforPlayGame(levelId: number): Promise<void> {
+        const data = await this.loadData(); 
+        const questions = this.mapQuestions(data); 
+    
+        questions.forEach(question => this.controller.addQuestions(question));
+    
+        const levelQuestions = questions.filter(question => question.levelId === levelId && question.state === false);
+    
+        if (levelQuestions.length === 0) {
+            console.warn(`No questions found for levelId: ${levelId} with state === false`);
+        } else {
+            levelQuestions.forEach(question => this.createQuestionView(question));
+        }
+    }
+
+    async initializeforQuestion(levelId: number): Promise<void> {
+        const data = await this.loadData(); 
+        const questions = this.mapQuestions(data); 
+    
+        questions.forEach(question => this.controller.addQuestions(question));
+    
+        const levelQuestions = questions.filter(question => question.levelId === levelId && question.state === true);
+    
+        if (levelQuestions.length === 0) {
+            console.warn(`No questions found for levelId: ${levelId} with state === true`);
+        } else {
+            levelQuestions.forEach(question => this.createQuestionView(question));
+        }
+    }
+    
+
     async initializeById(levelId: number, questionId: number): Promise<void> {
         const data = await this.loadData();
         const questions = this.mapQuestions(data);
@@ -81,6 +112,13 @@ export default class QuestionService {
     getQuestionDTOById(levelId: number): QuestionDTO | undefined {
         return this.controller.getQuestionById(levelId);
     }
+
+    getQuestionDTOById1(levelId: number, state: boolean): QuestionDTO | undefined {
+        const question = this.controller.getQuestionById(levelId);
+        // Kiểm tra điều kiện dựa trên tham số `state`
+        return question && question.state === state ? question : undefined;
+    }
+    
 
     getAllQuestionDTOs(): QuestionDTO[] {
         return this.controller.getAllQuestions();

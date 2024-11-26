@@ -14,6 +14,8 @@ export default class QuestionAndOptionScene extends Phaser.Scene {
     private validFruitsCount: number;
     private fruitsCaught: Map<number, { levelId: number, fruitId: number }[]> = new Map();
     public buttonOption: Phaser.GameObjects.Image; 
+    public successSount: Phaser.Sound.NoAudioSound | Phaser.Sound.HTML5AudioSound | Phaser.Sound.WebAudioSound;
+    public failureSount: Phaser.Sound.NoAudioSound | Phaser.Sound.HTML5AudioSound | Phaser.Sound.WebAudioSound;
 
 
     constructor() {
@@ -23,19 +25,28 @@ export default class QuestionAndOptionScene extends Phaser.Scene {
     init(data: { score: number, levelId: number, fruitsCaughtMatrix: { [key: number]: { levelId: number, fruitId: number }[] } }) {
         this.levelId = data.levelId;
         this.score = data.score;
-        console.log(data.score);
+        console.log("levelId in Question :",data.levelId);
 
         this.fruitsCaught = new Map(Object.entries(data.fruitsCaughtMatrix).map(([key, value]) => [parseInt(key), value]));
 
         this.validFruitsCount = this.fruitsCaught.get(this.levelId)?.filter(fruit => fruit.fruitId !== 0).length || 0;
 
-        console.log("Fruits caught matrix:", this.fruitsCaught);
-        console.log(`Valid fruits count for level ${this.levelId}:`, this.validFruitsCount);
+        // console.log("Fruits caught matrix:", this.fruitsCaught);
+        // console.log(`Valid fruits count for level ${this.levelId}:`, this.validFruitsCount);
     }
 
-    preload() { }
+    preload() { 
+        this.load.audio("sound_success", "assets/Audio/sound_success.mp3");
+        this.load.audio("sound_failure", "assets/Audio/sound_failure.mp3");
+    }
 
     async create() {
+        this.successSount = this.sound.add("sound_success", {
+            volume: 3,
+        });
+        this.failureSount = this.sound.add("sound_failure", {
+            volume: 3,
+        });
         const fruitCountPerLevel: Map<number, number> = new Map();
 
         this.fruitsCaught.forEach((fruits, levelId) => {
@@ -44,7 +55,7 @@ export default class QuestionAndOptionScene extends Phaser.Scene {
         });
 
         fruitCountPerLevel.forEach((count, levelId) => {
-            console.log(`Level ${levelId}: Valid fruits caught = ${count}`);
+            // console.log(`Level ${levelId}: Valid fruits caught = ${count}`);
         });
 
         this.buttonSound = this.sound.add("sound_initial", {
@@ -57,6 +68,7 @@ export default class QuestionAndOptionScene extends Phaser.Scene {
         await this.questionService.initialize(this.levelId);
 
         const questionDTO = this.questionService.getQuestionDTOById(this.levelId);
+        console.log(questionDTO);
 
         if (questionDTO && questionDTO.questionId !== undefined) {
             const questionId = questionDTO.questionId;
@@ -82,17 +94,29 @@ export default class QuestionAndOptionScene extends Phaser.Scene {
     checkAnswer(currentCount: number, optionDTO: OptionDTO): void {
         if (currentCount === optionDTO.value) {
             console.log("Đúng!");
+            if (this.successSount) {
+                this.successSount.play();
+            }
             this.levelId += 1;
 
             console.log("Chuyển sang LevelScene với levelId:", this.levelId);
             this.scene.start('LevelScene', {
                 levelId: this.levelId,
                 fruitsCaughtMatrix: Object.fromEntries(this.fruitsCaught), 
+            });  
+            this.scene.launch("PlayGameScene",{
+                levelId: this.levelId,
+                score: this.score
             });
             this.scene.stop('QuestionAndOptionScene');
             this.scene.stop('ResultScene');
+
         } else {
             console.log("Sai!");
+              if (this.failureSount) {
+                this.failureSount.play();
+            }
+            // this.scene.launch("UIScene",{validFruitsCount: this.validFruitsCount});
             this.scene.stop("QuestionAndOptionScene");
             this.scene.launch("WrongChoiceScene", {
                 levelId: this.levelId,

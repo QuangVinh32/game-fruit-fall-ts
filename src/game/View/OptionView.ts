@@ -37,10 +37,10 @@ export default class OptionView extends Phaser.GameObjects.Container {
         this.add(this.textQuestion);
 
         this.buttonOption.on('pointerdown', () => {
-            console.log("Option clicked");
-            if (this.buttonSound) {
-                this.buttonSound.play();
-            }
+            // console.log("Option clicked");
+            // if (this.buttonSound) {
+            //     this.buttonSound.play();
+            // }
         });
     }
 }

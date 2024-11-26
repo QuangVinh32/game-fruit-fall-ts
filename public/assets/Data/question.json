@@ -6,14 +6,14 @@
             "levelId": 1,
             "text": "How many apples did you catch?",
             "positionX": 130,
-            "positionY": 410
+            "positionY": 415
         },
         {
             "questionId": 2,
-            "state": true,
-            "levelId": 100,
+            "state": false,
+            "levelId": 20,
             "text": "Great Job! Now catch pears.",
-            "positionX": 130,
+            "positionX": 150,
             "positionY": 410
         },
         {
@@ -22,25 +22,35 @@
             "levelId": 2,
             "text": "How many pears did you catch?",
             "positionX": 130,
-            "positionY": 410
+            "positionY": 415
             
         },
-   
+        {
+            "questionId": 4,
+            "state": false,
+            "levelId": 30,
+            "text": "Great Job! Now catch orranges.",
+            "positionX": 150,
+            "positionY": 420
+            
+        },
+
         {
             "questionId": 5,
             "state": true,
             "levelId": 3,
             "text": "How many orranges did you catch?",
             "positionX": 130,
-            "positionY": 410
+            "positionY": 415
         },
+
         {
             "questionId": 6,
             "state": true,
             "levelId": 4,
             "text": "How many lemons did you catch?",
             "positionX": 130,
-            "positionY": 410
+            "positionY": 415
         }
 
     ]

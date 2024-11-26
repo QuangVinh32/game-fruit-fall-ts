@@ -6,7 +6,7 @@
             "positionY": 530,
             "width": 90,
             "height": 130,
-            "bounce": 0,
+            "bounce": 0.5,
             "texture": "player",
             "levelId": 1
         },

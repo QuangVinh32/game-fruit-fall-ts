@@ -15,8 +15,7 @@ export default class PlayerView extends Phaser.GameObjects.Container {
         this.scene.physics.world.enable(this);
         this.createPlayer();
         this.updateContainerSize();
-        this.setPosition(playerData.positionX, playerData.positionY);
-        
+        this.setPosition(playerData.positionX, playerData.positionY);   
     }
 
     createPlayer() {
@@ -27,20 +26,15 @@ export default class PlayerView extends Phaser.GameObjects.Container {
         )
         .setDisplaySize(this.playerData.width, this.playerData.height)
         .setOrigin(0.5, 0.5)
-        // .setBounce(this.playerData.bounce);
+        .setBounce(this.playerData.bounce);
         this.add(this.player);
-
-
     }
 
     updateContainerSize() {
         this.setSize(this.player.displayWidth, this.player.displayHeight);
-
         const body = this.body as Phaser.Physics.Arcade.Body;
         if (body) {
             body.setSize(this.player.displayWidth, this.player.displayHeight);
-            // body.setOffset(0, 0);  // Điều chỉnh offset nếu cần thiết.
-
         }
     }
 }

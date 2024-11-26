@@ -6,51 +6,60 @@
         private playerService: PlayerService | null;
         private fruitService: FruitService | null;
         private levelId: number;
-        private fruitId: number;
         private canMovePlayer: boolean;
         private canDropFruit: boolean;
         private playerView: any;
-        private fruitView: any;
         private score: number;
         private catchSound: Phaser.Sound.BaseSound | null = null;
         private fruitsCaught: { levelId: number, fruitId: number }[]; 
         private fruitsCaughtMatrix: Map<number, { levelId: number, fruitId: number }[]> = new Map();
+        private validFruitsCount: number;
 
-    
         constructor() {
             super("LevelScene");
-            this.levelId = 3;
             this.canMovePlayer = false;
             this.canDropFruit = false; 
             this.score = 0;
             this.fruitsCaught = [];
-
-
+            
         }
         preload() {
             this.load.image("player", "assets/Images/player.png");
             this.load.image("apple", "assets/Images/apple.png");
             this.load.image("cherry", "assets/Images/cherry.png");
-            this.load.image("kiwi", "assets/Images/kiwi.png");
+            // this.load.image("kiwi", "assets/Images/kiwi.png");
             this.load.image("lemon", "assets/Images/lemon.png");
             this.load.image("lime", "assets/Images/lime.png");
-            this.load.image("mango", "assets/Images/mango.png");
+            // this.load.image("mango", "assets/Images/mango.png");
             this.load.image("orrange", "assets/Images/orrange.png");
             this.load.image("peache", "assets/Images/peache.png");
             this.load.image("pear", "assets/Images/pear.png");
             this.load.audio("sound_catch", "assets/Audio/sound_catch.mp3");
         }
-        init(data: { levelId: number, fruitsCaught: { levelId: number, fruitId: number }[] }) {
-            if (data) {
-                this.levelId = data.levelId || 1;  
-                this.fruitsCaught = data.fruitsCaught || [];  
+        init(data: { levelId: number, validFruitsCount: number, fruitsCaught: { levelId: number, fruitId: number }[], canMovePlayer?: boolean, canDropFruit?: boolean }) {
+            this.levelId = data.levelId || 1;
+            this.validFruitsCount = data.validFruitsCount || 0;
+            this.fruitsCaught = data.fruitsCaught || [];
+            
+            this.canMovePlayer = data.canMovePlayer ?? false;
+            this.canDropFruit = data.canDropFruit ?? false;
+        
+            if (this.score > 0 && this.validFruitsCount > 0) {
+                this.score -= this.validFruitsCount;
+                if (this.score < 0) {
+                    this.score = 0; 
+                }        
             }
-            console.log("LevelScene initialized with levelId:", this.levelId);
-            console.log("Fruits caught from previous level:", this.fruitsCaught);
+            console.log("Score after deduction:", this.score);
+            console.log("canMovePlayer:", this.canMovePlayer);
+            console.log("canDropFruit:", this.canDropFruit);
         }
         
         
         async create() {
+            console.log("canMovePlayer:", this.canMovePlayer);
+            console.log("canDropFruit:", this.canDropFruit);
+
             this.catchSound = this.sound.add("sound_catch", {
                 volume: 3,
             });
@@ -81,10 +90,13 @@
         
             this.events.on("startFruitFall", () => {
                 this.canDropFruit = true;
+                console.log("dropFruit",this.canDropFruit)
             });
         
             this.events.on("enablePlayerMove", () => {
                 this.canMovePlayer = true;
+                console.log("movePlayer",this.canMovePlayer)
+
             });
         
             this.startFruitFall();
@@ -105,6 +117,8 @@
         
                 if (fruits.length === 0) {
                     console.warn("Tất cả trái cây đã được sử dụng.");
+                    this.canMovePlayer = false;
+                    this.canDropFruit = false;
                     this.scene.start('ResultScene', { score: this.score, levelId: this.levelId,   
                     fruitsCaughtMatrix: Object.fromEntries(this.fruitsCaughtMatrix),});
                     this.scene.start('QuestionAndOptionScene', { score: this.score, levelId: this.levelId,   
@@ -148,13 +162,16 @@
                             this.catchSound.play();
                         }
                         this.score++;
+
+                        console.log("score of Level", this.score)
         
                         fruit.destroy();
         
                         const uiScene = this.scene.get('UIScene') as UIScene;
                         if (uiScene) {
-                            uiScene.updateLaunchCount(this.score);
+                            uiScene.updateLaunchCount(this.score); 
                         }
+                        
         
                         const caughtFruit = {
                             levelId: this.levelId,
@@ -168,44 +185,44 @@
                         }
                         this.fruitsCaughtMatrix.get(this.levelId)?.push(caughtFruit);
 
-                        console.log("fruitsCaughtMatrix:", Array.from(this.fruitsCaughtMatrix.entries()));
+                        // console.log("fruitsCaughtMatrix:", Array.from(this.fruitsCaughtMatrix.entries()));
                     });
         
-                    let fruitSpawnDelay = 2000;
-                    switch (this.levelId) {
-                        case 1:
-                            fruitSpawnDelay = 2500;
-                            break;
-                        case 2:
-                            fruitSpawnDelay = 2200;
-                            break;
-                        case 3:
-                            fruitSpawnDelay = 2000;
-                            break;
-                        case 4:
-                            fruitSpawnDelay = 1800;
-                            break;
-                        default:
-                            fruitSpawnDelay = 2000;
-                            break;
-                    }
+                    // let fruitSpawnDelay = 2000;
+                    // switch (this.levelId) {
+                    //     case 1:
+                    //         fruitSpawnDelay = 2500;
+                    //         break;
+                    //     case 2:
+                    //         fruitSpawnDelay = 2200;
+                    //         break;
+                    //     case 3:
+                    //         fruitSpawnDelay = 2000;
+                    //         break;
+                    //     case 4:
+                    //         fruitSpawnDelay = 1800;
+                    //         break;
+                    //     default:
+                    //         fruitSpawnDelay = 2000;
+                    //         break;
+                    // }
         
-                    this.time.addEvent({
-                        delay: fruitSpawnDelay,
-                        callback: () => {
-                            if (fruitView.body) {
-                                const body = fruitView.body as Phaser.Physics.Arcade.Body;
-                                if (body && body.touching.none) {
-                                    this.fruitsCaught.push({
-                                        levelId: this.levelId,
-                                        fruitId: 0
-                                    });
-                                    console.log("Trái cây bị bỏ lỡ, fruitId được đặt thành 0");
-                                }
-                            }
-                        },
-                        loop: false,
-                    });
+                    // this.time.addEvent({
+                    //     delay: fruitSpawnDelay,
+                    //     callback: () => {
+                    //         if (fruitView.body) {
+                    //             const body = fruitView.body as Phaser.Physics.Arcade.Body;
+                    //             if (body && body.touching.none) {
+                    //                 this.fruitsCaught.push({
+                    //                     levelId: this.levelId,
+                    //                     fruitId: 0
+                    //                 });
+                    //                 console.log("Trái cây bị bỏ lỡ, fruitId được đặt thành 0");
+                    //             }
+                    //         }
+                    //     },
+                    //     loop: false,
+                    // });
                 }
             };
         
