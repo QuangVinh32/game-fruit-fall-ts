@@ -26,14 +26,6 @@ export default class UIScene extends Phaser.Scene {
         });
     } 
 
-    // create() {
-    //     // Hiển thị điểm số
-    //     this.scoreText = this.add.text(10, 20, `Score: ${this.scoreCount}`, {
-    //         fontSize: "18px Arial",
-    //         fontStyle: "bold",
-    //         color: "black",
-    //     });
-    // }
 
     updateLaunchCount(newScore: number) {
         this.scoreCount = newScore;
