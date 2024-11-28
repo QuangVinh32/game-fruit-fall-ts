@@ -30,7 +30,9 @@ export default class PlayerView extends Phaser.GameObjects.Container {
         .setDisplaySize(this.playerData.width, this.playerData.height)
         .setOrigin(0.5, 0.5)
         .setBounce(this.playerData.bounce);
+        
         this.add(this.player);
+
     }
     createShadow() {
         this.shadow = this.scene.add.sprite(
