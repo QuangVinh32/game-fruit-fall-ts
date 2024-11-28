@@ -5,6 +5,7 @@ export default class PlayerView extends Phaser.GameObjects.Container {
     public scene: Phaser.Scene;
     public playerData: PlayerDTO;
     private player: Phaser.Physics.Arcade.Sprite;
+    private shadow: Phaser.GameObjects.Sprite;
 
     constructor(scene: Phaser.Scene, playerData: PlayerDTO) {
         super(scene);
@@ -15,6 +16,8 @@ export default class PlayerView extends Phaser.GameObjects.Container {
         this.scene.physics.world.enable(this);
         this.createPlayer();
         this.updateContainerSize();
+        this.createShadow(); 
+
         this.setPosition(playerData.positionX, playerData.positionY);   
     }
 
@@ -28,6 +31,17 @@ export default class PlayerView extends Phaser.GameObjects.Container {
         .setOrigin(0.5, 0.5)
         .setBounce(this.playerData.bounce);
         this.add(this.player);
+    }
+    createShadow() {
+        this.shadow = this.scene.add.sprite(
+            0, 
+            this.playerData.height / 2 + 45, 
+            'shadow' 
+        );
+        this.shadow.setDisplaySize(this.playerData.width, 90); 
+        // this.shadow.setAlpha(0.5); 
+        this.shadow.setOrigin(0.5, 0.5); 
+        this.add(this.shadow); 
     }
 
     updateContainerSize() {
