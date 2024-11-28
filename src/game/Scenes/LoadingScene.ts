@@ -9,13 +9,13 @@ export default class LoadingScene extends Phaser.Scene {
     }
 
     async create() {
-        const titleText = this.add.text(this.scale.width / 2, this.scale.height / 2 - 80, 'Fruit Fall', {
+        const titleText = this.add.text(this.scale.width / 2 - 5, this.scale.height / 2 - 80, 'Fruit Fall', {
             fontSize: '30px Arial',
             fontStyle: "bold",
             color: 'black'
         }).setOrigin(0.5);
 
-        const loadingText = this.add.text(this.scale.width / 2 - 5, this.scale.height / 2 + 30, 'LOADING', {
+        const loadingText = this.add.text(this.scale.width / 2 , this.scale.height / 2 + 40, 'LOADING', {
             fontSize: '15px Arial',
             color: 'black'
         }).setOrigin(0.5);
@@ -36,7 +36,7 @@ export default class LoadingScene extends Phaser.Scene {
             this.scene.launch('PlayGameScene');
         });
 
-        this.cameras.main.fadeOut(1000, 255, 255, 255); 
+        this.cameras.main.fadeOut(1000, 255, 255, 255); // Màu trắng
     }
 
     update() {

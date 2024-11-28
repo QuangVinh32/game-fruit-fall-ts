@@ -25,6 +25,7 @@
         }
         preload() {
             this.load.image("player", "assets/Images/player.png");
+            this.load.image("shadow", "assets/Images/shadow.png")
             this.load.image("apple", "assets/Images/apple.png");
             this.load.image("cherry", "assets/Images/cherry.png");
             // this.load.image("kiwi", "assets/Images/kiwi.png");
@@ -74,7 +75,7 @@
             if (playerDTO) {
                 this.playerView = this.playerService.getPlayerViewById(this.levelId);
                 if (this.playerView) {
-                    this.playerView.setPosition(350, 530);
+                    this.playerView.setPosition(350, 490);
                     this.physics.add.existing(this.playerView);
                     this.playerView.body.setCollideWorldBounds(true);
                     this.playerView.body.setImmovable(true);
@@ -82,7 +83,7 @@
                     this.input.on("pointermove", (pointer: any) => {
                         if (this.canMovePlayer) {
                             this.playerView.x = pointer.worldX;
-                            this.playerView.y = 530;
+                            this.playerView.y = 490;
                         }
                     });
                 }
@@ -184,6 +185,14 @@
                             this.fruitsCaughtMatrix.set(this.levelId, []);
                         }
                         this.fruitsCaughtMatrix.get(this.levelId)?.push(caughtFruit);
+
+                        this.tweens.add({
+                            targets: this.playerView.player, 
+                            y: this.playerView.player.y + 5, 
+                            duration: 100, 
+                            yoyo: true, 
+                            ease: 'Bounce',
+                        });
 
                         // console.log("fruitsCaughtMatrix:", Array.from(this.fruitsCaughtMatrix.entries()));
                     });
