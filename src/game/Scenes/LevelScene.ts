@@ -14,6 +14,7 @@
         private fruitsCaught: { levelId: number, fruitId: number }[]; 
         private fruitsCaughtMatrix: Map<number, { levelId: number, fruitId: number }[]> = new Map();
         private validFruitsCount: number;
+        fruitView: any;
 
         constructor() {
             super("LevelScene");
@@ -136,20 +137,54 @@
                 if (fruitView) {
                     this.physics.add.existing(fruitView);
                     const body = fruitView.body as Phaser.Physics.Arcade.Body | null;
+
         
                     if (body) {
+                        body.setImmovable(true);
                         switch (this.levelId) {
                             case 1:
-                                body.setGravityY(800);
+                                this.tweens.add({
+                                    targets: fruitView,       // Trái cây cần rơi
+                                    y: 650,                  // Tọa độ Y đích
+                                    duration: 2200,          // Thời gian rơi (ms)
+                                    ease: 'Quad.easeOut',    // Hiệu ứng chậm dần về cuối
+                                    onComplete: () => {
+                                        fruitView.destroy();
+                                    }
+                                });;
                                 break;
                             case 2:
-                                body.setGravityY(900);
+                                this.tweens.add({
+                                    targets: fruitView,       
+                                    y: 650,                 
+                                    duration: 2100,         
+                                    ease: 'Quad.easeOut',    
+                                    onComplete: () => {
+                                        fruitView.destroy();
+                                    }
+                                });;                                
                                 break;
                             case 3:
-                                body.setGravityY(1000);
+                                this.tweens.add({
+                                    targets: fruitView,      
+                                    y: 650,                 
+                                    duration: 2000,         
+                                    ease: 'Quad.easeOut',    
+                                    onComplete: () => {
+                                        fruitView.destroy();
+                                    }
+                                });;                                
                                 break;
                             case 4:
-                                body.setGravityY(1100);
+                                this.tweens.add({
+                                    targets: fruitView,      
+                                    y: 650,                  
+                                    duration: 2000,          
+                                    ease: 'Quad.easeOut',    
+                                    onComplete: () => {
+                                        fruitView.destroy();
+                                    }
+                                });;                               
                                 break;
                             default:
                                 body.setGravityY(0);
@@ -164,7 +199,7 @@
                         }
                         this.score++;
 
-                        // console.log("score of Level", this.score)
+
         
                         fruit.destroy();
         
