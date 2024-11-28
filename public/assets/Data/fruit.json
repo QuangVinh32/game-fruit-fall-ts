@@ -2,7 +2,7 @@
     "fruitTypes": [
         {
             "fruitTypeId": 1,
-            "name": "Applwwwe",
+            "name": "Apple",
             "texture": "apple"
         },
         {
