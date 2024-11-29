@@ -20,7 +20,7 @@ export default class UIScene extends Phaser.Scene {
 
         // Hiển thị điểm số
         this.scoreText = this.add.text(10, 20, `Score: ${this.scoreCount}`, { 
-            fontSize: '18px Arial', 
+            fontSize: '20px Arial', 
             fontStyle: "bold", 
             color: 'black' 
         });

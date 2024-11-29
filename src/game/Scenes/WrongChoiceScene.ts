@@ -54,11 +54,11 @@ export default class WrongChoiceScene extends Phaser.Scene{
         startText.setOrigin(0.5, 0.5);
         startText.setPosition(buttonStart.x, buttonStart.y);
 
-        buttonStart.on('pointerdown', () => {
+        buttonStart.on('pointerup', () => {
             // console.log("Quay lại màn chơi")
-            if (this.buttonSound) {
-                this.buttonSound.play();
-            }
+            // if (this.buttonSound) {
+            //     this.buttonSound.play();
+            // }
             const currentLevelFruits = this.fruitsCaught.get(this.levelId);
             if (currentLevelFruits) {
                 currentLevelFruits.length = 0; 

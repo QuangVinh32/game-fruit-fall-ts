@@ -4,9 +4,13 @@ export default class LoadingScene extends Phaser.Scene {
     }
 
     preload() {
-        this.load.image("loader", "assets/Images/loader.gif");
- 
+        this.load.spritesheet('fruitFall', 'assets/Images/loader_spritesheet_1.png', {
+            frameWidth: 64,  
+            frameHeight: 64,
+            endFrame: 9
+        });
     }
+    
 
     async create() {
         const titleText = this.add.text(this.scale.width / 2 - 5, this.scale.height / 2 - 80, 'Fruit Fall', {
@@ -15,31 +19,29 @@ export default class LoadingScene extends Phaser.Scene {
             color: 'black'
         }).setOrigin(0.5);
 
-        const loadingText = this.add.text(this.scale.width / 2 , this.scale.height / 2 + 40, 'LOADING', {
+        const loadingText = this.add.text(this.scale.width / 2 , this.scale.height / 2 + 60, 'LOADING', {
             fontSize: '15px Arial',
             color: 'black'
         }).setOrigin(0.5);
 
-        // // Tạo phần tử DOM HTML để hiển thị GIF
-        // const gifElement = document.createElement('img');
-        // gifElement.src = 'assets/Images/loader.gif';
-        // gifElement.style.position = 'absolute';
-        // gifElement.style.top = `${this.scale.height / 2 }px`;
-        // gifElement.style.left = `${this.scale.width / 2}px`;
-        // gifElement.style.width = '80px';
-        // gifElement.style.height = '80px';
-        // document.body.appendChild(gifElement);
+        this.anims.create({
+            key: 'falling',     
+            frames: this.anims.generateFrameNumbers('fruitFall', { start: 0, end: 9 }),
+            frameRate: 10,        
+            repeat: -1         
+        });
+
+        const fruit = this.add.sprite(this.scale.width / 2, this.scale.height / 2, 'fruitFall');
+        fruit.play('falling');
 
         this.cameras.main.once('camerafadeoutcomplete', () => {
-            // gifElement.remove(); 
             this.scene.start('LevelScene');
             this.scene.launch('PlayGameScene');
         });
 
-        this.cameras.main.fadeOut(1000, 255, 255, 255); // Màu trắng
+        this.cameras.main.fadeOut(1000); 
     }
 
     update() {
-        // Không cần logic cập nhật
     }
 }

@@ -104,14 +104,14 @@ export default class PlayGameScene extends Phaser.Scene {
         startText.setOrigin(0.5, 0.5);
         startText.setPosition(buttonStart.x, buttonStart.y);
     
-        buttonStart.on("pointerdown", () => {
+        buttonStart.on("pointerup", () => {
             // console.log("Start button clicked");
-            if (this.buttonSound) {
-                this.buttonSound.play();
-            }
               if (!this.isUISceneLaunched) {
                 this.scene.launch("UIScene", { score: this.score });
                 this.isUISceneLaunched = true; 
+                if (this.buttonSound) {
+                    this.buttonSound.play();
+                }
             }
             this.scene.get("LevelScene").events.emit("enablePlayerMove");
             this.scene.get("LevelScene").events.emit("startFruitFall");

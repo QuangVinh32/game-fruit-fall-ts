@@ -55,7 +55,7 @@ export default class QuestionAndOptionScene extends Phaser.Scene {
         });
 
         fruitCountPerLevel.forEach((count, levelId) => {
-            // console.log(`Level ${levelId}: Valid fruits caught = ${count}`);
+            console.log(`Level ${levelId}: Valid fruits caught = ${count}`);
         });
 
         this.buttonSound = this.sound.add("sound_initial", {
@@ -66,29 +66,94 @@ export default class QuestionAndOptionScene extends Phaser.Scene {
 
         this.questionService = new QuestionService(this, "assets/Data/question.json");
         await this.questionService.initialize(this.levelId);
+        
+        this.fruitService = new FruitService(this, "assets/Data/fruit.json");
+        await this.fruitService.initializeNoView();
 
-        const questionDTO = this.questionService.getQuestionDTOById(this.levelId);
-        // console.log(questionDTO);
+        const fruitsAtLevel = this.fruitService.getFruitsByLevelId(this.levelId);
+        console.log("fruitAtLevel",fruitsAtLevel)
+        const fruitCount = fruitsAtLevel.length
+        console.log(`Level ${this.levelId}: FruitCount = ${fruitCount}`);
 
-        if (questionDTO && questionDTO.questionId !== undefined) {
-            const questionId = questionDTO.questionId;
 
-            this.optionService = new OptionService(this, "assets/Data/option.json");
-            await this.optionService.initialize(questionId);
 
-            const optionDTOs = this.optionService.getAllOptionDTOs(questionId);
-            const currentCount = fruitCountPerLevel.get(this.levelId) || 0;
 
-            optionDTOs.forEach((optionDTO) => {
+
+
+
+        // const maxFruits = 6;
+        const options = [];
+        
+        options.push(this.validFruitsCount);
+        
+        while (options.length < 4) {
+            const randomValue = Phaser.Math.Between(0, fruitCount);
+            if (!options.includes(randomValue)) {
+                options.push(randomValue);
+            }
+        }
+        
+            Phaser.Utils.Array.Shuffle(options);
+            
+            options.forEach((value, index) => {
+                const x = 120 + index * 160; 
+                const y = 535;             
+                const width = 120;           
+                const height = 120;          
+                const isAnswer = value === this.validFruitsCount; 
+            
+                const optionDTO = new OptionDTO(
+                    index,        
+                    isAnswer,    
+                    value,        
+                    this.levelId, 
+                    x,            
+                    y,            
+                    width,        
+                    height       
+                );
+            
                 const optionView = new OptionView(this, optionDTO);
+                optionView.setPosition(x, y);
                 this.add.existing(optionView);
-                optionView.buttonOption.on('pointerdown', () => {
-                    this.checkAnswer(currentCount, optionDTO);
+            
+                optionView.buttonOption.on("pointerup", () => {
+                    this.checkAnswer(this.validFruitsCount, optionDTO);
                 });
             });
-        } else {
-            console.error("Không thể lấy questionDTO hoặc questionId không hợp lệ");
-        }
+            
+        
+
+
+
+
+
+
+
+
+
+        // const questionDTO = this.questionService.getQuestionDTOById(this.levelId);
+        // // console.log(questionDTO);
+
+        // if (questionDTO && questionDTO.questionId !== undefined) {
+        //     const questionId = questionDTO.questionId;
+
+        //     this.optionService = new OptionService(this, "assets/Data/option.json");
+        //     await this.optionService.initialize(questionId);
+
+        //     const optionDTOs = this.optionService.getAllOptionDTOs(questionId);
+        //     const currentCount = fruitCountPerLevel.get(this.levelId) || 0;
+
+        //     optionDTOs.forEach((optionDTO) => {
+        //         const optionView = new OptionView(this, optionDTO);
+        //         this.add.existing(optionView);
+        //         optionView.buttonOption.on('pointerdown', () => {
+        //             this.checkAnswer(currentCount, optionDTO);
+        //         });
+        //     });
+        // } else {
+        //     console.error("Không thể lấy questionDTO hoặc questionId không hợp lệ");
+        // }
     }
 
     checkAnswer(currentCount: number, optionDTO: OptionDTO): void {
