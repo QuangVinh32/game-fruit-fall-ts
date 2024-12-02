@@ -8,8 +8,6 @@ export default class OpitionDTO{
     private _height: number;
     private _questionId: number;
 
-
-
 	constructor(optionId: number, isAnswer: boolean, value: number,questionId: number, positionX: number, positionY: number, width: number,height : number) {
 		this._optionId = optionId;
 		this._isAnswer = isAnswer;
@@ -20,9 +18,6 @@ export default class OpitionDTO{
         this._width = width;
 		this._height = height;
     }
-
-
-
 
     /**
      * Getter positionX

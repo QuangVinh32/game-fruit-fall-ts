@@ -6,6 +6,7 @@ export default class OptionView extends Phaser.GameObjects.Container {
     public buttonOption: Phaser.GameObjects.Image;
     private textQuestion: Phaser.GameObjects.Text;
     private buttonSound: Phaser.Sound.BaseSound | null = null;
+    tweens: any;
 
     constructor(scene: Phaser.Scene, optionData: OpitionDTO) {
         super(scene, optionData.positionX, optionData.positionY); 
@@ -23,7 +24,7 @@ export default class OptionView extends Phaser.GameObjects.Container {
             .setInteractive();
 
         this.textQuestion = this.scene.add.text(0, 0, this.optionData.value.toString(), {
-            fontSize: '35px',
+            fontSize: '45px',
             color: 'black',
             fontStyle: "bold"
         })
@@ -36,11 +37,18 @@ export default class OptionView extends Phaser.GameObjects.Container {
         this.add(this.buttonOption);
         this.add(this.textQuestion);
 
-        this.buttonOption.on('pointerdown', () => {
-            // console.log("Option clicked");
-            // if (this.buttonSound) {
-            //     this.buttonSound.play();
-            // }
-        });
+        // this.buttonOption.on('pointerup', () => {
+        //     this.scene.tweens.add({
+        //         targets: this.buttonOption,
+        //         scale: { from: 1, to: 1.1 }, 
+        //         ease: 'Quad.easeOut',
+        //         yoyo: true,
+        //         duration: 200,
+        //     });
+        //     console.log("Option clicked");
+        //     if (this.buttonSound) {
+        //         this.buttonSound.play();
+        //     }
+        // });
     }
 }

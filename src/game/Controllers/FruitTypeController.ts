@@ -7,8 +7,8 @@ export default class FruitTypeController {
         this.fruitTypes.push(fruitType);
     }
 
-    findFruitTypeById(fruitTypeId: number): FruitTypeDTO | undefined {
-        return this.fruitTypes.find(fruitType => fruitType.fruitTypeId === fruitTypeId);
+    findFruitTypeById(id: number): FruitTypeDTO | undefined {
+        return this.fruitTypes.find(fruitType => fruitType.id === id);
     }
 
     getAllFruitTypes(): FruitTypeDTO[] {

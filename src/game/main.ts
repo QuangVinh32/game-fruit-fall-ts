@@ -18,8 +18,8 @@ const config: Phaser.Types.Core.GameConfig = {
     parent: 'phaser-example',
     backgroundColor: '#FFFFFF',
     scale: {
-        mode: Phaser.Scale.FIT, 
-        autoCenter: Phaser.Scale.CENTER_BOTH,
+            mode: Phaser.Scale.FIT, 
+            autoCenter: Phaser.Scale.CENTER_BOTH,
     },
     physics: {
         default: 'arcade',

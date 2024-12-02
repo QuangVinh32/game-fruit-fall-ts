@@ -2,7 +2,6 @@ import QuestionDTO from "../DTOs/QuestionDTO";
 
 export default class QuestionController {
     private questions: QuestionDTO[]; 
-
     constructor() {
         this.questions = [];
     }
@@ -11,11 +10,15 @@ export default class QuestionController {
         this.questions.push(dto);
     }
 
-    getAllQuestions(): QuestionDTO[] {
-        return this.questions;
-    }
-
     getQuestionById(levelId: number): QuestionDTO | undefined {
         return this.questions.find(question => question.levelId === levelId);
+    }
+    
+    setQuestions(questions: QuestionDTO[]) {
+        this.questions = questions;
+    }
+
+    getAllQuestions(): QuestionDTO[] {
+        return this.questions;
     }
 }

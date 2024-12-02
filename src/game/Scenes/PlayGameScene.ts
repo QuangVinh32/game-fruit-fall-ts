@@ -1,4 +1,4 @@
-import QuestionService from "../Service/QuestionService";
+import QuestionService from "../Services/QuestionService";
 
 export default class PlayGameScene extends Phaser.Scene {
     private buttonSound: Phaser.Sound.BaseSound | null = null;
@@ -23,72 +23,38 @@ export default class PlayGameScene extends Phaser.Scene {
         this.load.audio("sound_initial","assets/Audio/sound_initial.mp3")
     }
 
-    async create() {
+    create() {
         this.buttonSound = this.sound.add("sound_initial", {
             volume: 1,
         });
-
-    switch (this.levelId) {
-        case 1:
-            this.add.text(190, 410, "Help the farmer catch the apples.", {
-                fontSize: "25px Arial",
-                fontStyle: "bold",
-                color: "black",
-            });
-            this.add.text(270, 440, 'Select "Start" to continue', {
-                fontSize: "15px Arial",
-                color: "black",
-            });
-            break;
-
-        case 2:
-            this.add.text(190, 410, "Great job! Now catch pears.", {
-                fontSize: "25px Arial",
-                fontStyle: "bold",
-                color: "black",
-            });
-            this.add.text(270, 440, 'Select "Start" to continue', {
-                fontSize: "15px Arial",
-                color: "black",
-            });
-            break;
-
-        case 3:
-            this.add.text(180, 410, "Great job! Now catch orranges.", {
-                fontSize: "25px Arial",
-                fontStyle: "bold",
-                color: "black",
-            });
-            this.add.text(270, 440, 'Select "Start" to continue', {
-                fontSize: "15px Arial",
-                color: "black",
-            });
-            break;
-        case 4:
-            this.add.text(190, 410, "Great job! Now catch lemons.", {
-                fontSize: "25px Arial",
-                fontStyle: "bold",
-                color: "black",
-            });
-            this.add.text(270, 440, 'Select "Start" to continue', {
-                fontSize: "15px Arial",
-                color: "black",
-            });
-            break;
-
-
-        default:
-            this.add.text(160, 410, "Help the farmer catch the apples.", {
-                fontSize: "25px Arial",
-                fontStyle: "bold",
-                color: "black",
-            });
-            this.add.text(270, 440, 'Select "Start" to continue', {
-                fontSize: "15px Arial",
-                color: "black",
-            });
-            break;
-        }
+    
+        const levelMessages = [
+            { main: "Help the farmer catch the apples.", sub: 'Select "Start" to continue' },
+            { main: "Great job! Now catch pears.", sub: 'Select "Start" to continue' },
+            { main: "Great job! Now catch oranges.", sub: 'Select "Start" to continue' },
+            { main: "Great job! Now catch lemons.", sub: 'Select "Start" to continue' },
+            { main: "Great job! Now catch limes.", sub: 'Select "Start" to continue' },
+            { main: "Great job! Now catch peaches.", sub: 'Select "Start" to continue' },
+        ];
+    
+        const levelIndex = Math.max(0, Math.min(this.levelId - 1, levelMessages.length - 1));
+        const { main, sub } = levelMessages[levelIndex] || { 
+            main: "Help the farmer catch the apples.", 
+            sub: 'Select "Start" to continue' 
+        };
+        
+    
+        this.add.text(this.scale.width / 2, 410, main, {
+            fontSize: "25px Arial",
+            fontStyle: "bold",
+            color: "black",
+        }).setOrigin(0.5, 0); // Căn giữa ngang
+        
+        this.add.text(this.scale.width / 2, 440, sub, {
+            fontSize: "15px Arial",
+            color: "black",
+        }).setOrigin(0.5, 0); // Căn giữa ngang
+        
     
         let buttonStart = this.add.image(350, 300, "button")
             .setDisplaySize(150, 150)
@@ -105,10 +71,9 @@ export default class PlayGameScene extends Phaser.Scene {
         startText.setPosition(buttonStart.x, buttonStart.y);
     
         buttonStart.on("pointerup", () => {
-            // console.log("Start button clicked");
-              if (!this.isUISceneLaunched) {
+            if (!this.isUISceneLaunched) {
                 this.scene.launch("UIScene", { score: this.score });
-                this.isUISceneLaunched = true; 
+                this.isUISceneLaunched = true;
                 if (this.buttonSound) {
                     this.buttonSound.play();
                 }
@@ -118,11 +83,5 @@ export default class PlayGameScene extends Phaser.Scene {
             this.scene.stop("PlayGameScene");
         });
     }
-    
-
-
-    update() {}
-
-
-
 }
+    

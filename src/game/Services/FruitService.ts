@@ -1,6 +1,6 @@
 import FruitDTO from "../DTOs/FruitDTO";
 import FruitTypeDTO from "../DTOs/FruitTypeDTO";
-import FruitView from "../View/FruitView";
+import FruitView from "../Views/FruitView";
 import FruitTypeController from "../Controllers/FruitTypeController";
 import FruitController from "../Controllers/FruitController";
 
@@ -35,7 +35,7 @@ export default class FruitService {
 
     private mapFruitTypes(data: any): void {
         if (Array.isArray(data.fruitTypes)) {
-            this.fruitTypes = data.fruitTypes.map((typeData: any) => new FruitTypeDTO(typeData.fruitTypeId, typeData.name, typeData.texture));
+            this.fruitTypes = data.fruitTypes.map((typeData: any) => new FruitTypeDTO(typeData.id, typeData.name, typeData.texture));
             this.fruitTypes.forEach(fruitType => this.fruitTypeController.addFruitTypes(fruitType));
         } else {
             console.error("Invalid or missing fruitTypes data:", data.fruitTypes);
@@ -57,7 +57,7 @@ export default class FruitService {
                 fruit.positionY, 
                 fruit.width, 
                 fruit.height, 
-                fruit.fruitTypeId, 
+                fruit.id, 
                 fruit.levelId
             ));
     }
@@ -74,6 +74,7 @@ export default class FruitService {
             console.error("Failed to initialize fruit service:", error);
         }
     }
+    
     async initializeNoView(levelId?: number, screenWidth?: number, screenHeight?: number): Promise<void> {
         try {
             const data = await this.loadData();
@@ -85,10 +86,6 @@ export default class FruitService {
             console.error("Failed to initialize fruit service:", error);
         }
     }
-
-    
-
-
 
     async initializeById(levelId?: number, fruitId?: number): Promise<void> {
         try {
@@ -103,12 +100,11 @@ export default class FruitService {
             console.error("Failed to initialize fruit service:", error);
         }
     }
+    
     async initializeByNoView(levelId?: number, fruitId?: number): Promise<void> {
         try {
             const data = await this.loadData();
             this.mapFruitTypes(data);
-
-            // Lọc trái cây theo levelId và fruitId nếu có
             const fruits = this.mapFruits(data, levelId, fruitId);
             fruits.forEach(dto => this.fruitController.addFruits(dto));
             // fruits.forEach(dto => this.createFruitView(dto));
@@ -118,7 +114,7 @@ export default class FruitService {
     }
 
     createFruitView(fruitData: FruitDTO): void {
-        const fruitType = this.fruitTypeController.findFruitTypeById(fruitData.fruitTypeId);
+        const fruitType = this.fruitTypeController.findFruitTypeById(fruitData.id);
         if (fruitType) {
             const fruitView = new FruitView(this.scene, fruitData, fruitType);
             this.fruitViews.push(fruitView);
@@ -141,8 +137,8 @@ export default class FruitService {
         return this.fruitViews.find(fruitView => 
             fruitView.fruitData.fruitId === fruitId && fruitView.fruitData.levelId === levelId);
     }
-    getFruitTypeById(fruitTypeId: number): FruitTypeDTO | undefined {
-        return this.fruitTypes.find(fruitType => fruitType.fruitTypeId === fruitTypeId);
+    getFruitTypeById(id: number): FruitTypeDTO | undefined {
+        return this.fruitTypes.find(fruitType => fruitType.id === fruitType.id);
     }
     getFruitDTOById(fruitId: number,levelId: number): FruitDTO | undefined {
         return this.fruitController.getFruitDTOById(fruitId,levelId);

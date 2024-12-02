@@ -1,10 +1,10 @@
 export default class FruitTypeDTO{
-    private _fruitTypeId: number;
+    private _id: number;
     private _name: string;
     private _texture: string;
 
-	constructor(fruitTypeId: number, name: string, texture: string) {
-		this._fruitTypeId = fruitTypeId;
+	constructor(id: number, name: string, texture: string) {
+		this._id = id;
 		this._name = name;
         this._texture = texture;
 	}
@@ -30,8 +30,8 @@ export default class FruitTypeDTO{
      * Getter fruitTypeId
      * @return {number}
      */
-	public get fruitTypeId(): number {
-		return this._fruitTypeId;
+	public get id(): number {
+		return this._id;
 	}
 
     /**
@@ -46,8 +46,8 @@ export default class FruitTypeDTO{
      * Setter fruitTypeId
      * @param {number} value
      */
-	public set fruitTypeId(value: number) {
-		this._fruitTypeId = value;
+	public set id(value: number) {
+		this.id = value;
 	}
 
     /**

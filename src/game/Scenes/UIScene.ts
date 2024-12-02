@@ -1,7 +1,6 @@
 export default class UIScene extends Phaser.Scene {
     private scoreText: Phaser.GameObjects.Text;
     private scoreCount: number = 0;
-
     constructor() {
         super("UIScene");
     }
@@ -15,10 +14,8 @@ export default class UIScene extends Phaser.Scene {
     preload() {}
 
     create(data: { newScore: number }) {
-        // Khởi tạo điểm số từ dữ liệu được truyền vào
         this.scoreCount = data.newScore || 0;
 
-        // Hiển thị điểm số
         this.scoreText = this.add.text(10, 20, `Score: ${this.scoreCount}`, { 
             fontSize: '20px Arial', 
             fontStyle: "bold", 
@@ -26,11 +23,11 @@ export default class UIScene extends Phaser.Scene {
         });
     } 
 
-
     updateLaunchCount(newScore: number) {
         this.scoreCount = newScore;
         this.scoreText.setText(`Score: ${this.scoreCount}`);
     }
+    
     updateScore(newScore: number) {
         this.scoreCount = newScore;
         this.scoreText.setText(`Score: ${this.scoreCount}`);

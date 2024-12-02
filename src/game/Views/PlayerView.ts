@@ -34,6 +34,7 @@ export default class PlayerView extends Phaser.GameObjects.Container {
         this.add(this.player);
 
     }
+    
     createShadow() {
         this.shadow = this.scene.add.sprite(
             0, 

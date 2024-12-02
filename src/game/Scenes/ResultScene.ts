@@ -1,9 +1,6 @@
-import FruitService from "../Service/FruitService";
-
-
+import FruitService from "../Services/FruitService";
 export default class ResultScene extends Phaser.Scene {
     private fruitService: FruitService | null = null;
-
     private levelId: number;
     private fruitsCaught: Map<number, { levelId: number, fruitId: number }[]> = new Map();
  
@@ -66,7 +63,7 @@ export default class ResultScene extends Phaser.Scene {
                     const x = gridStartX + (levelId - 1) * cellWidth + cellWidth / 2;
                     const y = gridStartY + (rows - 1 - index) * cellHeight + cellHeight / 2;
         
-                    const fruitType = this.fruitService?.getFruitTypeById(fruitDTO.fruitTypeId);
+                    const fruitType = this.fruitService?.getFruitTypeById(fruitDTO.id);
                     if (fruitType) {
                         this.add.sprite(x, y, fruitType.texture)
                             .setOrigin(0.5, 0.5)

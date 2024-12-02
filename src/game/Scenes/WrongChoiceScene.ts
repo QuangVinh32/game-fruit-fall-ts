@@ -20,10 +20,7 @@ export default class WrongChoiceScene extends Phaser.Scene{
 
         this.validFruitsCount = this.fruitsCaught.get(this.levelId)?.filter(fruit => fruit.fruitId !== 0).length || 0;
     }
-    
-    preaload(){
 
-    }
     create(){
         this.buttonSound = this.sound.add("sound_initial", {
             volume: 1,
@@ -42,8 +39,8 @@ export default class WrongChoiceScene extends Phaser.Scene{
             // console.log(`Level ${levelId}: Số lượng fruitId khác 0 là ${count}`);
         });
 
-        this.add.text(240, 420, "Sorry, The answer is", { fontSize: '20px Arial', fontStyle: "bold", color: 'black' })
-        this.add.text(440, 420, this.validFruitsCount.toString(), { fontSize: '20px Arial', fontStyle: "bold", color: 'black' })
+        this.add.text(240, 420, `Sorry, The answer is ${this.validFruitsCount.toString()}`, { fontSize: '20px Arial', fontStyle: "bold", color: 'black' })
+        // this.add.text(440, 420, this.validFruitsCount.toString(), { fontSize: '20px Arial', fontStyle: "bold", color: 'black' })
         this.add.text(230, 445, "Try agian, Select 'Start' to continue.", { fontSize: '15px Arial', color: 'black' })
 
         let buttonStart = this.add.image(350, 530, 'button')

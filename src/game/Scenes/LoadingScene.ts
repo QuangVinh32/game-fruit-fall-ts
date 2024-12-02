@@ -12,7 +12,7 @@ export default class LoadingScene extends Phaser.Scene {
     }
     
 
-    async create() {
+    create() {
         const titleText = this.add.text(this.scale.width / 2 - 5, this.scale.height / 2 - 80, 'Fruit Fall', {
             fontSize: '30px Arial',
             fontStyle: "bold",
