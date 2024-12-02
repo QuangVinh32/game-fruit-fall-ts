@@ -1,8 +1,8 @@
 import FruitDTO from "../DTOs/FruitDTO";
 import FruitTypeDTO from "../DTOs/FruitTypeDTO";
-import FruitView from "../Views/FruitView";
 import FruitTypeController from "../Controllers/FruitTypeController";
 import FruitController from "../Controllers/FruitController";
+import FruitView from "../Views/FruitView";
 
 export default class FruitService {
     private scene: Phaser.Scene;
@@ -74,7 +74,6 @@ export default class FruitService {
             console.error("Failed to initialize fruit service:", error);
         }
     }
-    
     async initializeNoView(levelId?: number, screenWidth?: number, screenHeight?: number): Promise<void> {
         try {
             const data = await this.loadData();
@@ -86,6 +85,10 @@ export default class FruitService {
             console.error("Failed to initialize fruit service:", error);
         }
     }
+
+    
+
+
 
     async initializeById(levelId?: number, fruitId?: number): Promise<void> {
         try {
@@ -100,11 +103,12 @@ export default class FruitService {
             console.error("Failed to initialize fruit service:", error);
         }
     }
-    
     async initializeByNoView(levelId?: number, fruitId?: number): Promise<void> {
         try {
             const data = await this.loadData();
             this.mapFruitTypes(data);
+
+            // Lọc trái cây theo levelId và fruitId nếu có
             const fruits = this.mapFruits(data, levelId, fruitId);
             fruits.forEach(dto => this.fruitController.addFruits(dto));
             // fruits.forEach(dto => this.createFruitView(dto));
@@ -138,7 +142,7 @@ export default class FruitService {
             fruitView.fruitData.fruitId === fruitId && fruitView.fruitData.levelId === levelId);
     }
     getFruitTypeById(id: number): FruitTypeDTO | undefined {
-        return this.fruitTypes.find(fruitType => fruitType.id === fruitType.id);
+        return this.fruitTypes.find(fruitType => fruitType.id === id);
     }
     getFruitDTOById(fruitId: number,levelId: number): FruitDTO | undefined {
         return this.fruitController.getFruitDTOById(fruitId,levelId);

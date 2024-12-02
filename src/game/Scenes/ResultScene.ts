@@ -1,6 +1,9 @@
 import FruitService from "../Services/FruitService";
+
+
 export default class ResultScene extends Phaser.Scene {
     private fruitService: FruitService | null = null;
+
     private levelId: number;
     private fruitsCaught: Map<number, { levelId: number, fruitId: number }[]> = new Map();
  
@@ -21,9 +24,6 @@ export default class ResultScene extends Phaser.Scene {
         // console.log(`Valid fruits count for level ${this.levelId}:`, this.validFruitsCount);
     }
     async create() {
-
-
-        
         this.add.text(230, 15, "The Farmer's Fruit", { fontSize: '30px Arial', fontStyle: "bold", color: 'black' });
 
         const gridStartX = 55;
@@ -49,7 +49,7 @@ export default class ResultScene extends Phaser.Scene {
                 gridStartX - 25,
                 gridStartY + row * cellHeight + cellHeight / 2 - 10,
                 number.toString(),
-                { fontSize: '25px', color: 'black', fontStyle: "bold" }
+                { fontSize: '20px', color: 'black', fontStyle: "bold" }
             );
         }
 
