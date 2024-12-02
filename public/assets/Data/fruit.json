@@ -1,40 +1,51 @@
 {
     "fruitTypes": [
         {
-            "fruitTypeId": 1,
+            "id": 1,
             "name": "Apple",
             "texture": "apple"
         },
         {
-            "fruitTypeId": 2,
+            "id": 2,
             "name": "Cherry",
             "texture": "cherry"
         },
         {
-            "fruitTypeId": 3,
+            "id": 3,
             "name": "Kiwi",
             "texture": "kiwi"
         },
         {
-            "fruitTypeId": 4,
+            "id": 4,
             "name": "Lemon",
             "texture": "lemon"
         },
         {
-            "fruitTypeId": 6,
-            "name": "Mango",
-            "texture": "mango"
+            "id": 6,
+            "name": "Peache",
+            "texture": "peache"
         },
         {
-            "fruitTypeId": 7,
+            "id": 7,
             "name": "Orrange",
             "texture": "orrange"
         },
         {
-            "fruitTypeId": 8,
+            "id": 8,
             "name": "Pear",
             "texture": "pear"
+        },        
+        {
+            "id": 9,
+            "name": "Lime",
+            "texture": "lime"
+        },
+        {
+            "id": 10,
+            "name": "Star",
+            "texture": "star"
         }
+    
     ],
     "fruits": [
         {
@@ -43,16 +54,17 @@
             "positionY":100,
             "width": 40,
             "height": 50,
-            "fruitTypeId": 1,
+            "id": 1,
             "levelId": 1
         },
+
         {
             "fruitId": 2,
             "positionX": 210,
             "positionY": 100,
             "width": 40,
             "height": 50,
-            "fruitTypeId": 1,
+            "id": 1,
             "levelId": 1
             
         },
@@ -62,7 +74,7 @@
             "positionY": 100,
             "width": 40,
             "height": 50,
-            "fruitTypeId": 1,
+            "id": 1,
             "levelId": 1
         },
         {
@@ -71,7 +83,7 @@
             "positionY": 100,
             "width": 40,
             "height": 50,
-            "fruitTypeId": 1,
+            "id": 1,
             "levelId": 1
 
         },
@@ -81,7 +93,7 @@
             "positionY": 100,
             "width": 40,
             "height": 50,
-            "fruitTypeId": 1,
+            "id": 1,
             "levelId": 1
 
         },
@@ -92,16 +104,17 @@
             "positionY": 100,
             "width": 32,
             "height": 52,
-            "fruitTypeId": 8,
+            "id": 8,
             "levelId": 2
         },
+
         {
             "fruitId": 2,
             "positionX": 210,
             "positionY": 100,
             "width": 32,
             "height": 52,
-            "fruitTypeId": 8,
+            "id": 8,
             "levelId": 2
             
         },
@@ -111,7 +124,7 @@
             "positionY": 100,
             "width": 32,
             "height": 52,
-            "fruitTypeId": 8,
+            "id": 8,
             "levelId": 2
         },
         {
@@ -120,7 +133,7 @@
             "positionY": 100,
             "width": 32,
             "height": 52,
-            "fruitTypeId": 8,
+            "id": 8,
             "levelId": 2
 
         },
@@ -130,7 +143,7 @@
             "positionY": 100,
             "width": 32,
             "height": 52,
-            "fruitTypeId": 8,
+            "id": 8,
             "levelId": 2
 
         },
@@ -140,7 +153,7 @@
             "positionY": 100,
             "width": 47,
             "height": 48,
-            "fruitTypeId": 7,
+            "id": 7,
             "levelId": 3
         },
         {
@@ -149,7 +162,7 @@
             "positionY": 100,
             "width": 47,
             "height": 48,
-            "fruitTypeId": 7,
+            "id": 7,
             "levelId": 3
             
         },
@@ -159,7 +172,7 @@
             "positionY": 100,
             "width": 47,
             "height": 48,
-            "fruitTypeId": 7,
+            "id": 7,
             "levelId": 3
         },
         {
@@ -168,7 +181,7 @@
             "positionY": 100,
             "width": 47,
             "height": 48,
-            "fruitTypeId": 7,
+            "id": 7,
             "levelId": 3
 
         },
@@ -178,7 +191,7 @@
             "positionY": 100,
             "width": 47,
             "height": 48,
-            "fruitTypeId": 7,
+            "id": 7,
             "levelId": 3
 
         },
@@ -188,7 +201,7 @@
             "positionY": 100,
             "width": 56,
             "height": 39,
-            "fruitTypeId": 4,
+            "id": 4,
             "levelId": 4
         },
         {
@@ -197,7 +210,7 @@
             "positionY": 100,
             "width": 56,
             "height": 39,
-            "fruitTypeId": 4,
+            "id": 4,
             "levelId": 4
             
         },
@@ -207,7 +220,7 @@
             "positionY": 100,
             "width": 56,
             "height": 39,
-            "fruitTypeId": 4,
+            "id": 4,
             "levelId": 4
         },
         {
@@ -216,7 +229,7 @@
             "positionY": 100,
             "width": 56,
             "height": 39,
-            "fruitTypeId": 4,
+            "id": 4,
             "levelId": 4
 
         },
@@ -226,9 +239,103 @@
             "positionY": 100,
             "width": 56,
             "height": 39,
-            "fruitTypeId": 4,
+            "id": 4,
             "levelId": 4
 
+        },        
+        {
+            "fruitId": 1,
+            "positionX": 80,
+            "positionY": 100,
+            "width": 48,
+            "height": 39,
+            "id": 9,
+            "levelId": 5
+        },
+        {
+            "fruitId": 2,
+            "positionX": 210,
+            "positionY": 100,
+            "width": 48,
+            "height": 39,
+            "id": 9,
+            "levelId": 5
+            
+        },
+        {
+            "fruitId": 3,
+            "positionX": 350,
+            "positionY": 100,
+            "width": 48,
+            "height": 39,
+            "id": 9,
+            "levelId": 5
+        },
+        {
+            "fruitId": 4,
+            "positionX": 485,
+            "positionY": 100,
+            "width": 48,
+            "height": 39,
+            "id": 9,
+            "levelId": 5
+
+        },
+        {
+            "fruitId": 5,
+            "positionX": 620,
+            "positionY": 100,
+            "width": 48,
+            "height": 39,
+            "id": 9,
+            "levelId": 5
+        },
+        {
+            "fruitId": 1,
+            "positionX": 80,
+            "positionY": 100,
+            "width": 47,
+            "height": 56,
+            "id": 6,
+            "levelId": 6
+        },
+        {
+            "fruitId": 2,
+            "positionX": 210,
+            "positionY": 100,
+            "width": 47,
+            "height": 56,
+            "id": 6,
+            "levelId": 6
+            
+        },
+        {
+            "fruitId": 3,
+            "positionX": 350,
+            "positionY": 100,
+            "width": 47,
+            "height": 56,
+            "id": 6,
+            "levelId": 6
+        },
+        {
+            "fruitId": 4,
+            "positionX": 485,
+            "positionY": 100,
+            "width": 47,
+            "height": 56,
+            "id": 6,
+            "levelId": 6
+
+        },
+        {
+            "fruitId": 5,
+            "positionX": 620,
+            "positionY": 100,
+            "width": 47,
+            "height": 56,
+            "id": 6,
+            "levelId": 6
         }
     ]
 }

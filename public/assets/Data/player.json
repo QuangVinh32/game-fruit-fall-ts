@@ -42,6 +42,51 @@
             "texture": "player",
             "levelId": 4
 
+            
+        },
+        {
+            "playerId": 5,
+            "positionX": 0,
+            "positionY": 0,
+            "width": 90,
+            "height": 40,
+            "bounce": 0.5,
+            "texture": "player",
+            "levelId": 5
+
+        },        {
+            "playerId": 6,
+            "positionX": 0,
+            "positionY": 0,
+            "width": 90,
+            "height": 40,
+            "bounce": 0.5,
+            "texture": "player",
+            "levelId": 6
+
+        },
+        {
+            "playerId": 7,
+            "positionX": 0,
+            "positionY": 0,
+            "width": 90,
+            "height": 40,
+            "bounce": 0.5,
+            "texture": "player",
+            "levelId": 7
+
+        },
+        {
+            "playerId": 8,
+            "positionX": 0,
+            "positionY": 0,
+            "width": 90,
+            "height": 40,
+            "bounce": 0.5,
+            "texture": "player",
+            "levelId": 8
+
         }
+
     ]
 }
