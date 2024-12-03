@@ -73,27 +73,27 @@ export default class LevelScene extends Phaser.Scene {
         this.fruitService = new FruitService(this, "assets/Data/fruit.json");
         await this.fruitService.initialize(this.levelId);
     
-        this.playerService = new PlayerService( "assets/Data/player.json");
+        this.playerService = new PlayerService(this, "assets/Data/player.json");
         await this.playerService.initialize(this.levelId);
     
-        this.playerService = new PlayerService("assets/Data/player.json");
-        const players = await this.playerService.initialize(this.levelId);
+     
+    
+        const playerDTO = this.playerService.getPlayerDTOById(this.levelId);
+        if (playerDTO) {
+            this.playerView = this.playerService.getPlayerViewById(this.levelId);
+            if (this.playerView) {
+                this.playerView.setPosition(350, 490);
+                this.physics.add.existing(this.playerView);
+                this.playerView.body.setCollideWorldBounds(true);
+                this.playerView.body.setImmovable(true)
 
-        if (players.length > 0) {
-            const playerDTO = players[0];
-            // console.log("ply",playerDTO)
-            this.playerView = new PlayerView(this, playerDTO);
-            this.playerView.setPosition(350, 490);
-            this.physics.add.existing(this.playerView);
-            this.playerView.body.setCollideWorldBounds(true);
-            this.playerView.body.setImmovable(true);
-
-            this.input.on("pointermove", (pointer: any) => {
-                if (this.canMovePlayer) {
-                    this.playerView.x = pointer.worldX;
-                    this.playerView.y = 490;
-                }
-            });
+                this.input.on("pointermove", (pointer: any) => {
+                    if (this.canMovePlayer) {
+                        this.playerView.x = pointer.worldX;
+                        this.playerView.y = 490;
+                    }
+                });
+            }
         }
     
         this.events.on("startFruitFall", () => {

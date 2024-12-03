@@ -62,14 +62,8 @@ export default class QuestionAndOptionScene extends Phaser.Scene {
 
         this.add.text(180, 450, "Use the picture graph above to find the correct amount.", { fontSize: '15px Arial', color: 'black' });
 
-        this.questionService = new QuestionService("assets/Data/question.json");
+        this.questionService = new QuestionService(this,"assets/Data/question.json");
         await this.questionService.initialize(this.levelId);
-
-        const questions = this.questionService.getAllQuestionDTOs(); 
-        const question = questions[0];
-        const questionView = new QuestionView(this, question);
-        this.add.existing(questionView);
-    
 
         this.fruitService = new FruitService(this, "assets/Data/fruit.json");
         await this.fruitService.initializeNoView();

@@ -10,6 +10,7 @@ export default class FruitDTO {
     private _levelId: number;
 
 
+
 	constructor(fruitId: number, positionX: number, positionY: number, width: number, height: number, id: number,levelId: number) {
 		this._fruitId = fruitId;
 		this._positionX = positionX;

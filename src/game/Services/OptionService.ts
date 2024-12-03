@@ -1,12 +1,15 @@
 import OptionDTO from "../DTOs/OptionDTO";
-import OptionView from "../Views/OptionView";
 import OptionController from "../Controllers/OptionController";
+import OptionView from "../Views/OptionView";
 
 export default class OptionService {
+    private scene: Phaser.Scene;
     private jsonPath: string;
     private controller: OptionController;
+    private optionViews: OptionView[] = [];
 
-    constructor(jsonPath: string) {
+    constructor(scene: Phaser.Scene, jsonPath: string) {
+        this.scene = scene;
         this.jsonPath = jsonPath;
         this.controller = new OptionController();
     }
@@ -32,21 +35,38 @@ export default class OptionService {
         ));
     }
 
-    async initialize(questionId: number): Promise<OptionDTO[]> {
+    async initialize(questionId: number): Promise<void> {
         const data = await this.loadData();
         const options = this.mapOptions(data);
+
         options.forEach(option => this.controller.addOptions(option));
-        return options.filter(option => option.questionId === questionId);
+
+        const levelOptions = options.filter(option => option.questionId === questionId);
+        if (levelOptions.length === 0) {
+            console.warn(`No options found for questionId: ${questionId}`);
+        } else {
+            levelOptions.forEach(option => this.createOptionView(option));
+        }
+    }
+
+    createOptionView(optionData: OptionDTO): void {
+        const optionView = new OptionView(this.scene, optionData);
+        this.optionViews.push(optionView);
+    }
+
+    getAllOptionViews(): OptionView[] {
+        return this.optionViews;
+    }
+
+    getOptionViewById(optionId: number): OptionView | undefined {
+        return this.optionViews.find(view => view.optionData.optionId === optionId);
     }
 
     getOptionDTOById(optionId: number): OptionDTO | undefined {
         return this.controller.getOptionById(optionId);
     }
-   
-    getAllOptionDTOs(questionId: number): OptionDTO[] {
-        const allOptions = this.controller.getAllOptions();
-            const filteredOptions = allOptions.filter(option => option.questionId === questionId);
-        return filteredOptions;
+
+    getAllOptionDTOs(): OptionDTO[] {
+        return this.controller.getAllOptions();
     }
-    
 }

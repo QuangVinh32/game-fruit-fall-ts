@@ -1,11 +1,15 @@
 import QuestionDTO from "../DTOs/QuestionDTO";
 import QuestionController from "../Controllers/QuestionController";
+import QuestionView from "../Views/QuestionView";
 
 export default class QuestionService {
-    private controller: QuestionController;
+    private scene: Phaser.Scene;
     private jsonPath: string;
+    private controller: QuestionController;
+    private questionViews: QuestionView[] = [];
 
-    constructor(jsonPath: string) {
+    constructor(scene: Phaser.Scene, jsonPath: string) {
+        this.scene = scene;
         this.jsonPath = jsonPath;
         this.controller = new QuestionController();
     }
@@ -17,9 +21,7 @@ export default class QuestionService {
 
     private mapQuestions(data: any): QuestionDTO[] {
         const questions = Array.isArray(data.questions) ? data.questions : [];
-        if (!questions.length) {
-            console.error("Invalid or missing questions data:", data.questions);
-        }
+        if (!questions.length) console.error("Invalid or missing questions data:", data.questions);
 
         return questions.map((questionData: any) => new QuestionDTO(
             questionData.questionId,
@@ -28,24 +30,56 @@ export default class QuestionService {
             questionData.text,
             questionData.positionX,
             questionData.positionY
+
         ));
     }
 
-    async initialize(levelId: number): Promise<QuestionDTO[]> {
+    async initialize(levelId: number): Promise<void> {
         const data = await this.loadData();
         const questions = this.mapQuestions(data);
-        // this.controller.setQuestions(questions);
-        questions.forEach(question => this.controller.addQuestions(question))
-        return questions.filter(question => question.levelId === levelId);
+
+        questions.forEach(question => this.controller.addQuestions  (question));
+
+        const levelQuestions = questions.filter(question => question.levelId === levelId);
+        if (levelQuestions.length === 0) {
+            console.warn(`No questions found for levelId: ${levelId}`);
+        } else {
+            levelQuestions.forEach(question => this.createQuestionView(question));
+        }
     }
 
-    async initializeById(levelId: number, questionId: number): Promise<QuestionDTO[]> {
+    async initializeById(levelId: number, questionId: number): Promise<void> {
         const data = await this.loadData();
         const questions = this.mapQuestions(data);
-        questions.forEach(question => this.controller.addQuestions(question))
-        return questions.filter(
+    
+        questions.forEach(question => this.controller.addQuestions(question));
+    
+        const filteredQuestions = questions.filter(
             question => question.levelId === levelId && question.questionId === questionId
         );
+    
+        if (filteredQuestions.length === 0) {
+            console.warn(`No questions found for levelId: ${levelId} and questionId: ${questionId}`);
+        } else {
+            filteredQuestions.forEach(question => this.createQuestionView(question));
+        }
+    }
+
+    createQuestionView(questionData: QuestionDTO): void {
+        const questionView = new QuestionView(this.scene, questionData);
+        this.questionViews.push(questionView);
+    }
+
+    getAllQuestionViews(): QuestionView[] {
+        return this.questionViews;
+    }
+
+    getQuestionViewById(questionId: number): QuestionView | undefined {
+        return this.questionViews.find(view => view.questionData.questionId === questionId);
+    }
+
+    getQuestionDTOById(levelId: number): QuestionDTO | undefined {
+        return this.controller.getQuestionById(levelId);
     }
 
     getAllQuestionDTOs(): QuestionDTO[] {

@@ -24,7 +24,7 @@ export default class ResultScene extends Phaser.Scene {
         // console.log(`Valid fruits count for level ${this.levelId}:`, this.validFruitsCount);
     }
     async create() {
-        this.add.text(230, 15, "The Farmer's Fruit", { fontSize: '30px Arial', fontStyle: "bold", color: 'black' });
+        this.add.text(this.scale.width / 2, this.scale.height / 20, "The Farmer's Fruit", { fontSize: '30px Arial', fontStyle: "bold", color: 'black' }).setOrigin(0.5, 0);;
 
         const gridStartX = 55;
         const gridStartY = 85;
@@ -93,33 +93,6 @@ export default class ResultScene extends Phaser.Scene {
                 { fontSize: '12px', color: 'black', fontStyle: "bold" }
             );
         }
-
-        // this.add.text(93, 15, "Next Level", { fontSize: '25px Arial', fontStyle: "bold", color: 'red' })
-        //     .setInteractive()
-        //     .on('pointerdown', () => {
-        //         this.levelId += 1;
-        //         console.log("Transitioning to LevelScene with levelId:", this.levelId);
-        //         this.scene.start('LevelScene', { levelId: this.levelId });
-        //         this.scene.stop('QuestionAndOptionScene');
-        //     });
-
-        // this.add.text(510, 15, "Wrong Answer", { fontSize: '25px Arial', fontStyle: "bold", color: 'red' })
-        //     .setInteractive()
-        //     .on('pointerdown', () => {
-        //         const currentLevelFruits = this.fruitsCaught.get(this.levelId);
-        //         if (currentLevelFruits) {
-        //             currentLevelFruits.length = 0; 
-        //         }
-        //         console.log('Fruits caught for the current level cleared:', this.fruitsCaught);
-
-        //         this.validFruitsCount = 0;
-        //         console.log("Level before:", this.levelId);
-        //         this.scene.start('LevelScene', {
-        //             levelId: this.levelId,
-        //             fruitsCaught: Array.from(this.fruitsCaught.get(this.levelId) || []),
-        //         });
-        //         this.scene.stop("QuestionAndOptionScene");
-        //     });
     }
 
     update() {}
