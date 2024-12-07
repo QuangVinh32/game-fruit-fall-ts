@@ -37,18 +37,5 @@ export default class OptionView extends Phaser.GameObjects.Container {
         this.add(this.buttonOption);
         this.add(this.textQuestion);
 
-        // this.buttonOption.on('pointerup', () => {
-        //     this.scene.tweens.add({
-        //         targets: this.buttonOption,
-        //         scale: { from: 1, to: 1.1 }, 
-        //         ease: 'Quad.easeOut',
-        //         yoyo: true,
-        //         duration: 200,
-        //     });
-        //     console.log("Option clicked");
-        //     if (this.buttonSound) {
-        //         this.buttonSound.play();
-        //     }
-        // });
     }
 }

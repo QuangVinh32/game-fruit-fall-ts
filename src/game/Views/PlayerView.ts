@@ -42,7 +42,6 @@ export default class PlayerView extends Phaser.GameObjects.Container {
             'shadow' 
         );
         this.shadow.setDisplaySize(this.playerData.width, 90); 
-        // this.shadow.setAlpha(0.5); 
         this.shadow.setOrigin(0.5, 0.5); 
         this.add(this.shadow); 
     }

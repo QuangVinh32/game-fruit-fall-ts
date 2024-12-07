@@ -1,0 +1,447 @@
+
+
+
+
+
+
+
+
+
+import FruitTypeDTO from "../DTOs/FruitTypeDTO";
+import FruitService from "../Services/FruitService";
+import PlayerService from "../Services/PlayerService";
+import FruitView from "../Views/FruitView";
+import PlayerView from "../Views/PlayerView";
+import UIScene from "./UIScene";
+
+export default class LevelScene extends Phaser.Scene {
+    private playerService: PlayerService | null;
+    private fruitService: FruitService | null;
+    private levelId: number;
+    private canMovePlayer: boolean;
+    private canDropFruit: boolean;
+    private playerView: any;
+    private score: number;
+    private catchSound: Phaser.Sound.BaseSound | null = null;
+    private fruitsCaught: { levelId: number, fruitId: number }[]; 
+    private fruitsCaughtMatrix: Map<number, { levelId: number, fruitId: number }[]> = new Map();
+    private validFruitsCount: number;
+    private fruitView: any;
+    private playerViews: PlayerView[] = [];
+
+
+    constructor() {
+        super("LevelScene");
+        this.canMovePlayer = false;
+        this.canDropFruit = false; 
+        this.score = 0;
+        this.fruitsCaught = [];
+        
+    }
+
+    preload() {
+        this.load.image("player", "assets/Images/player.png");
+        this.load.image("shadow", "assets/Images/shadow.png")
+        this.load.image("apple", "assets/Images/apple.png");
+        this.load.image("cherry", "assets/Images/cherry.png");
+        this.load.image("kiwi", "assets/Images/kiwi.png");
+        this.load.image("lemon", "assets/Images/lemon.png");
+        this.load.image("lime", "assets/Images/lime.png");
+        this.load.image("mango", "assets/Images/mango.png");
+        this.load.image("orrange", "assets/Images/orrange.png");
+        this.load.image("peache", "assets/Images/peache.png");
+        this.load.image("pear", "assets/Images/pear.png");
+
+        this.load.audio("sound_catch", "assets/Audio/sound_catch.mp3");
+    }
+
+    init(data: { levelId: number, validFruitsCount: number, fruitsCaught: { levelId: number, fruitId: number }[], canMovePlayer?: boolean, canDropFruit?: boolean }) {
+        this.levelId = data.levelId || 1;
+        this.validFruitsCount = data.validFruitsCount || 0;
+        this.fruitsCaught = data.fruitsCaught || [];
+        
+        this.canMovePlayer = data.canMovePlayer ?? false;
+        this.canDropFruit = data.canDropFruit ?? false;
+    
+        if (this.score > 0 && this.validFruitsCount > 0) {
+            this.score -= this.validFruitsCount;
+            if (this.score < 0) {
+                this.score = 0; 
+            }        
+        }
+        // console.log("Score after deduction:", this.score);
+        // console.log("canMovePlayer:", this.canMovePlayer);
+        // console.log("canDropFruit:", this.canDropFruit);
+    }
+    
+    
+    async create() {
+
+        this.catchSound = this.sound.add("sound_catch", {
+            volume: 3,
+        });
+    
+        this.fruitService = new FruitService(this, "assets/Data/fruit.json");
+        const fruits = await this.fruitService.initialize(this.levelId);
+        
+        if (Array.isArray(fruits) && fruits.length > 0) {
+            fruits.forEach(fruitDTO => {
+                const fruitTypeDTO = this.fruitService?.getFruitTypeById(fruitDTO.id);
+                if (fruitTypeDTO) {
+                    this.fruitView = new FruitView(this, fruitDTO, fruitTypeDTO); 
+                } else {
+                    console.error(`Fruit type with ID ${fruitDTO.id} not found.`);
+                }
+            });
+        } else {
+            console.log("No fruits available.");
+        }
+        
+    
+        this.playerService = new PlayerService( "assets/Data/player.json");
+        await this.playerService.initialize(this.levelId);
+    
+        this.playerService = new PlayerService("assets/Data/player.json");
+        const players = await this.playerService.initialize(this.levelId);
+
+        if (players.length > 0) {
+            const playerDTO = players[0];
+            // console.log("ply",playerDTO)
+            this.playerView = new PlayerView(this, playerDTO);
+            this.playerView.setPosition(350, 490);
+            this.physics.add.existing(this.playerView);
+            this.playerView.body.setCollideWorldBounds(true);
+            this.playerView.body.setImmovable(true);
+
+            this.input.on("pointermove", (pointer: any) => {
+                if (this.canMovePlayer) {
+                    this.playerView.x = pointer.worldX;
+                    this.playerView.y = pointer.worldY;
+                }
+            });
+        }
+    
+        this.events.on("startFruitFall", () => {
+            this.canDropFruit = true;
+            // console.log("dropFruit",this.canDropFruit)
+        });
+    
+        this.events.on("enablePlayerMove", () => {
+            this.canMovePlayer = true;
+            // console.log("movePlayer",this.canMovePlayer)
+
+        });
+    
+        this.startFruitFall();
+    }
+    
+    startFruitFall() {
+        if (!this.fruitService) return;
+    
+        const fruits = this.fruitService.getFruitsByLevelId(this.levelId);
+    
+        if (!fruits.length) {
+            // console.warn(`Không có trái cây nào cho levelId: ${this.levelId}`);
+            return;
+        }
+    
+        const spawnFruit = () => {
+            if (!this.canDropFruit) return;
+    
+            if (fruits.length === 0) {
+                console.warn("Tất cả trái cây đã được sử dụng.");
+                this.canMovePlayer = false;
+                this.canDropFruit = false;
+                this.scene.start('ResultScene', { score: this.score, levelId: this.levelId,   
+                fruitsCaughtMatrix: Object.fromEntries(this.fruitsCaughtMatrix),});
+                this.scene.start('QuestionAndOptionScene', { score: this.score, levelId: this.levelId,   
+                fruitsCaughtMatrix: Object.fromEntries(this.fruitsCaughtMatrix),});
+                return;
+            }
+    
+            const randomIndex = Phaser.Math.Between(0, fruits.length - 1);
+            const randomFruit = fruits.splice(randomIndex, 1)[0];
+
+            const fruitTypeDTO = this.fruitService?.getFruitTypeById(randomFruit.id);
+            if (fruitTypeDTO) {
+                this.fruitView = new FruitView(this, randomFruit, fruitTypeDTO);
+            } else {
+                console.error(`Fruit type with ID ${randomFruit.id} not found.`);
+                return;
+            }
+    
+            console.log("FruitId", randomFruit.fruitId);
+
+            if (!this.fruitView) return;
+            this.physics.add.existing(this.fruitView);
+            const body = this.fruitView.body as Phaser.Physics.Arcade.Body | null;
+            if (body) {
+                body.setImmovable(true);
+            
+                const durations = [2200, 2200, 2200, 2200, 2200, 2200];
+                const duration = durations[this.levelId - 1] || 0; // Giá trị mặc định là 0 nếu levelId không hợp lệ
+            
+                if (duration > 0) {
+                    this.tweens.add({
+                        targets: this.fruitView,       
+                        y: 700,                   // Tọa độ Y đích
+                        duration,                 // Thời gian rơi
+                        ease: 'Quad.easeOut',     // Hiệu ứng chậm dần về cuối
+                        onComplete: () => {
+                            this.fruitView.destroy();  // Destroy it once it reaches the end
+                        },
+                    });
+                } else {
+                    body.setGravityY(0);
+                }
+            
+                body.setImmovable(true);
+            }
+            
+
+            this.physics.add.collider(this.playerView, this.fruitView, (player, fruit) => {
+                if (this.catchSound) {
+                    this.catchSound.play();
+                }
+                this.score++;
+
+
+
+                fruit.destroy();
+
+                const uiScene = this.scene.get('UIScene') as UIScene;
+                if (uiScene) {
+                    uiScene.updateLaunchCount(this.score); 
+                }
+                
+
+                const caughtFruit = {
+                    levelId: this.levelId,
+                    fruitId: randomFruit.fruitId
+                };
+
+                this.fruitsCaught.push(caughtFruit);
+
+                if (!this.fruitsCaughtMatrix.has(this.levelId)) {
+                    this.fruitsCaughtMatrix.set(this.levelId, []);
+                }
+                this.fruitsCaughtMatrix.get(this.levelId)?.push(caughtFruit);
+
+                this.tweens.add({
+                    targets: this.playerView.player, 
+                    y: this.playerView.player.y + 5, 
+                    duration: 100, 
+                    yoyo: true, 
+                    ease: 'Bounce',
+                });
+
+                // console.log("fruitsCaughtMatrix:", Array.from(this.fruitsCaughtMatrix.entries()));
+            });
+
+            // let fruitSpawnDelay = 2000;
+            // switch (this.levelId) {
+            //     case 1:
+            //         fruitSpawnDelay = 2500;
+            //         break;
+            //     case 2:
+            //         fruitSpawnDelay = 2200;
+            //         break;
+            //     case 3:
+            //         fruitSpawnDelay = 2000;
+            //         break;
+            //     case 4:
+            //         fruitSpawnDelay = 1800;
+            //         break;
+            //     default:
+            //         fruitSpawnDelay = 2000;
+            //         break;
+            // }
+
+            // this.time.addEvent({
+            //     delay: fruitSpawnDelay,
+            //     callback: () => {
+            //         if (fruitView.body) {
+            //             const body = fruitView.body as Phaser.Physics.Arcade.Body;
+            
+            //             if (body && body.touching.none) {
+            //                 const missedFruit = {
+            //                     levelId: this.levelId,
+            //                     fruitId: 0 
+            //                 };
+            
+            //                 this.fruitsCaught.push(missedFruit);
+            
+            //                 if (!this.fruitsCaughtMatrix.has(this.levelId)) {
+            //                     this.fruitsCaughtMatrix.set(this.levelId, []);
+            //                 }
+            //                 this.fruitsCaughtMatrix.get(this.levelId)?.push(missedFruit);
+            
+            //                 console.log("Trái cây bị bỏ lỡ:", missedFruit);
+            //                 console.log("fruitsCaughtMatrix hiện tại:", Array.from(this.fruitsCaughtMatrix.entries()));
+            //             }
+            //         }
+            //     },
+            //     loop: false,
+            // });
+            
+        }
+    
+        this.time.addEvent({
+            delay: 1500,
+            callback: spawnFruit,
+            loop: true,
+        });
+    }
+}   
+
+
+
+import FruitDTO from "../DTOs/FruitDTO";
+import FruitTypeDTO from "../DTOs/FruitTypeDTO";
+import FruitTypeController from "../Controllers/FruitTypeController";
+import FruitController from "../Controllers/FruitController";
+
+export default class FruitService {
+    private scene: Phaser.Scene;
+    private jsonPath: string;
+    private fruitDTOs: FruitDTO[] = [];
+    private fruitTypes: FruitTypeDTO[] = [];
+    private fruitTypeController: FruitTypeController;
+    private fruitController: FruitController;
+
+    constructor(scene: Phaser.Scene, jsonPath: string) {
+        this.scene = scene;
+        this.jsonPath = jsonPath;
+        this.fruitTypeController = new FruitTypeController();
+        this.fruitController = new FruitController(this.fruitTypeController); 
+    }
+
+    // Load JSON data from the specified path
+    private async loadData(): Promise<any> {
+        try {
+            const response = await fetch(this.jsonPath);
+            if (!response.ok) {
+                throw new Error(`Failed to load data from ${this.jsonPath}`);
+            }
+            return await response.json();
+        } catch (error) {
+            console.error("Error loading fruit data:", error);
+            throw error;
+        }
+    }
+
+    // Map the fruit types from the loaded data
+    private mapFruitTypes(data: any): void {
+        if (Array.isArray(data.fruitTypes)) {
+            this.fruitTypes = data.fruitTypes.map((typeData: any) => new FruitTypeDTO(typeData.id, typeData.name, typeData.texture));
+            this.fruitTypes.forEach(fruitType => this.fruitTypeController.addFruitTypes(fruitType));
+        } else {
+            console.error("Invalid or missing fruitTypes data:", data.fruitTypes);
+        }
+    }
+
+    // Map the fruits from the loaded data with optional filters for levelId and fruitId
+    private mapFruits(data: any, levelId?: number, fruitId?: number): FruitDTO[] {
+        const fruits = Array.isArray(data.fruits) ? data.fruits : [];
+        if (!fruits.length) {
+            console.error("Invalid or missing fruits data:", data.fruits);
+        }
+
+        return fruits
+            .filter((fruit: any) => (levelId ? fruit.levelId === levelId : true) && 
+                                    (fruitId ? fruit.fruitId === fruitId : true))
+            .map((fruit: any) => new FruitDTO(
+                fruit.fruitId, 
+                fruit.positionX, 
+                fruit.positionY, 
+                fruit.width, 
+                fruit.height, 
+                fruit.id, 
+                fruit.levelId
+            ));
+    }
+
+    async initialize(levelId?: number): Promise<FruitDTO[]> {
+        try {
+            const data = await this.loadData();
+            this.mapFruitTypes(data);  // Map fruit types first
+            const fruits = this.mapFruits(data, levelId);  // Map fruits with optional levelId
+            fruits.forEach(dto => this.fruitController.addFruits(dto));  // Add the fruits to the controller
+            return fruits;  // Trả về mảng fruits
+        } catch (error) {
+            console.error("Failed to initialize fruit service:", error);
+            return [];  // Nếu có lỗi, trả về mảng rỗng
+        }
+    }
+    
+    
+    
+
+
+    // Get all fruits by a specific levelId
+    getFruitsByLevelId(levelId: number): FruitDTO[] {
+        return this.fruitController.getAllFruits().filter(fruit => fruit.levelId === levelId);
+    }
+
+    // Get all fruits (not filtered)
+    getAllFruits(): FruitDTO[] {
+        return this.fruitDTOs;
+    }
+
+    // Get a specific fruit by its fruitId and levelId
+    getFruitDTOById(fruitId: number, levelId: number): FruitDTO | undefined {
+        return this.fruitController.getFruitDTOById(fruitId, levelId);
+    }
+
+    // Get a specific fruit type by its ID
+    getFruitTypeById(id: number): FruitTypeDTO | undefined {
+        return this.fruitTypes.find(fruitType => fruitType.id === id);
+    }
+}
+
+
+
+
+
+
+import FruitDTO from "../DTOs/FruitDTO";
+import FruitTypeDTO from "../DTOs/FruitTypeDTO";
+import FruitTypeController from "./FruitTypeController";  // Import FruitTypeController
+
+export default class FruitController {
+    private fruits: FruitDTO[]; 
+    private fruitTypeController: FruitTypeController;  // Add FruitTypeController instance
+
+    constructor(fruitTypeController: FruitTypeController) {
+        this.fruits = [];
+        this.fruitTypeController = fruitTypeController;  // Initialize the FruitTypeController
+    }
+
+    addFruits(dto: FruitDTO): void {
+        // Ensure that the fruit type is valid before adding the fruit
+        const fruitType = this.fruitTypeController.findFruitTypeById(dto.id);
+        if (fruitType) {
+            this.fruits.push(dto);
+        } else {
+            console.warn(`Fruit type with ID ${dto.id} not found. Fruit not added.`);
+        }
+    }
+
+    getAllFruits(): FruitDTO[] {
+        return this.fruits;
+    }
+
+    getFruitDTOById(fruitId: number, levelId: number): FruitDTO | undefined {
+        return this.fruits.find(fruit => fruit.fruitId === fruitId && fruit.levelId === levelId);
+    }
+
+    // Additional method to get a fruit's type by its ID
+    getFruitTypeForFruit(fruitId: number): FruitTypeDTO | undefined {
+        const fruit = this.fruits.find(fruit => fruit.fruitId === fruitId);
+        if (fruit) {
+            return this.fruitTypeController.findFruitTypeById(fruit.id);  // Get fruit type by the fruit's typeId
+        }
+        return undefined;
+    }
+}
+

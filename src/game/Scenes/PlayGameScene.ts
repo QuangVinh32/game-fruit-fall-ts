@@ -43,19 +43,17 @@ export default class PlayGameScene extends Phaser.Scene {
             sub: 'Select "Start" to continue' 
         };
         
-    
         this.add.text(this.scale.width / 2, 410, main, {
             fontSize: "25px Arial",
             fontStyle: "bold",
             color: "black",
-        }).setOrigin(0.5, 0); // Căn giữa ngang
+        }).setOrigin(0.5, 0); 
         
         this.add.text(this.scale.width / 2, 440, sub, {
             fontSize: "15px Arial",
             color: "black",
-        }).setOrigin(0.5, 0); // Căn giữa ngang
+        }).setOrigin(0.5, 0);
         
-    
         let buttonStart = this.add.image(350, 300, "button")
             .setDisplaySize(150, 150)
             .setOrigin(0.5, 0.5)
