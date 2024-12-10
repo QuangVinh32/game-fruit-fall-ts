@@ -1,23 +1,9 @@
-import FruitDTO  from "../DTOs/FruitDTO";
+import BaseController from "./BaseController";
+import FruitDTO from "../DTOs/FruitDTO";
 
-export default class FruitController {
-    private fruits: FruitDTO[]; 
-
-    constructor() {
-        this.fruits = [];
-    }
-
-    addFruits(dto: FruitDTO): void {
-        this.fruits.push(dto);
-    }
-
-    getAllFruits(): FruitDTO[] {
-        return this.fruits;
-    }
-
-    getFruitDTOById(fruitId: number, levelId: number): FruitDTO | undefined {
-        return this.fruits.find(fruit => fruit.fruitId === fruitId && fruit.levelId === levelId);
-    }
+export default class FruitController extends BaseController<FruitDTO> {
     
-
+    getFruitDTOByLevelIdAndId(fruitId: number, levelId: number): FruitDTO | undefined {
+        return this.items.find(fruit => fruit.fruitId === fruitId && fruit.levelId === levelId);
+    }
 }

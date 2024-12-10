@@ -1,6 +1,11 @@
 export default class UIScene extends Phaser.Scene {
     private scoreText: Phaser.GameObjects.Text;
     private scoreCount: number = 0;
+
+    private readonly SCORE_TEXT_X_POSITION = 10;
+    private readonly SCORE_TEXT_Y_POSITION = 20;
+    private readonly SCORE_FONT_SIZE = '20px Arial';
+
     constructor() {
         super("UIScene");
     }
@@ -16,8 +21,11 @@ export default class UIScene extends Phaser.Scene {
     create(data: { newScore: number }) {
         this.scoreCount = data.newScore || 0;
 
-        this.scoreText = this.add.text(10, 20, `Score: ${this.scoreCount}`, { 
-            fontSize: '20px Arial', 
+        this.scoreText = this.add.text(
+            this.SCORE_TEXT_X_POSITION, 
+            this.SCORE_TEXT_Y_POSITION, 
+            `Score: ${this.scoreCount}`, { 
+            fontSize: this.SCORE_FONT_SIZE, 
             fontStyle: "bold", 
             color: 'black' 
         });

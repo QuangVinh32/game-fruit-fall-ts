@@ -35,6 +35,10 @@ export default class PlayGameScene extends Phaser.Scene {
             { main: "Great job! Now catch lemons.", sub: 'Select "Start" to continue' },
             { main: "Great job! Now catch limes.", sub: 'Select "Start" to continue' },
             { main: "Great job! Now catch peaches.", sub: 'Select "Start" to continue' },
+            { main: "Great job! Now catch cherries.", sub: 'Select "Start" to continue' },
+            { main: "Great job! Now catch mangoes.", sub: 'Select "Start" to continue' },
+            { main: "Great job! Now catch kiwis.", sub: 'Select "Start" to continue' },
+            { main: "Great job! Now catch stars.", sub: 'Select "Start" to continue' },
         ];
     
         const levelIndex = Math.max(0, Math.min(this.levelId - 1, levelMessages.length - 1));
@@ -42,44 +46,77 @@ export default class PlayGameScene extends Phaser.Scene {
             main: "Help the farmer catch the apples.", 
             sub: 'Select "Start" to continue' 
         };
+
+        const UI_PERCENT = {
+            MAIN_TEXT_Y: 0.65,
+            SUB_TEXT_Y: 0.7,
+            BUTTON_X: 0.5,
+            BUTTON_Y: 0.75,
+            BUTTON_SCALE: 0.2
+        };
         
-        this.add.text(this.scale.width / 2, 410, main, {
+        this.add.text(
+            this.scale.width * UI_PERCENT.BUTTON_X,
+            this.scale.height * UI_PERCENT.MAIN_TEXT_Y,
+             main, {
             fontSize: "25px Arial",
             fontStyle: "bold",
             color: "black",
         }).setOrigin(0.5, 0); 
         
-        this.add.text(this.scale.width / 2, 440, sub, {
+        this.add.text(
+            this.scale.width * UI_PERCENT.BUTTON_X,
+            this.scale.height * UI_PERCENT.SUB_TEXT_Y, 
+            sub, {
             fontSize: "15px Arial",
             color: "black",
         }).setOrigin(0.5, 0);
         
-        let buttonStart = this.add.image(350, 300, "button")
-            .setDisplaySize(150, 150)
-            .setOrigin(0.5, 0.5)
-            .setInteractive();
-    
+        let buttonStart = this.add.image(0, 0, "button").setDisplaySize(
+            this.scale.width * UI_PERCENT.BUTTON_SCALE, 
+            this.scale.width * UI_PERCENT.BUTTON_SCALE
+            );
+
         let startText = this.add.text(0, 0, "Start", {
             fontSize: "33px Arial",
             fontStyle: "bold",
             color: "black",
-        });
+        }).setOrigin(0.5, 0.5);
     
-        startText.setOrigin(0.5, 0.5);
-        startText.setPosition(buttonStart.x, buttonStart.y);
+        let buttonContainer = this.add.container(
+            this.scale.width / 2,
+            this.scale.height / 2, 
+            [buttonStart, startText]);
     
-        buttonStart.on("pointerup", () => {
-            if (!this.isUISceneLaunched) {
-                this.scene.launch("UIScene", { score: this.score });
-                this.isUISceneLaunched = true;
-                if (this.buttonSound) {
-                    this.buttonSound.play();
-                }
+        buttonContainer.setSize(
+            this.scale.width * UI_PERCENT.BUTTON_SCALE, 
+            this.scale.width * UI_PERCENT.BUTTON_SCALE
+            ).setInteractive();
+    
+        buttonContainer.on("pointerup", () => {
+            if (this.buttonSound) {
+                this.buttonSound.play();
             }
-            this.scene.get("LevelScene").events.emit("enablePlayerMove");
-            this.scene.get("LevelScene").events.emit("startFruitFall");
-            this.scene.stop("PlayGameScene");
+    
+            this.tweens.add({
+                targets: buttonContainer,
+                scale: { from: 1, to: 1.1 }, 
+                duration: 300,
+                yoyo: true,                 
+                ease: "Sine.easeInOut",    
+                onComplete: () => {
+                    if (!this.isUISceneLaunched) {
+                        this.scene.launch("UIScene", { score: this.score });
+                        this.isUISceneLaunched = true;
+                    }
+                    this.scene.get("LevelScene").events.emit("enablePlayerMove");
+                    this.scene.get("LevelScene").events.emit("startFruitFall");
+                    this.scene.stop("PlayGameScene");
+                },
+            });
         });
     }
+    
+    
 }
     

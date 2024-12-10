@@ -1,22 +1,15 @@
 import PlayerDTO from "../DTOs/PlayerDTO";
 import PlayerController from "../Controllers/PlayerController";
 import PlayerView from "../Views/PlayerView";
+import BaseService from "./BaseService";
 
-export default class PlayerService {
-    private scene: Phaser.Scene;
-    private jsonPath: string;
+export default class PlayerService extends BaseService<PlayerDTO>{
     private controller: PlayerController;
     private playerViews: PlayerView[] = [];
 
     constructor(scene: Phaser.Scene, jsonPath: string) {
-        this.scene = scene;
-        this.jsonPath = jsonPath;
+        super(scene, jsonPath);
         this.controller = new PlayerController();
-    }
-
-    private async loadData(): Promise<any> {
-        const response = await fetch(this.jsonPath);
-        return await response.json();
     }
 
     private mapPlayers(data: any): PlayerDTO[] {
@@ -35,12 +28,10 @@ export default class PlayerService {
         ));
     }
 
-    async initialize(levelId: number): Promise<void> {
+    public async initialize(levelId: number): Promise<void> {
         const data = await this.loadData();
         const players = this.mapPlayers(data);
-
-        players.forEach(player => this.controller.addPlayers(player));
-
+        players.forEach(player => this.controller.addItem(player));
         const levelPlayers = players.filter(player => player.levelId === levelId);
         if (levelPlayers.length === 0) {
             console.warn(`No players found for levelId: ${levelId}`);
@@ -49,24 +40,23 @@ export default class PlayerService {
         }
     }
 
-    createPlayerView(playerData: PlayerDTO): void {
+    public getPlayerDTOById(playerId: number): PlayerDTO | undefined {
+        return this.controller.getItemByProperty("playerId",playerId);
+    }
+
+    public getAllPlayerDTOs(): PlayerDTO[] {
+        return this.controller.getAllItems();
+    }
+    public createPlayerView(playerData: PlayerDTO): void {
         const playerView = new PlayerView(this.scene, playerData);
         this.playerViews.push(playerView);
     }
 
-    getAllPlayerViews(): PlayerView[] {
+    public getAllPlayerViews(): PlayerView[] {
         return this.playerViews;
     }
 
-    getPlayerViewById(playerId: number): PlayerView | undefined {
+    public getPlayerViewById(playerId: number): PlayerView | undefined {
         return this.playerViews.find(view => view.playerData.playerId === playerId);
-    }
-
-    getPlayerDTOById(playerId: number): PlayerDTO | undefined {
-        return this.controller.getPlayerById(playerId);
-    }
-
-    getAllPlayerDTOs(): PlayerDTO[] {
-        return this.controller.getAllPlayers();
     }
 }

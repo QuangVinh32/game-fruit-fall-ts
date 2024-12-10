@@ -1,0 +1,219 @@
+import FruitDTO from "../DTOs/FruitDTO";
+import FruitTypeDTO from "../DTOs/FruitTypeDTO";
+import FruitTypeController from "../Controllers/FruitTypeController";
+import FruitController from "../Controllers/FruitController";
+
+export default class FruitService {
+    private scene: Phaser.Scene;
+    private jsonPath: string;
+    private fruitTypes: FruitTypeDTO[] = [];
+    private fruitTypeController: FruitTypeController;
+    private fruitController: FruitController;
+
+    constructor(scene: Phaser.Scene, jsonPath: string) {
+        this.scene = scene;
+        this.jsonPath = jsonPath;
+        this.fruitTypeController = new FruitTypeController();
+        this.fruitController = new FruitController();
+    }
+
+    /**
+     * Fetch JSON data asynchronously from the given endpoint.
+     */
+    private async loadData(): Promise<any> {
+        try {
+            const response = await fetch(this.jsonPath);
+            if (!response.ok) {
+                throw new Error(`Failed to load data from ${this.jsonPath}`);
+            }
+            return await response.json();
+        } catch (error) {
+            console.error("Error loading fruit data:", error);
+            throw error;
+        }
+    }
+
+    /**
+     * Map raw data into FruitTypeDTO objects and add them to the controller.
+     */
+    private mapFruitTypes(data: any): void {
+        if (Array.isArray(data.fruitTypes)) {
+            this.fruitTypes = data.fruitTypes.map((typeData: any) => new FruitTypeDTO(typeData.id, typeData.name, typeData.texture));
+            this.fruitTypes.forEach(type => this.fruitTypeController.addFruitTypes(type));
+        } else {
+            console.error("Invalid or missing fruitTypes data:", data.fruitTypes);
+        }
+    }
+
+    
+
+    /**
+     * Map fruits' raw JSON into DTOs filtered by levelId or fruitId.
+     */
+    private mapFruits(data: any, levelId?: number, fruitId?: number): FruitDTO[] {
+        const fruits = Array.isArray(data.fruits) ? data.fruits : [];
+        if (!fruits.length) {
+            console.error("Invalid or missing fruits data:", data.fruits);
+        }
+
+        return fruits
+            .filter((fruit: any) => (levelId ? fruit.levelId === levelId : true) &&
+                                   (fruitId ? fruit.fruitId === fruitId : true))
+            .map((fruit: any) => new FruitDTO(
+                fruit.fruitId,
+                fruit.positionX,
+                fruit.positionY,
+                fruit.width,
+                fruit.height,
+                fruit.id,
+                fruit.levelId
+            ));
+    }
+
+    /**
+     * Load data and initialize FruitController with DTOs.
+     */
+    async initialize(levelId?: number): Promise<void> {
+        try {
+            const data = await this.loadData();
+            this.mapFruitTypes(data);
+            const fruits = this.mapFruits(data, levelId);
+            fruits.forEach(dto => this.fruitController.addFruits(dto));
+            // this.fruitDTOs = fruits; // Keep a local copy of DTOs
+        } catch (error) {
+            console.error("Failed to initialize fruit service:", error);
+        }
+    }
+
+    /**
+     * Get all fruits filtered by levelId.
+     */
+    getAllFruitsByLevelId(levelId: number): FruitDTO[] {
+        return this.fruitController.getAllFruits().filter(fruit => fruit.levelId === levelId);
+    }
+
+    /**
+     * Return DTO by specific fruitId and levelId pair.
+     */
+    getFruitDTOById(fruitId: number, levelId: number): FruitDTO | undefined {
+        return this.fruitController.getFruitDTOById(fruitId, levelId);
+    }
+
+    /**
+     * Get a type by its ID.
+     */
+    getFruitTypeById(id: number): FruitTypeDTO | undefined {
+        return this.fruitTypes.find(fruitType => fruitType.id === id);
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+import PlayerDTO from "../DTOs/PlayerDTO";
+import PlayerController from "../Controllers/PlayerController";
+
+export default class PlayerService {
+    private jsonPath: string;
+    private controller: PlayerController;
+
+    constructor(jsonPath: string) {
+        this.jsonPath = jsonPath;
+        this.controller = new PlayerController();
+    }
+
+    private async loadData(): Promise<any> {
+        try {
+            const response = await fetch(this.jsonPath);
+            if (!response.ok) {
+                throw new Error(`Failed to fetch data: ${response.statusText}`);
+            }
+            return await response.json();
+        } catch (error) {
+            console.error("Error loading player data:", error);
+            return { players: [] };
+        }
+    }
+
+    private mapPlayers(data: any): PlayerDTO[] {
+        const players = Array.isArray(data.players) ? data.players : [];
+        if (!players.length) {
+            console.error("No players data found.");
+            return [];
+        }
+        return players.map((playerData: any) => {
+            if (!playerData.playerId || !playerData.texture) {
+                console.warn("Invalid player data:", playerData);
+                return null;
+            }
+            return new PlayerDTO(
+                playerData.playerId,
+                playerData.positionX,
+                playerData.positionY,
+                playerData.width,
+                playerData.height,
+                playerData.bounce,
+                playerData.texture,
+                playerData.levelId
+            );
+        }).filter((player: PlayerDTO | null) => player !== null);
+    }
+
+
+    // async initialize(): Promise<void> {
+    //     try {
+    //         const data = await this.loadData();
+    //         const players = this.mapPlayers(data);
+    //         if (players.length) {
+    //             players.forEach(player => this.controller.addPlayers(player));
+    //         } else {
+    //             console.warn("No valid players found to initialize.");
+    //         }
+    //     } catch (error) {
+    //         console.error("Failed to initialize PlayerService:", error);
+    //     }
+    // }
+    async initialize(levelId: number): Promise<void> {
+        const data = await this.loadData();
+        const players = this.mapPlayers(data);
+
+        players.forEach(player => this.controller.addPlayers(player));
+
+        const levelPlayers = players.filter(player => player.levelId === levelId);
+        if (levelPlayers.length === 0) {
+            console.warn(`No players found for levelId: ${levelId}`);
+        } else {
+        }
+    }
+
+
+    getPlayerDTOById(playerId: number): PlayerDTO | undefined {
+        return this.controller.getPlayerById(playerId);
+    }
+
+    getAllPlayerDTOs(): PlayerDTO[] {
+        return this.controller.getAllPlayers();
+    }
+}

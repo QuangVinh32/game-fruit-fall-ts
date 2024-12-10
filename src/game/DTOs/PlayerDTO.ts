@@ -35,9 +35,6 @@ export default class PlayerDTO {
 		this._levelId = value;
 	}
 
- 
-
-
     /**
      * Getter texture
      * @return {string}
@@ -149,7 +146,5 @@ export default class PlayerDTO {
 	public set height(value: number) {
 		this._height = value;
 	}
-
-
 
 }

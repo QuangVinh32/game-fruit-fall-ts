@@ -34,8 +34,8 @@ export default class QuestionAndOptionScene extends Phaser.Scene {
     }
 
     preload() { 
-        this.load.audio("sound_success", "assets/Audio/sound_success.mp3");
-        this.load.audio("sound_failure", "assets/Audio/sound_failure.mp3");
+        this.load.audio('sound_success', 'assets/Audio/sound_success.mp3');
+        this.load.audio('sound_failure', 'assets/Audio/sound_failure.mp3');
     }
 
     async create() {
@@ -69,9 +69,9 @@ export default class QuestionAndOptionScene extends Phaser.Scene {
         await this.fruitService.initializeNoView();
 
         const fruitsAtLevel = this.fruitService.getFruitsByLevelId(this.levelId);
-        // console.log("fruitAtLevel",fruitsAtLevel)
+        console.log("fruitAtLevel",fruitsAtLevel)
         const fruitCount = fruitsAtLevel.length
-        // console.log(`Level ${this.levelId}: FruitCount = ${fruitCount}`);
+        console.log(`Level ${this.levelId}: FruitCount = ${fruitCount}`);
 
         // const maxFruits = 6;
         const options = [];

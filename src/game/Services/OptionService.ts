@@ -1,22 +1,15 @@
 import OptionDTO from "../DTOs/OptionDTO";
 import OptionController from "../Controllers/OptionController";
 import OptionView from "../Views/OptionView";
+import BaseService from "./BaseService";
 
-export default class OptionService {
-    private scene: Phaser.Scene;
-    private jsonPath: string;
+export default class OptionService extends BaseService<OptionDTO>{
     private controller: OptionController;
     private optionViews: OptionView[] = [];
 
     constructor(scene: Phaser.Scene, jsonPath: string) {
-        this.scene = scene;
-        this.jsonPath = jsonPath;
+        super(scene, jsonPath);
         this.controller = new OptionController();
-    }
-
-    private async loadData(): Promise<any> {
-        const response = await fetch(this.jsonPath);
-        return await response.json();
     }
 
     private mapOptions(data: any): OptionDTO[] {
@@ -35,11 +28,11 @@ export default class OptionService {
         ));
     }
 
-    async initialize(questionId: number): Promise<void> {
+    public async initialize(questionId: number): Promise<void> {
         const data = await this.loadData();
         const options = this.mapOptions(data);
 
-        options.forEach(option => this.controller.addOptions(option));
+        options.forEach(option => this.controller.addItem(option));
 
         const levelOptions = options.filter(option => option.questionId === questionId);
         if (levelOptions.length === 0) {
@@ -49,24 +42,24 @@ export default class OptionService {
         }
     }
 
-    createOptionView(optionData: OptionDTO): void {
+    public getOptionDTOById(optionId: number): OptionDTO | undefined {
+        return this.controller.getItemByProperty("optionId",optionId);
+    }
+
+    public getAllOptionDTOs(): OptionDTO[] {
+        return this.controller.getAllItems();
+    }
+
+    public createOptionView(optionData: OptionDTO): void {
         const optionView = new OptionView(this.scene, optionData);
         this.optionViews.push(optionView);
     }
 
-    getAllOptionViews(): OptionView[] {
+    public getAllOptionViews(): OptionView[] {
         return this.optionViews;
     }
 
-    getOptionViewById(optionId: number): OptionView | undefined {
+    public getOptionViewById(optionId: number): OptionView | undefined {
         return this.optionViews.find(view => view.optionData.optionId === optionId);
-    }
-
-    getOptionDTOById(optionId: number): OptionDTO | undefined {
-        return this.controller.getOptionById(optionId);
-    }
-
-    getAllOptionDTOs(): OptionDTO[] {
-        return this.controller.getAllOptions();
     }
 }

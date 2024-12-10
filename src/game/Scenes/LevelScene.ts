@@ -3,6 +3,9 @@ import PlayerService from "../Services/PlayerService";
 import PlayerView from "../Views/PlayerView";
 import UIScene from "./UIScene";
 
+
+
+
 export default class LevelScene extends Phaser.Scene {
     private playerService: PlayerService | null;
     private fruitService: FruitService | null;
@@ -15,9 +18,12 @@ export default class LevelScene extends Phaser.Scene {
     private fruitsCaught: { levelId: number, fruitId: number }[]; 
     private fruitsCaughtMatrix: Map<number, { levelId: number, fruitId: number }[]> = new Map();
     private validFruitsCount: number;
-    private fruitView: any;
-    private playerViews: PlayerView[] = [];
 
+    private DURATIONS = [2000, 2100, 2200, 2250, 2200, 2300, 2400, 2500, 2600, 2700];
+    private INITIAL_PLAYER_POSITION = { x: 350, y: 490 };
+    private PLAYER_MOVE_EVENT = "pointermove";
+    private FRUIT_FALL_DELAY = 1500;
+    private SOUND_VOLUME_CATCH = 1;
 
     constructor() {
         super("LevelScene");
@@ -25,23 +31,24 @@ export default class LevelScene extends Phaser.Scene {
         this.canDropFruit = false; 
         this.score = 0;
         this.fruitsCaught = [];
-        
     }
 
     preload() {
-        this.load.image("player", "assets/Images/player.png");
-        this.load.image("shadow", "assets/Images/shadow.png")
-        this.load.image("apple", "assets/Images/apple.png");
-        this.load.image("cherry", "assets/Images/cherry.png");
-        this.load.image("kiwi", "assets/Images/kiwi.png");
-        this.load.image("lemon", "assets/Images/lemon.png");
-        this.load.image("lime", "assets/Images/lime.png");
-        this.load.image("mango", "assets/Images/mango.png");
-        this.load.image("orrange", "assets/Images/orrange.png");
-        this.load.image("peache", "assets/Images/peache.png");
-        this.load.image("pear", "assets/Images/pear.png");
-
-        this.load.audio("sound_catch", "assets/Audio/sound_catch.mp3");
+        this.load.image('player', 'assets/Images/player.png');
+        this.load.image('shadow', 'assets/Images/shadow.png');
+        this.load.image('apple', 'assets/Images/apple.png');
+        this.load.image('cherry', 'assets/Images/cherry.png');
+        this.load.image('kiwi', 'assets/Images/kiwi.png');
+        this.load.image('lemon', 'assets/Images/lemon.png');
+        this.load.image('lime', 'assets/Images/lime.png');
+        this.load.image('mango', 'assets/Images/mango.png');
+        this.load.image('orrange', 'assets/Images/orrange.png');
+        this.load.image('peache', 'assets/Images/peache.png');
+        this.load.image('pear', 'assets/Images/pear.png');
+        this.load.image('star', 'assets/Images/star.png');
+        
+        this.load.audio('sound_catch', 'assets/Audio/sound_catch.mp3');
+        
     }
 
     init(data: { levelId: number, validFruitsCount: number, fruitsCaught: { levelId: number, fruitId: number }[], canMovePlayer?: boolean, canDropFruit?: boolean }) {
@@ -58,16 +65,14 @@ export default class LevelScene extends Phaser.Scene {
                 this.score = 0; 
             }        
         }
-        // console.log("Score after deduction:", this.score);
         // console.log("canMovePlayer:", this.canMovePlayer);
         // console.log("canDropFruit:", this.canDropFruit);
     }
     
-    
     async create() {
 
         this.catchSound = this.sound.add("sound_catch", {
-            volume: 3,
+            volume: this.SOUND_VOLUME_CATCH,
         });
     
         this.fruitService = new FruitService(this, "assets/Data/fruit.json");
@@ -76,21 +81,19 @@ export default class LevelScene extends Phaser.Scene {
         this.playerService = new PlayerService(this, "assets/Data/player.json");
         await this.playerService.initialize(this.levelId);
     
-     
-    
         const playerDTO = this.playerService.getPlayerDTOById(this.levelId);
         if (playerDTO) {
             this.playerView = this.playerService.getPlayerViewById(this.levelId);
             if (this.playerView) {
-                this.playerView.setPosition(350, 490);
+                this.playerView.setPosition(this.INITIAL_PLAYER_POSITION.x, this.INITIAL_PLAYER_POSITION.y);
                 this.physics.add.existing(this.playerView);
                 this.playerView.body.setCollideWorldBounds(true);
                 this.playerView.body.setImmovable(true)
 
-                this.input.on("pointermove", (pointer: any) => {
+                this.input.on(this.PLAYER_MOVE_EVENT, (pointer: any) => {
                     if (this.canMovePlayer) {
                         this.playerView.x = pointer.worldX;
-                        this.playerView.y = 490;
+                        this.playerView.y = this.INITIAL_PLAYER_POSITION.y;
                     }
                 });
             }
@@ -98,13 +101,10 @@ export default class LevelScene extends Phaser.Scene {
     
         this.events.on("startFruitFall", () => {
             this.canDropFruit = true;
-            // console.log("dropFruit",this.canDropFruit)
         });
     
         this.events.on("enablePlayerMove", () => {
             this.canMovePlayer = true;
-            // console.log("movePlayer",this.canMovePlayer)
-
         });
     
         this.startFruitFall();
@@ -138,15 +138,13 @@ export default class LevelScene extends Phaser.Scene {
             const randomFruit = fruits.splice(randomIndex, 1)[0];
             const fruitView = this.fruitService?.getFruitViewById(randomFruit.fruitId, this.levelId);
     
-            // console.log("FruitId", randomFruit.fruitId);
             if (!fruitView) return;
             this.physics.add.existing(fruitView);
             const body = fruitView.body as Phaser.Physics.Arcade.Body | null;
             if (body) {
                 body.setImmovable(true);
             
-                const durations = [2200, 2100, 2000, 2100, 2200, 2300];
-                const duration = durations[this.levelId - 1] || 0; // Giá trị mặc định là 0 nếu levelId không hợp lệ
+                const duration = this.DURATIONS[this.levelId - 1] || 0;
             
                 if (duration > 0) {
                     this.tweens.add({
@@ -165,14 +163,11 @@ export default class LevelScene extends Phaser.Scene {
                 body.setImmovable(true);
             }
             
-
             this.physics.add.collider(this.playerView, fruitView, (player, fruit) => {
                 if (this.catchSound) {
                     this.catchSound.play();
                 }
                 this.score++;
-
-
 
                 fruit.destroy();
 
@@ -181,7 +176,6 @@ export default class LevelScene extends Phaser.Scene {
                     uiScene.updateLaunchCount(this.score); 
                 }
                 
-
                 const caughtFruit = {
                     levelId: this.levelId,
                     fruitId: randomFruit.fruitId
@@ -254,7 +248,7 @@ export default class LevelScene extends Phaser.Scene {
         }
     
         this.time.addEvent({
-            delay: 1500,
+            delay: this.FRUIT_FALL_DELAY,
             callback: spawnFruit,
             loop: true,
         });

@@ -1,27 +1,23 @@
+export default class BaseDTO {
+    protected _idB: number;
 
-export class BaseDTO{
-    private _id: number;
-
-	constructor(id: number) {
-		this._id = id;
+    constructor(id: number) {
+        this._idB = id;
     }
 
     /**
      * Getter id
      * @return {number}
      */
-	public get id(): number {
-		return this._id;
-	}
+    public get idB(): number {
+        return this._idB;
+    }
 
     /**
      * Setter id
      * @param {number} value
      */
-	public set id(value: number) {
-		this._id = value;
-	}
-
-    
-
+    public set idB(value: number) {
+        this._idB = value;
+    }
 }

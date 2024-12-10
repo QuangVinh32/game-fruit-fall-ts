@@ -2,6 +2,7 @@ export default class FruitTypeDTO{
     private _id: number;
     private _name: string;
     private _texture: string;
+    levelId: number;
 
 	constructor(id: number, name: string, texture: string) {
 		this._id = id;

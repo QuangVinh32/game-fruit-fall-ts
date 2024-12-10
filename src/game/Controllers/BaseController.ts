@@ -1,19 +1,16 @@
 export default class BaseController<T> {
-    private items: T[]; // Generic array to store items of type T
+    protected items: T[] = [];
 
-    constructor() {
-        this.items = [];
-    }
-
-    addItem(item: T): void {
+    public addItem(item: T): void {
         this.items.push(item);
     }
 
-    getAllItems(): T[] {
+    public getAllItems(): T[] {
         return this.items;
     }
 
-    getItemByCondition(predicate: (item: T) => boolean): T | undefined {
-        return this.items.find(predicate);
+    public getItemByProperty<K extends keyof T>(key: K, value: T[K]): T | undefined {
+        return this.items.find(item => item[key] === value);
     }
+
 }

@@ -29,7 +29,7 @@
         "export": "next build && next export"
     },
     "dependencies": {
-        "next": "^14.2.3",
+        "next": "^14.2.18",
         "phaser": "^3.85.2",
         "react": "^18",
         "react-dom": "^18"

@@ -1,23 +1,21 @@
+import BaseView from "./BaseView";
 import OpitionDTO from "../DTOs/OptionDTO";
 
-export default class OptionView extends Phaser.GameObjects.Container {
-    public scene: Phaser.Scene;
+export default class OptionView extends BaseView {
     public optionData: OpitionDTO;
     public buttonOption: Phaser.GameObjects.Image;
     private textQuestion: Phaser.GameObjects.Text;
-    private buttonSound: Phaser.Sound.BaseSound | null = null;
-    tweens: any;
 
     constructor(scene: Phaser.Scene, optionData: OpitionDTO) {
-        super(scene, optionData.positionX, optionData.positionY); 
-        this.scene = scene;
+        super(scene);
         this.optionData = optionData;
-
-        this.scene.add.existing(this); 
-        this.createQuestion();
+        this.createOption();
+        this.setViewPosition(optionData.positionX, optionData.positionY);
+        this.updateContainerSize(optionData.width,optionData.height)
+        this.playTweenAnimation();
     }
 
-    private createQuestion(): void {
+    private createOption(): void {
         this.buttonOption = this.scene.add.image(0, 0, "button")
             .setDisplaySize(this.optionData.width, this.optionData.height)
             .setOrigin(0.5, 0.5)
@@ -30,12 +28,18 @@ export default class OptionView extends Phaser.GameObjects.Container {
         })
             .setOrigin(0.5, 0.5);
 
-        this.buttonSound = this.scene.sound.add("sound_initial", {
-            volume: 1,
-        });
-
         this.add(this.buttonOption);
         this.add(this.textQuestion);
+    }
 
+    private playTweenAnimation(): void {
+        this.scene.tweens.add({
+            targets: [this.buttonOption, this.textQuestion],
+            scale: { from: 0.75, to: 1 },
+            duration: 500, 
+            ease: 'Power2',
+            yoyo: true, 
+            repeat: 0 
+        });
     }
 }

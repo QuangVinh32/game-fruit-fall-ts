@@ -50,7 +50,41 @@
             "text": "How many peaches did you catch?",
             "positionX": 130,
             "positionY": 415
+        },
+        {
+            "questionId": 7,
+            "state": true,
+            "levelId": 7,
+            "text": "How many cherries did you catch?",
+            "positionX": 130,
+            "positionY": 415
         }
-
+        ,
+        {
+            "questionId": 8,
+            "state": true,
+            "levelId": 8,
+            "text": "How many mangoes did you catch?",
+            "positionX": 130,
+            "positionY": 415
+        }
+        ,
+        {
+            "questionId": 9,
+            "state": true,
+            "levelId": 9,
+            "text": "How many kiwis did you catch?",
+            "positionX": 130,
+            "positionY": 415
+        }
+        ,
+        {
+            "questionId": 10,
+            "state": true,
+            "levelId": 10,
+            "text": "How many stars did you catch?",
+            "positionX": 130,
+            "positionY": 415
+        }
     ]
 }

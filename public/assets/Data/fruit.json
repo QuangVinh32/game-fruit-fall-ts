@@ -21,9 +21,14 @@
             "texture": "lemon"
         },
         {
-            "id": 6,
+            "id": 5,
             "name": "Peache",
             "texture": "peache"
+        },
+        {
+            "id": 6,
+            "name": "Mango",
+            "texture": "mango"
         },
         {
             "id": 7,
@@ -98,6 +103,7 @@
 
         },
 
+
         {
             "fruitId": 1,
             "positionX": 80,
@@ -296,7 +302,7 @@
             "positionY": 100,
             "width": 47,
             "height": 56,
-            "id": 6,
+            "id": 5,
             "levelId": 6
         },
         {
@@ -305,7 +311,7 @@
             "positionY": 100,
             "width": 47,
             "height": 56,
-            "id": 6,
+            "id": 5,
             "levelId": 6
             
         },
@@ -315,7 +321,7 @@
             "positionY": 100,
             "width": 47,
             "height": 56,
-            "id": 6,
+            "id": 5,
             "levelId": 6
         },
         {
@@ -324,7 +330,7 @@
             "positionY": 100,
             "width": 47,
             "height": 56,
-            "id": 6,
+            "id": 5,
             "levelId": 6
 
         },
@@ -334,8 +340,196 @@
             "positionY": 100,
             "width": 47,
             "height": 56,
-            "id": 6,
+            "id": 5,
             "levelId": 6
+        },
+        {
+            "fruitId": 1,
+            "positionX": 80,
+            "positionY": 100,
+            "width": 26,
+            "height": 53,
+            "id": 2,
+            "levelId": 7
+        },
+        {
+            "fruitId": 2,
+            "positionX": 210,
+            "positionY": 100,
+            "width": 26,
+            "height": 53,
+            "id": 2,
+            "levelId": 7
+            
+        },
+        {
+            "fruitId": 3,
+            "positionX": 350,
+            "positionY": 100,
+            "width": 26,
+            "height": 53,
+            "id": 2,
+            "levelId": 7
+        },
+        {
+            "fruitId": 4,
+            "positionX": 485,
+            "positionY": 100,
+            "width": 26,
+            "height": 53,
+            "id": 2,
+            "levelId": 7
+
+        },
+        {
+            "fruitId": 5,
+            "positionX": 620,
+            "positionY": 100,
+            "width": 26,
+            "height": 53,
+            "id": 2,
+            "levelId": 7
+        },
+        {
+            "fruitId": 1,
+            "positionX": 80,
+            "positionY": 100,
+            "width": 38,
+            "height": 52,
+            "id": 6,
+            "levelId": 8
+        },
+        {
+            "fruitId": 2,
+            "positionX": 210,
+            "positionY": 100,
+            "width": 38,
+            "height": 52,
+            "id": 6,
+            "levelId": 8
+            
+        },
+        {
+            "fruitId": 3,
+            "positionX": 350,
+            "positionY": 100,
+            "width": 38,
+            "height": 52,
+            "id": 6,
+            "levelId": 8
+        },
+        {
+            "fruitId": 4,
+            "positionX": 485,
+            "positionY": 100,
+            "width": 38,
+            "height": 52,
+            "id": 6,
+            "levelId": 8
+
+        },
+        {
+            "fruitId": 5,
+            "positionX": 620,
+            "positionY": 100,
+            "width": 38,
+            "height": 52,
+            "id": 6,
+            "levelId": 8
+        },
+        {
+            "fruitId": 1,
+            "positionX": 80,
+            "positionY": 100,
+            "width": 38,
+            "height": 52,
+            "id": 3,
+            "levelId": 9
+        },
+        {
+            "fruitId": 2,
+            "positionX": 210,
+            "positionY": 100,
+            "width": 38,
+            "height": 52,
+            "id": 3,
+            "levelId": 9
+            
+        },
+        {
+            "fruitId": 3,
+            "positionX": 350,
+            "positionY": 100,
+            "width": 38,
+            "height": 52,
+            "id": 3,
+            "levelId": 9
+        },
+        {
+            "fruitId": 4,
+            "positionX": 485,
+            "positionY": 100,
+            "width": 38,
+            "height": 52,
+            "id": 3,
+            "levelId": 9
+
+        },
+        {
+            "fruitId": 5,
+            "positionX": 620,
+            "positionY": 100,
+            "width": 38,
+            "height": 52,
+            "id": 3,
+            "levelId": 9    
+        },
+        {
+            "fruitId": 1,
+            "positionX": 80,
+            "positionY": 100,
+            "width": 38,
+            "height": 52,
+            "id": 10,
+            "levelId": 10
+        },
+        {
+            "fruitId": 2,
+            "positionX": 210,
+            "positionY": 100,
+            "width": 38,
+            "height": 52,
+            "id": 10,
+            "levelId": 10
+            
+        },
+        {
+            "fruitId": 3,
+            "positionX": 350,
+            "positionY": 100,
+            "width": 38,
+            "height": 52,
+            "id": 10,
+            "levelId": 10
+        },
+        {
+            "fruitId": 4,
+            "positionX": 485,
+            "positionY": 100,
+            "width": 38,
+            "height": 52,
+            "id": 10,
+            "levelId": 10
+
+        },
+        {
+            "fruitId": 5,
+            "positionX": 620,
+            "positionY": 100,
+            "width": 38,
+            "height": 52,
+            "id": 10,
+            "levelId": 10
         }
     ]
 }
