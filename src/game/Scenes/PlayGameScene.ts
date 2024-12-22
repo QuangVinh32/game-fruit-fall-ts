@@ -1,3 +1,4 @@
+import FruitService from "../Services/FruitService";
 import QuestionService from "../Services/QuestionService";
 
 export default class PlayGameScene extends Phaser.Scene {
@@ -6,6 +7,7 @@ export default class PlayGameScene extends Phaser.Scene {
     public levelId: number;
     private score: number;
     private isUISceneLaunched: boolean = false; 
+    private fruitService: FruitService | null ;
 
     constructor() {
         super("PlayGameScene");
@@ -27,6 +29,11 @@ export default class PlayGameScene extends Phaser.Scene {
         this.buttonSound = this.sound.add("sound_initial", {
             volume: 1,
         });
+
+        // const levelIds = this.fruitService?.getUniqueLevelIds() || [];
+        // const cols = levelIds.length; 
+        // console.log(`Cols (Number of unique levels) = ${cols}`);
+
     
         const levelMessages = [
             { main: "Help the farmer catch the apples.", sub: 'Select "Start" to continue' },
@@ -62,7 +69,7 @@ export default class PlayGameScene extends Phaser.Scene {
             fontSize: "25px Arial",
             fontStyle: "bold",
             color: "black",
-        }).setOrigin(0.5, 0); 
+        }).setOrigin(0.5, 0).setResolution(2); 
         
         this.add.text(
             this.scale.width * UI_PERCENT.BUTTON_X,
@@ -70,7 +77,7 @@ export default class PlayGameScene extends Phaser.Scene {
             sub, {
             fontSize: "15px Arial",
             color: "black",
-        }).setOrigin(0.5, 0);
+        }).setOrigin(0.5, 0).setResolution(2);
         
         let buttonStart = this.add.image(0, 0, "button").setDisplaySize(
             this.scale.width * UI_PERCENT.BUTTON_SCALE, 
@@ -81,7 +88,7 @@ export default class PlayGameScene extends Phaser.Scene {
             fontSize: "33px Arial",
             fontStyle: "bold",
             color: "black",
-        }).setOrigin(0.5, 0.5);
+        }).setOrigin(0.5, 0.5).setResolution(2);
     
         let buttonContainer = this.add.container(
             this.scale.width / 2,
@@ -106,9 +113,17 @@ export default class PlayGameScene extends Phaser.Scene {
                 ease: "Sine.easeInOut",    
                 onComplete: () => {
                     if (!this.isUISceneLaunched) {
-                        this.scene.launch("UIScene", { score: this.score });
+                        this.scene.launch("UIScene", { score: this.score , levelId: this.levelId});
                         this.isUISceneLaunched = true;
                     }
+
+                    // if (this.levelId >= cols) {
+                    //     this.levelId = 1; 
+
+                    // } else {
+                    //     this.levelId += 1; 
+                    // }
+
                     this.scene.get("LevelScene").events.emit("enablePlayerMove");
                     this.scene.get("LevelScene").events.emit("startFruitFall");
                     this.scene.stop("PlayGameScene");

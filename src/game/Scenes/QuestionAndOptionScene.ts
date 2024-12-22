@@ -17,6 +17,7 @@ export default class QuestionAndOptionScene extends Phaser.Scene {
     public buttonOption: Phaser.GameObjects.Image; 
     public successSount: Phaser.Sound.NoAudioSound | Phaser.Sound.HTML5AudioSound | Phaser.Sound.WebAudioSound;
     public failureSount: Phaser.Sound.NoAudioSound | Phaser.Sound.HTML5AudioSound | Phaser.Sound.WebAudioSound;
+    private cols: number;
 
 
     constructor() {
@@ -26,7 +27,7 @@ export default class QuestionAndOptionScene extends Phaser.Scene {
     init(data: { score: number, levelId: number, fruitsCaughtMatrix: { [key: number]: { levelId: number, fruitId: number }[] } }) {
         this.levelId = data.levelId;
         this.score = data.score;
-        // console.log("levelId in Question :",data.levelId);
+        console.log("levelId in Question :",data.levelId);
         this.fruitsCaught = new Map(Object.entries(data.fruitsCaughtMatrix).map(([key, value]) => [parseInt(key), value]));
         this.validFruitsCount = this.fruitsCaught.get(this.levelId)?.filter(fruit => fruit.fruitId !== 0).length || 0;
         // console.log("Fruits caught matrix:", this.fruitsCaught);
@@ -60,7 +61,7 @@ export default class QuestionAndOptionScene extends Phaser.Scene {
             volume: 1,
         });
 
-        this.add.text(180, 450, "Use the picture graph above to find the correct amount.", { fontSize: '15px Arial', color: 'black' });
+        this.add.text(180, 450, "Use the picture graph above to find the correct amount.", { fontSize: '15px Arial', color: 'black' }).setResolution(2);
 
         this.questionService = new QuestionService(this,"assets/Data/question.json");
         await this.questionService.initialize(this.levelId);
@@ -72,6 +73,10 @@ export default class QuestionAndOptionScene extends Phaser.Scene {
         console.log("fruitAtLevel",fruitsAtLevel)
         const fruitCount = fruitsAtLevel.length
         console.log(`Level ${this.levelId}: FruitCount = ${fruitCount}`);
+
+        const levelIds = this.fruitService?.getUniqueLevelIds() || [];
+        this.cols = levelIds.length; 
+        console.log(`Cols (Number of unique levels) = ${this.cols}`);
 
         // const maxFruits = 6;
         const options = [];
@@ -101,7 +106,7 @@ export default class QuestionAndOptionScene extends Phaser.Scene {
                     x,            
                     y,            
                     width,        
-                    height       
+                    height
                 );
             
                 const optionView = new OptionView(this, optionDTO);
@@ -120,7 +125,17 @@ export default class QuestionAndOptionScene extends Phaser.Scene {
             if (this.successSount) {
                 this.successSount.play();
             }
-            this.levelId += 1;
+
+            
+            if (this.levelId >= this.cols) {
+                console.log(this.cols)
+                this.levelId = 1; 
+
+            } else {
+                this.levelId += 1; 
+                console.log(this.cols)
+
+            }
 
             // console.log("Chuyển sang LevelScene với levelId:", this.levelId);
             this.scene.start('LevelScene', {

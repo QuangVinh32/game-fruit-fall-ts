@@ -12,12 +12,8 @@ const CONFIG = {
 
 export default class ResultScene extends Phaser.Scene {
     private fruitService: FruitService;
-
     private levelId: number;
     private fruitsCaught: Map<number, { levelId: number, fruitId: number }[]> = new Map();
-
-    // private totalWidth = 600; 
-    // private totalHeight = 300;
 
     constructor() {
         super("ResultScene");
@@ -30,19 +26,19 @@ export default class ResultScene extends Phaser.Scene {
     }
 
     async create() {
-        this.add.text(this.scale.width / 2, this.scale.height / 20, "The Farmer's Fruit", { fontSize: '30px Arial', fontStyle: "bold", color: 'black' }).setOrigin(0.5, 0);
+        this.add.text(this.scale.width / 2, this.scale.height / 20, "The Farmer's Fruit", { fontSize: '30px Arial', fontStyle: "bold", color: 'black' }).setOrigin(0.5, 0).setResolution(2);
+
+        // this.add.text(400, this.scale.height / 20, "NextLevel", { fontSize: '30px Arial', fontStyle: "bold", color: 'black' }).setOrigin(0.5, 0);
+
         
         this.fruitService = new FruitService(this, "assets/Data/fruit.json");
         await this.fruitService.initializeNoView();
 
         const fruitsAtLevel = this.fruitService.getFruitsByLevelId(this.levelId);
-        console.log("fruitAtLevel", fruitsAtLevel);
+        // console.log("fruitAtLevel", fruitsAtLevel);
 
-     
-
-      // Tìm fruitCount lớn nhất qua tất cả các levels
+        // Tìm fruitCount lớn nhất qua tất cả các levels
         let maxFruitCount = 0;
-
         this.fruitsCaught.forEach((fruits, levelId) => {
             const fruitsAtLevel = this.fruitService.getFruitsByLevelId(levelId);
             const fruitCount = fruitsAtLevel.length;
@@ -53,13 +49,12 @@ export default class ResultScene extends Phaser.Scene {
 
             console.log(`Level ${levelId}: FruitCount = ${fruitCount}`);
         });
-
         const rows = maxFruitCount;
+
         console.log(`Max FruitCount (Rows) = ${rows}`);
 
-        // Tính tổng số levelId
         const levelIds = this.fruitService.getUniqueLevelIds();
-        const cols = levelIds.length; // Số cột bằng số lượng levelId
+        const cols = levelIds.length; 
         console.log(`Cols (Number of unique levels) = ${cols}`);
 
         const cellWidth = CONFIG.TOTAL_GRID_WIDTH / cols; 
@@ -71,7 +66,6 @@ export default class ResultScene extends Phaser.Scene {
         const graphics = this.add.graphics();
         graphics.lineStyle(4, 0x000000, 1);
 
-        // Vẽ lưới động với số hàng và cột thay đổi
         for (let row = 0; row < rows; row++) {
             for (let col = 0; col < cols; col++) {
                 const x = gridStartX + col * cellWidth;
@@ -88,7 +82,7 @@ export default class ResultScene extends Phaser.Scene {
                 gridStartY + row * cellHeight + cellHeight / 2 - 10,
                 number.toString(),
                 { fontSize: CONFIG.FONT_SIZE_LABEL, color: 'black', fontStyle: "bold" }
-            );
+            ).setResolution(2);
         }
 
         this.fruitService = new FruitService(this, "assets/Data/fruit.json");
@@ -124,11 +118,11 @@ export default class ResultScene extends Phaser.Scene {
 
         for (let col = 0; col < cols; col++) {
             this.add.text(
-                gridStartX + col * cellWidth + cellWidth / 2 - 28,
+                gridStartX + col * cellWidth + cellWidth / 2 - 25,
                 gridStartY + rows * cellHeight + 10,
                 fruitNames[col % fruitNames.length],
-                { fontSize: '12px', color: 'black', fontStyle: "bold" }
-            );
+                { fontSize: '12.5px', color: 'black', fontStyle: "bold" }
+            ).setResolution(2);
         }
     }
 

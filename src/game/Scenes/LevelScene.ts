@@ -3,9 +3,6 @@ import PlayerService from "../Services/PlayerService";
 import PlayerView from "../Views/PlayerView";
 import UIScene from "./UIScene";
 
-
-
-
 export default class LevelScene extends Phaser.Scene {
     private playerService: PlayerService | null;
     private fruitService: FruitService | null;

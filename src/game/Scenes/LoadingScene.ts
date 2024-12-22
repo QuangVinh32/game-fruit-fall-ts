@@ -16,12 +16,12 @@ export default class LoadingScene extends Phaser.Scene {
             fontSize: '30px Arial',
             fontStyle: "bold",
             color: 'black'
-        }).setOrigin(0.5);
+        }).setOrigin(0.5).setResolution(2);
 
         const loadingText = this.add.text(this.scale.width / 2 , this.scale.height / 2 + 60, 'LOADING', {
             fontSize: '15px Arial',
             color: 'black'
-        }).setOrigin(0.5);
+        }).setOrigin(0.5).setResolution(2);
 
         this.anims.create({
             key: 'falling',     

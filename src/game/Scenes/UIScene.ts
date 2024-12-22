@@ -1,6 +1,7 @@
 export default class UIScene extends Phaser.Scene {
     private scoreText: Phaser.GameObjects.Text;
     private scoreCount: number = 0;
+    private levelId: number;
 
     private readonly SCORE_TEXT_X_POSITION = 10;
     private readonly SCORE_TEXT_Y_POSITION = 20;
@@ -13,6 +14,9 @@ export default class UIScene extends Phaser.Scene {
     init(data: { score: number }) {
         if (data && typeof data.score === "number") {
             this.scoreCount = data.score;
+        }
+        if (this.levelId === 1) {
+            this.scoreCount = 0;
         }
     }
 
@@ -28,7 +32,7 @@ export default class UIScene extends Phaser.Scene {
             fontSize: this.SCORE_FONT_SIZE, 
             fontStyle: "bold", 
             color: 'black' 
-        });
+        }).setResolution(2);
     } 
 
     updateLaunchCount(newScore: number) {

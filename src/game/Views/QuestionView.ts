@@ -19,7 +19,7 @@ export default class QuestionView extends BaseView {
             fontSize: '30px Arial',
             color: 'black',
             fontStyle: "bold"
-        });
+        }).setResolution(2);
         this.add(this.textQuestion);
     }
     private animateQuestion(): void {

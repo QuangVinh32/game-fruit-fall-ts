@@ -22,11 +22,11 @@ export default class OptionView extends BaseView {
             .setInteractive();
 
         this.textQuestion = this.scene.add.text(0, 0, this.optionData.value.toString(), {
-            fontSize: '45px',
+            fontSize: '60px',
             color: 'black',
             fontStyle: "bold"
         })
-            .setOrigin(0.5, 0.5);
+            .setOrigin(0.5, 0.5).setResolution(2);
 
         this.add(this.buttonOption);
         this.add(this.textQuestion);

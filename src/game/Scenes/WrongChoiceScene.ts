@@ -38,8 +38,8 @@ export default class WrongChoiceScene extends Phaser.Scene{
             // console.log(`Level ${levelId}: Số lượng fruitId khác 0 là ${count}`);
         });
 
-        this.add.text(240, 420, `Sorry, The answer is ${this.validFruitsCount.toString()}`, { fontSize: '20px Arial', fontStyle: "bold", color: 'black' })
-        this.add.text(230, 445, "Try agian, Select 'Start' to continue.", { fontSize: '15px Arial', color: 'black' })
+        this.add.text(240, 420, `Sorry, The answer is ${this.validFruitsCount.toString()}`, { fontSize: '20px Arial', fontStyle: "bold", color: 'black' }).setResolution(2)
+        this.add.text(230, 445, "Try agian, Select 'Start' to continue.", { fontSize: '15px Arial', color: 'black' }).setResolution(2)
 
         let container = this.add.container(350, 530);
 
@@ -49,7 +49,7 @@ export default class WrongChoiceScene extends Phaser.Scene{
             .setInteractive();
 
         let startText = this.add.text(0, 0, 'Start', { fontSize: '30px Arial', fontStyle: 'bold', color: 'black' });
-        startText.setOrigin(0.5, 0.5);
+        startText.setOrigin(0.5, 0.5).setResolution(2);
 
         container.add([buttonStart, startText]);
 
