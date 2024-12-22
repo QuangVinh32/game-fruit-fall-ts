@@ -11,8 +11,8 @@ export default function Home() {
     return (
         <>
             <Head>
-                <title>Game Fruit Fall</title>
-                <meta name="description" content="A Phaser 3 Next.js project template that demonstrates Next.js with React communication and uses Vite for bundling." />
+                <title>Yotech - Game Fruit Fail</title>
+                <meta name="description" content="Yotech - Game Fruit Fail" />
                 <meta name="viewport" content="width=device-width, initial-scale=1" />
                 <link rel="icon" href="/favicon.png" />
             </Head>
