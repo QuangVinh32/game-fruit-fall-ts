@@ -3,7 +3,6 @@ import FruitService from "../Services/FruitService";
 import OptionService from "../Services/OptionService";
 import QuestionService from "../Services/QuestionService";
 import OptionView from "../Views/OptionView";
-import QuestionView from "../Views/QuestionView";
 
 export default class QuestionAndOptionScene extends Phaser.Scene {
     private buttonSound: Phaser.Sound.BaseSound | null = null;
@@ -18,6 +17,8 @@ export default class QuestionAndOptionScene extends Phaser.Scene {
     public successSount: Phaser.Sound.NoAudioSound | Phaser.Sound.HTML5AudioSound | Phaser.Sound.WebAudioSound;
     public failureSount: Phaser.Sound.NoAudioSound | Phaser.Sound.HTML5AudioSound | Phaser.Sound.WebAudioSound;
     private cols: number;
+    private canMoveOption: boolean;
+
 
 
     constructor() {

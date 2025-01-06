@@ -65,8 +65,8 @@ export default class WrongChoiceScene extends Phaser.Scene{
                 currentLevelFruits.length = 0;
             }
 
-            console.log('Fruits caught for the current level cleared:', this.fruitsCaught);
-            console.log("Level before:", this.levelId);
+            // console.log('Fruits caught for the current level cleared:', this.fruitsCaught);
+            // console.log("Level before:", this.levelId);
 
             this.tweens.add({
                 targets: container,

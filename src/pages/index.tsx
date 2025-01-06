@@ -11,8 +11,8 @@ export default function Home() {
     return (
         <>
             <Head>
-                <title>Yotech - Game Fruit Fail</title>
-                <meta name="description" content="Yotech - Game Fruit Fail" />
+                <title>YOTECH - GAME FRUIT FALL</title>
+                <meta name="description" content="YOTECH - GAME FRUIT FALL" />
                 <meta name="viewport" content="width=device-width, initial-scale=1" />
                 <link rel="icon" href="/favicon.png" />
             </Head>
