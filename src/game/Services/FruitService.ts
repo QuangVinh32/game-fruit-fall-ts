@@ -3,7 +3,7 @@ import FruitTypeDTO from "../DTOs/FruitTypeDTO";
 import FruitTypeController from "../Controllers/FruitTypeController";
 import FruitController from "../Controllers/FruitController";
 import FruitView from "../Views/FruitView";
-import BaseService from "./BaseService";
+import { BaseService } from "mct-common";
 
 export default class FruitService  extends BaseService<FruitDTO>{
 

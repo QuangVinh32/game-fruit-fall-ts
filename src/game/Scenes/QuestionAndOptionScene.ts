@@ -36,8 +36,8 @@ export default class QuestionAndOptionScene extends Phaser.Scene {
     }
 
     preload() { 
-        this.load.audio('sound_success', 'assets/Audio/sound_success.mp3');
-        this.load.audio('sound_failure', 'assets/Audio/sound_failure.mp3');
+        this.load.audio('sound_success', 'assets/audio/sound_success.mp3');
+        this.load.audio('sound_failure', 'assets/audio/sound_failure.mp3');
     }
 
     async create() {
@@ -64,10 +64,10 @@ export default class QuestionAndOptionScene extends Phaser.Scene {
 
         this.add.text(180, 450, "Use the picture graph above to find the correct amount.", { fontSize: '15px Arial', color: 'black' }).setResolution(2);
 
-        this.questionService = new QuestionService(this,"assets/Data/question.json");
+        this.questionService = new QuestionService(this,"assets/data/question.json");
         await this.questionService.initialize(this.levelId);
 
-        this.fruitService = new FruitService(this, "assets/Data/fruit.json");
+        this.fruitService = new FruitService(this, "assets/data/fruit.json");
         await this.fruitService.initializeNoView();
 
         const fruitsAtLevel = this.fruitService.getFruitsByLevelId(this.levelId);

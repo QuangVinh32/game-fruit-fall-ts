@@ -4,7 +4,7 @@ export default class LoadingScene extends Phaser.Scene {
     }
 
     preload() {
-        this.load.spritesheet('fruitFall', 'assets/Images/loader_spritesheet_1.png', {
+        this.load.spritesheet('fruitFall', 'assets/images/loader_spritesheet_1.png', {
             frameWidth: 64,  
             frameHeight: 64,
             endFrame: 9

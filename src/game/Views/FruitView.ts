@@ -1,4 +1,4 @@
-import BaseView from "./BaseView";
+import { BaseView } from "mct-common";
 import FruitDTO from "../DTOs/FruitDTO";
 import FruitTypeDTO from "../DTOs/FruitTypeDTO";
 

@@ -1,4 +1,4 @@
-import BaseView from "./BaseView";
+import { BaseView } from "mct-common";
 import QuestionDTO from "../DTOs/QuestionDTO";
 
 export default class QuestionView extends BaseView {

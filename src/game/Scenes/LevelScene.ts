@@ -31,20 +31,20 @@ export default class LevelScene extends Phaser.Scene {
     }
 
     preload() {
-        this.load.image('player', 'assets/Images/player.png');
-        this.load.image('shadow', 'assets/Images/shadow.png');
-        this.load.image('apple', 'assets/Images/apple.png');
-        this.load.image('cherry', 'assets/Images/cherry.png');
-        this.load.image('kiwi', 'assets/Images/kiwi.png');
-        this.load.image('lemon', 'assets/Images/lemon.png');
-        this.load.image('lime', 'assets/Images/lime.png');
-        this.load.image('mango', 'assets/Images/mango.png');
-        this.load.image('orrange', 'assets/Images/orrange.png');
-        this.load.image('peache', 'assets/Images/peache.png');
-        this.load.image('pear', 'assets/Images/pear.png');
-        this.load.image('star', 'assets/Images/star.png');
+        this.load.image('player', 'assets/images/player.png');
+        this.load.image('shadow', 'assets/images/shadow.png');
+        this.load.image('apple', 'assets/images/apple.png');
+        this.load.image('cherry', 'assets/images/cherry.png');
+        this.load.image('kiwi', 'assets/images/kiwi.png');
+        this.load.image('lemon', 'assets/images/lemon.png');
+        this.load.image('lime', 'assets/images/lime.png');
+        this.load.image('mango', 'assets/images/mango.png');
+        this.load.image('orrange', 'assets/images/orrange.png');
+        this.load.image('peache', 'assets/images/peache.png');
+        this.load.image('pear', 'assets/images/pear.png');
+        this.load.image('star', 'assets/images/star.png');
         
-        this.load.audio('sound_catch', 'assets/Audio/sound_catch.mp3');
+        this.load.audio('sound_catch', 'assets/audio/sound_catch.mp3');
         
     }
 
@@ -72,10 +72,10 @@ export default class LevelScene extends Phaser.Scene {
             volume: this.SOUND_VOLUME_CATCH,
         });
     
-        this.fruitService = new FruitService(this, "assets/Data/fruit.json");
+        this.fruitService = new FruitService(this, "assets/data/fruit.json");
         await this.fruitService.initialize(this.levelId);
     
-        this.playerService = new PlayerService(this, "assets/Data/player.json");
+        this.playerService = new PlayerService(this, "assets/data/player.json");
         await this.playerService.initialize(this.levelId);
     
         const playerDTO = this.playerService.getPlayerDTOById(this.levelId);

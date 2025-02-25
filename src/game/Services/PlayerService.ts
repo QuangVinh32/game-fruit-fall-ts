@@ -1,7 +1,7 @@
 import PlayerDTO from "../DTOs/PlayerDTO";
 import PlayerController from "../Controllers/PlayerController";
 import PlayerView from "../Views/PlayerView";
-import BaseService from "./BaseService";
+import { BaseService } from "mct-common";
 
 export default class PlayerService extends BaseService<PlayerDTO>{
     private controller: PlayerController;

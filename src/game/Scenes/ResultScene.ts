@@ -31,7 +31,7 @@ export default class ResultScene extends Phaser.Scene {
         // this.add.text(400, this.scale.height / 20, "NextLevel", { fontSize: '30px Arial', fontStyle: "bold", color: 'black' }).setOrigin(0.5, 0);
 
         
-        this.fruitService = new FruitService(this, "assets/Data/fruit.json");
+        this.fruitService = new FruitService(this, "assets/data/fruit.json");
         await this.fruitService.initializeNoView();
 
         const fruitsAtLevel = this.fruitService.getFruitsByLevelId(this.levelId);
@@ -85,7 +85,7 @@ export default class ResultScene extends Phaser.Scene {
             ).setResolution(2);
         }
 
-        this.fruitService = new FruitService(this, "assets/Data/fruit.json");
+        this.fruitService = new FruitService(this, "assets/data/fruit.json");
         await this.fruitService.initializeNoView();
 
         this.fruitsCaught.forEach((fruits, levelId) => {

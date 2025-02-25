@@ -1,13 +1,16 @@
 import Boot from './Scenes/Boot';
-import LoadingScene from './Scenes/LoadingScene';
+// import LoadingScene from './Scenes/LoadingScene';
 import MainMenu from './Scenes/MainMenu';
 import { AUTO, Game } from 'phaser';
 import UIScene from './Scenes/UIScene';
 import LevelScene from './Scenes/LevelScene';
-import PlayGameScene from './Scenes/PlayGameScene';
+import GamePlayScene from './Scenes/GamePlayScene';
 import ResultScene from './Scenes/ResultScene';
 import QuestionAndOptionScene from './Scenes/QuestionAndOptionScene';
 import WrongChoiceScene from './Scenes/WrongChoiceScene';
+import LoadingScene from './Scenes/LoadingScene';
+// import { LoadingScene } from 'mct-common';
+;
 
 //  Find out more information about the Game Config at:
 //  https://newdocs.phaser.io/docs/3.70.0/Phaser.Types.Core.GameConfig
@@ -40,7 +43,7 @@ const config: Phaser.Types.Core.GameConfig = {
     scene: [
         Boot,
         MainMenu,
-        PlayGameScene,
+        GamePlayScene,
         LoadingScene,
         LevelScene,
         UIScene,

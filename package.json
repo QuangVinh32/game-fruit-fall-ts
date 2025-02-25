@@ -22,13 +22,16 @@
         "typescript"
     ],
     "scripts": {
-        "dev": "node log.js dev & next dev -p 3002",
-        "build": "node log.js build & next build",
-        "dev-nolog": "next dev -p 3002",
+        "copy-assets": "copyfiles -u 5 node_modules/mct-commom/public/assets/images/* public/assets/Images",
+        "clean": "rm -rf dist",
+        "dev": "npm run copy-assets & node log.js dev & next dev -p 3003",
+        "build": "node log.js build & next build ",
+        "dev-nolog": "next dev -p 3003",
         "build-nolog": "next build",
         "export": "next build && next export"
     },
     "dependencies": {
+        "mct-common": "github:YoloGameStudio/mct-common",
         "next": "^14.2.18",
         "phaser": "^3.85.2",
         "react": "^18",

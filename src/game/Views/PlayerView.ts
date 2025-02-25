@@ -1,4 +1,4 @@
-import BaseView from "./BaseView";
+import { BaseView } from "mct-common";
 import PlayerDTO from "../DTOs/PlayerDTO";
 
 export default class PlayerView extends BaseView {

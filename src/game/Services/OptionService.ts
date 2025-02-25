@@ -1,7 +1,7 @@
 import OptionDTO from "../DTOs/OptionDTO";
 import OptionController from "../Controllers/OptionController";
 import OptionView from "../Views/OptionView";
-import BaseService from "./BaseService";
+import { BaseService } from "mct-common";
 
 export default class OptionService extends BaseService<OptionDTO>{
     private controller: OptionController;

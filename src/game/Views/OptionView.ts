@@ -1,4 +1,4 @@
-import BaseView from "./BaseView";
+import { BaseView } from "mct-common";
 import OpitionDTO from "../DTOs/OptionDTO";
 
 export default class OptionView extends BaseView {

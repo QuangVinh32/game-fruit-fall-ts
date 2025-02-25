@@ -1,7 +1,7 @@
 import FruitService from "../Services/FruitService";
 import QuestionService from "../Services/QuestionService";
 
-export default class PlayGameScene extends Phaser.Scene {
+export default class GamePlayScene extends Phaser.Scene {
     private buttonSound: Phaser.Sound.BaseSound | null = null;
     private questionService: any;
     public levelId: number;
@@ -21,8 +21,8 @@ export default class PlayGameScene extends Phaser.Scene {
     }
 
     preload() {
-        this.load.image("button", "assets/Images/button.png");
-        this.load.audio("sound_initial","assets/Audio/sound_initial.mp3")
+        this.load.image("button", "assets/images/button.png");
+        this.load.audio("sound_initial","assets/audio/sound_initial.mp3")
     }
 
     create() {
