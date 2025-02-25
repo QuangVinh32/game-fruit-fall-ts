@@ -143,7 +143,7 @@ export default class QuestionAndOptionScene extends Phaser.Scene {
                 levelId: this.levelId,
                 fruitsCaughtMatrix: Object.fromEntries(this.fruitsCaught), 
             });  
-            this.scene.start("PlayGameScene",{
+            this.scene.start("GamePlayScene",{
                 levelId: this.levelId,
                 score: this.score
             });

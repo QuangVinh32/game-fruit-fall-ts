@@ -10,7 +10,7 @@ export default class PlayGameScene extends Phaser.Scene {
     private fruitService: FruitService | null ;
 
     constructor() {
-        super("PlayGameScene");
+        super("GamePlayScene");
         this.levelId = 1;
     }
 
@@ -126,7 +126,7 @@ export default class PlayGameScene extends Phaser.Scene {
 
                     this.scene.get("LevelScene").events.emit("enablePlayerMove");
                     this.scene.get("LevelScene").events.emit("startFruitFall");
-                    this.scene.stop("PlayGameScene");
+                    this.scene.stop("GamePlayScene");
                 },
             });
         });

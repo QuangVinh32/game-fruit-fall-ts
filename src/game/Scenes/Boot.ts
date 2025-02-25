@@ -1,22 +1,29 @@
 import { Scene } from 'phaser';
 
-export default class Boot extends Scene
-{
-    constructor ()
-    {
+export default class Boot extends Scene {
+    constructor() {
         super('Boot');
     }
 
-    preload ()
-    {
-        //  The Boot Scene is typically used to load in any assets you require for your Preloader, such as a game logo or background.
-        //  The smaller the file size of the assets, the better, as the Boot Scene itself has no preloader.
-
+    preload() {
         this.load.pack('pack', 'assets/boot-asset-pack.json');
     }
 
-    create ()
-    {
+    create() {
+        console.log("🚀 Boot Scene đã khởi chạy");
+
+        // Lắng nghe tin nhắn từ React
+        window.addEventListener("message", (event) => {
+            console.log("📩 Game nhận tin nhắn:", event.data);
+
+            if (event.data?.action === "START_GAME") {
+                console.log("🕹️ Bắt đầu game với nội dung:", event.data.data);
+                
+                // Chuyển sang LoadingScene hoặc GamePlayScene
+                this.scene.start('GamePlayScene');
+            }
+        });
+
         this.scene.start('LoadingScene');
     }
 }
