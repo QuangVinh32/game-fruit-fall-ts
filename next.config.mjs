@@ -2,7 +2,7 @@
 const nextConfig = {
     output: 'export',
     distDir: 'dist',
-    basePath: "/game-fruit-faill-ts"
+    basePath: '/game-fruit-fall-ts'
 };
 
 export default nextConfig;
