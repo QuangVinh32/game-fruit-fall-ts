@@ -10,18 +10,18 @@ export default class Boot extends Scene {
     }
 
     create() {
-        console.log("Boot Scene đã khởi chạy");
+        // console.log("Boot Scene đã khởi chạy");
 
-        window.addEventListener("message", (event) => {
-            console.log("Game nhận tin nhắn:", event.data);
+        // window.addEventListener("message", (event) => {
+        //     console.log("Game nhận tin nhắn:", event.data);
 
-            if (event.data?.action === "START_GAME") {
-                console.log("Bắt đầu game với nội dung:", event.data.data);
+        //     if (event.data?.action === "START_GAME") {
+        //         console.log("Bắt đầu game với nội dung:", event.data.data);
                 
-                // Chuyển sang LoadingScene hoặc GamePlayScene
-                // this.scene.start('GamePlayScene');
-            }
-        });
+        //         // Chuyển sang LoadingScene hoặc GamePlayScene
+        //         // this.scene.start('GamePlayScene');
+        //     }
+        // });
 
         this.scene.start('LoadingScene');
     }

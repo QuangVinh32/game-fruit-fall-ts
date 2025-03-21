@@ -116,7 +116,7 @@ export default class GamePlayScene extends Phaser.Scene {
                         this.scene.launch("UIScene", { score: this.score , levelId: this.levelId});
                         this.isUISceneLaunched = true;
                     }
-
+                    
                     // if (this.levelId >= cols) {
                     //     this.levelId = 1; 
 

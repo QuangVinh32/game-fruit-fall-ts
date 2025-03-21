@@ -9,6 +9,7 @@ import ResultScene from './Scenes/ResultScene';
 import QuestionAndOptionScene from './Scenes/QuestionAndOptionScene';
 import WrongChoiceScene from './Scenes/WrongChoiceScene';
 import LoadingScene from './Scenes/LoadingScene';
+import TestScene from './Scenes/TestScene';
 // import { LoadingScene } from 'mct-common';
 ;
 
@@ -42,6 +43,7 @@ const config: Phaser.Types.Core.GameConfig = {
     },
     scene: [
         Boot,
+        TestScene,
         MainMenu,
         GamePlayScene,
         LoadingScene,

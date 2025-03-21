@@ -4,7 +4,7 @@ export default class LoadingScene extends Phaser.Scene {
     }
 
     preload() {
-        this.load.spritesheet('fruitFall', 'assets/images/loader_spritesheet_1.png', {
+        this.load.spritesheet('fruitFall', 'assets/Images/loader_spritesheet_1.png', {
             frameWidth: 64,  
             frameHeight: 64,
             endFrame: 9
@@ -19,7 +19,7 @@ export default class LoadingScene extends Phaser.Scene {
         }).setOrigin(0.5).setResolution(2);
 
         const loadingText = this.add.text(this.scale.width / 2 , this.scale.height / 2 + 60, 'LOADING', {
-            fontSize: '15px Arial',
+            fontSize: '15px Arial', 
             color: 'black'
         }).setOrigin(0.5).setResolution(2);
 

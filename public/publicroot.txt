@@ -1,0 +1,71 @@
+import { useEffect, useRef, useState } from "react";
+import { IRefPhaserGame, PhaserGame } from "./game/PhaserGame";
+import { MainMenu } from "./game/Scenes/MainMenu";
+import yoTechSDK from "./game/utils/yoTechSDK";
+
+function App() {
+
+  const phaserRef = useRef<IRefPhaserGame | null>(null);
+        // B Nhận dữ liệu từ C
+        useEffect(() => {
+            const handleMessage = (event: MessageEvent) => {
+                console.log("[B] Nhận tin nhắn từ C:", event.data);
+                if (event.data.action === "DATA_FROM_TESTSCENE") {
+                    console.log("[B] Dữ liệu nhận từ C:", event.data.dataTestScene);
+                    console.log("[B] Điểm mới:", event.data.newScore);
+
+                    // B gửi dữ liệu đến A
+                    window.parent.postMessage({
+                        action: "DATA_FROM_B",
+                        dataTestScene: event.data.dataTestScene,
+                        newScore: event.data.newScore
+                    }, "http://localhost:3003");
+                    
+                }
+            };
+
+            window.addEventListener("message", handleMessage);
+            return () => window.removeEventListener("message", handleMessage);
+        }, []);
+
+        useEffect(() => {
+            // Nhận dữ liệu từ A
+            const handleMessage = (event: MessageEvent) => {
+            console.log("[B] Nhận dữ liệu từ A:", event.data.action);
+            if (event.data.action === "START_GAME") {
+                sendDataToC(event.data.data);
+            }
+            };
+        
+            window.addEventListener("message", handleMessage);
+            return () => window.removeEventListener("message", handleMessage);
+
+
+   
+              
+        }, []);
+        
+  
+        // Gửi dữ liệu đến C (Phaser Scene)
+        const sendDataToC = (data: { levelId: number; score: number }) => {
+            console.log("[B] Gửi dữ liệu đến C:", data);
+  
+        const scene = phaserRef.current?.game?.scene.getScene("TestScene");
+        if (scene) {
+        scene.scene.start("TestScene", {
+            levelId: data.levelId,
+            score: data.score,
+        });
+        } else {
+        console.error("[B] Không tìm thấy TestScene");
+        }
+    };
+  
+  return (
+    <div id="app">
+      <PhaserGame ref={phaserRef} />
+    </div>
+  );
+}
+
+export default App;

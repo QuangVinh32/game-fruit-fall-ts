@@ -1,23 +1,53 @@
+// import { useEffect, useState } from "react";
+// import { IRefPhaserGame, PhaserGame } from "./game/PhaserGame";
+// import yoTechSDK from "./game/utils/yoTechSDK";
+
+
+
+// function App() {
+//   const [receivedData, setReceivedData] = useState<any>(null);
+
+//   useEffect(() => {
+//     yoTechSDK.registerHandler((message) => {
+//       console.log("[B] Nhận tin nhắn từ A:", message);
+//       try { 
+//         if (message.eventType === "START") {
+//           console.log("[B] Dữ liệu hợp lệ:", message.eventData);
+//           setReceivedData(message.eventData );
+//         } else {
+//           console.warn("Tin nhắn không hợp lệ:", message);
+//         }
+//       } catch (error) {
+//         console.error("Lỗi khi xử lý tin nhắn:", error);
+//       }
+//     });
+  
+//     return () => {
+//       yoTechSDK.registerHandler(() => {});
+//     };
+//   }, []);
+  
+
+//   return (
+//     <div id="app">
+//       {/* <PhaserGame />
+//       <h2>Dữ liệu nhận từ A:</h2>
+//       <pre>{JSON.stringify(receivedData, null, 2)}</pre> */}
+//     </div>
+//   );
+// }
+
+// export default App;
+
+
+
 import { ChangeEvent, useRef, useState } from 'react';
 import { IRefPhaserGame, PhaserGame } from './game/PhaserGame';
-import { MainMenu } from './game/Scenes/MainMenu';
+import MainMenu from './game/Scenes/MainMenu';
 
 function App()
-
 {
-
-    console.log("Scene đã khởi tạo");
-
-    // Lắng nghe tin nhắn từ React
-    window.addEventListener("message", (event) => {
-      console.log("Game nhận được tin nhắn từ React:", event.data);
-
-      if (event.data.action === "START_GAME") {
-        console.log("Bắt đầu game với thông điệp:", event.data.data);
-        
-      }
-    });
-        //  References to the PhaserGame component (game and scene are exposed)
+    //  References to the PhaserGame component (game and scene are exposed)
     const phaserRef = useRef<IRefPhaserGame | null>(null);
     const [insideOutMessage, setInsideOutMessage] = useState('');
     const [outsideInMessage, setOutsideInMessage] = useState('');
@@ -63,3 +93,4 @@ function App()
 }
 
 export default App
+

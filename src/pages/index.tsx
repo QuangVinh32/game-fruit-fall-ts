@@ -8,6 +8,8 @@ const inter = Inter({ subsets: ["latin"] });
 const AppWithoutSSR = dynamic(() => import("@/App"), { ssr: false });
 
 export default function Home() {
+
+    
     return (
         <>
             <Head>
