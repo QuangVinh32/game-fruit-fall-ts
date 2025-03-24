@@ -26,6 +26,10 @@ export default class GamePlayScene extends Phaser.Scene {
     }
 
     create() {
+
+        // this.scene.start('LevelScene');
+        // // this.scene.start('GamePlayScene');
+
         this.buttonSound = this.sound.add("sound_initial", {
             volume: 1,
         });

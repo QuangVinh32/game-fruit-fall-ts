@@ -22,7 +22,7 @@
         "typescript"
     ],
     "scripts": {
-        "copy-assets": "copyfiles -u 5 node_modules/mct-commom/public/assets/images/* public/assets/Images",
+        "copy-assets": "copyfiles -u 5 node_modules/mct-common/public/assets/images/* public/assets/images",
         "clean": "rm -rf dist",
         "dev": "npm run copy-assets & node log.js dev & next dev -p 3003",
         "build": "node log.js build & next build ",
@@ -41,6 +41,7 @@
         "@types/node": "^20",
         "@types/react": "^18",
         "@types/react-dom": "^18",
+        "copyfiles": "^2.4.1",
         "eslint": "^9.22.0",
         "typescript": "^5"
     }

@@ -26,7 +26,7 @@ export default class ResultScene extends Phaser.Scene {
     }
 
     async create() {
-        this.add.text(this.scale.width / 2, this.scale.height / 20, "The Farmer's Fruit", { fontSize: '30px Arial', fontStyle: "bold", color: 'black' }).setOrigin(0.5, 0).setResolution(2);
+        this.add.text(this.scale.width / 2, this.scale.height / 20 - 10, "The Farmer's Fruit", { fontSize: '30px Arial', fontStyle: "bold", color: 'black' }).setOrigin(0.5, 0).setResolution(2);
 
         // this.add.text(400, this.scale.height / 20, "NextLevel", { fontSize: '30px Arial', fontStyle: "bold", color: 'black' }).setOrigin(0.5, 0);
 

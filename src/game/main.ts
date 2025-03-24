@@ -1,5 +1,4 @@
 import Boot from './Scenes/Boot';
-// import LoadingScene from './Scenes/LoadingScene';
 import MainMenu from './Scenes/MainMenu';
 import { AUTO, Game } from 'phaser';
 import UIScene from './Scenes/UIScene';
